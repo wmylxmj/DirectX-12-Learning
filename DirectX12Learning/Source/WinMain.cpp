@@ -19,6 +19,7 @@
 // -----------------------------------------
 
 #include <string>
+#include <cassert>
 
 // 自己的头文件
 #include "D3D12/Helper.h"
@@ -104,6 +105,20 @@ bool InitMainWindow(HINSTANCE hInstance) {
 	UpdateWindow(g_hMainWnd);
 
 	return true;
+}
+
+void FlushCmdQueue() {
+	g_fenceValue++;
+	// 发送同步信号
+	CHECK_HRESULT(g_cmdQueue->Signal(g_fence.Get(), g_fenceValue));
+	// 等待 GPU 命令完成
+	if (g_fence->GetCompletedValue() < g_fenceValue) {
+		HANDLE eventHandle = CreateEventEx(nullptr, L"Fence Event", false, EVENT_ALL_ACCESS);
+		assert(eventHandle != nullptr && "Create Fence Event Failed.");
+		CHECK_HRESULT(g_fence->SetEventOnCompletion(g_fenceValue, eventHandle));
+		WaitForSingleObject(eventHandle, INFINITE);
+		CloseHandle(eventHandle);
+	}
 }
 
 
