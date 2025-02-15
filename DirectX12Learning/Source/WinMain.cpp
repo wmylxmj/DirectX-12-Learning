@@ -28,7 +28,11 @@ uint32_t g_viewportHeight = 480;
 
 HWND g_hMainWnd;
 Microsoft::WRL::ComPtr<ID3D12Device2> g_device;
+
+// 用于同步
 Microsoft::WRL::ComPtr<ID3D12Fence> g_fence;
+uint64_t g_fenceValue = 0;
+
 Microsoft::WRL::ComPtr<ID3D12CommandQueue> g_cmdQueue;
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> g_cmdList;
 // 与后台缓冲区数量相关
@@ -42,13 +46,23 @@ Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
 
 UINT g_rtvDescriptorSize;
 
+LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (Msg) {
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+	return DefWindowProc(hWnd, Msg, wParam, lParam);
+}
+
 bool InitMainWindow(HINSTANCE hInstance) {
 
 	// 创建窗口类
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(wc); // 结构的大小
 	wc.style = CS_HREDRAW | CS_VREDRAW; // 类样式
-	wc.lpfnWndProc = DefWindowProc; // 窗口处理函数
+	wc.lpfnWndProc = MainWndProc; // 窗口处理函数
 	wc.cbClsExtra = 0; // 此类的额外数据量
 	wc.cbWndExtra = 0; // 此类型的每个窗口的额外数据量
 	wc.hInstance = hInstance; // 应用程序实例的句柄
@@ -184,6 +198,9 @@ bool InitDirect3D() {
 		IID_PPV_ARGS(g_dsvDescriptorHeap.GetAddressOf())
 	));
 
+	// RTV 描述符大小
+	g_rtvDescriptorSize = g_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
 	return true;
 }
 
@@ -196,6 +213,15 @@ int WINAPI WinMain(
 	InitMainWindow(hInstance);
 	InitDirect3D();
 	OutputDebugStringA("Hello World!\n");
+	MSG msg = {};
+	while (msg.message != WM_QUIT)
+	{
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
 	return 0;
 }
 
