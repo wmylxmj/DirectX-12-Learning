@@ -21,13 +21,13 @@
 	HRESULT hr = (x); \
 	if (FAILED(hr)) \
 	{ \
-	_com_error err(hr); \
-	std::wstring wError = err.ErrorMessage(); \
-	std::wstring wErrMsg = std::wstring(L ## #x) + \
-	L" failed in " + std::wstring(__FILEW__) + \
-	L"; line: " + std::to_wstring(__LINE__) + \
-	L"; error: " + wError; \
-	MessageBox(0, wErrMsg.c_str(), L"HRESULT ´íÎó", 0); \
+		_com_error err(hr); \
+		std::wstring wError = err.ErrorMessage(); \
+		std::wstring wErrMsg = std::wstring(L ## #x) + \
+		L" failed in " + std::wstring(__FILEW__) + \
+		L"; line: " + std::to_wstring(__LINE__) + \
+		L"; error: " + wError; \
+		MessageBox(0, wErrMsg.c_str(), L"HRESULT ´íÎó", 0); \
 	} \
 }                        
 #endif
