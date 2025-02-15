@@ -35,13 +35,12 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> g_cmdList;
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> g_cmdAllocator;
 Microsoft::WRL::ComPtr<IDXGISwapChain> g_swapChain;
 
-bool g_4xMsaaEnable = false; // 是否开启 4x MSAA
-UINT g_4xMsaaQuality = 0;
-
 int swapChainBufferCount = 2;
 
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvHeap;
-Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvHeap;
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvDescriptorHeap;
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
+
+UINT g_rtvDescriptorSize;
 
 bool InitMainWindow(HINSTANCE hInstance) {
 
@@ -140,20 +139,6 @@ bool InitDirect3D() {
 	));
 	g_cmdList->Close();
 
-	// 检测 4x MSAA 质量支持
-	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS multisampleQualityLevels;
-	multisampleQualityLevels.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	multisampleQualityLevels.SampleCount = 4;
-	multisampleQualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
-	multisampleQualityLevels.NumQualityLevels = 0;
-	CHECK_HRESULT(g_device->CheckFeatureSupport(
-		D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
-		&multisampleQualityLevels,
-		sizeof(multisampleQualityLevels)
-	));
-	g_4xMsaaQuality = multisampleQualityLevels.NumQualityLevels;
-	if (g_4xMsaaQuality <= 0) throw;
-
 	// 创建交换链
 	g_swapChain.Reset();
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
@@ -164,8 +149,8 @@ bool InitDirect3D() {
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	swapChainDesc.SampleDesc.Count = g_4xMsaaEnable ? 4 : 1; // 翻转模型无法使用多重采样
-	swapChainDesc.SampleDesc.Quality = g_4xMsaaEnable ? (g_4xMsaaQuality - 1) : 0;
+	swapChainDesc.SampleDesc.Count = 1; // 翻转模型无法使用多重采样
+	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.BufferCount = swapChainBufferCount;
 	swapChainDesc.OutputWindow = g_hMainWnd;
@@ -186,7 +171,7 @@ bool InitDirect3D() {
 	rtvHeapDesc.NodeMask = 0;
 	CHECK_HRESULT(g_device->CreateDescriptorHeap(
 		&rtvHeapDesc,
-		IID_PPV_ARGS(g_rtvHeap.GetAddressOf())
+		IID_PPV_ARGS(g_rtvDescriptorHeap.GetAddressOf())
 	));
 
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc;
@@ -196,7 +181,7 @@ bool InitDirect3D() {
 	dsvHeapDesc.NodeMask = 0;
 	CHECK_HRESULT(g_device->CreateDescriptorHeap(
 		&dsvHeapDesc,
-		IID_PPV_ARGS(g_dsvHeap.GetAddressOf())
+		IID_PPV_ARGS(g_dsvDescriptorHeap.GetAddressOf())
 	));
 
 	return true;
