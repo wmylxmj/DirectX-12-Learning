@@ -55,7 +55,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	switch (Msg) {
 	case WM_DESTROY:
 		PostQuitMessage(0);
-		return 0;
+		break;
 	}
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
@@ -228,6 +228,14 @@ bool InitDirect3D() {
 	return true;
 }
 
+void Update() {
+
+}
+
+void Render() {
+
+}
+
 int WINAPI WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -244,6 +252,10 @@ int WINAPI WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+		}
+		else {
+			Update();
+			Render();
 		}
 	}
 	return 0;
