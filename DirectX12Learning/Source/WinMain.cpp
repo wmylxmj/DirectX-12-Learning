@@ -44,6 +44,7 @@ Microsoft::WRL::ComPtr<IDXGISwapChain> g_swapChain;
 // 交换链缓冲数
 const int k_swapChainBufferCount = 2;
 Microsoft::WRL::ComPtr<ID3D12Resource> g_swapChainBuffers[k_swapChainBufferCount];
+int g_currBackBufferIndex= 0;
 
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvDescriptorHeap;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
@@ -233,7 +234,48 @@ void Update() {
 }
 
 void Render() {
+	
+	CHECK_HRESULT(g_cmdAllocator->Reset());
+	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
 
+	CD3DX12_RESOURCE_BARRIER barrier;
+	// 清除 Render Target
+	barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		g_swapChainBuffers[g_currBackBufferIndex].Get(),
+		D3D12_RESOURCE_STATE_PRESENT,
+		D3D12_RESOURCE_STATE_RENDER_TARGET
+	);
+	g_cmdList->ResourceBarrier(1, &barrier);
+
+
+	FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
+		g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+		g_currBackBufferIndex, 
+		g_rtvDescriptorSize
+	);
+
+	g_cmdList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+
+	// 呈现
+	barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		g_swapChainBuffers[g_currBackBufferIndex].Get(),
+		D3D12_RESOURCE_STATE_RENDER_TARGET,
+		D3D12_RESOURCE_STATE_PRESENT
+	);
+	g_cmdList->ResourceBarrier(1, &barrier);
+
+	CHECK_HRESULT(g_cmdList->Close());
+
+	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
+	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
+	// 交换前后缓存
+	CHECK_HRESULT(g_swapChain->Present(0, 0));
+	g_currBackBufferIndex = (g_currBackBufferIndex + 1) % k_swapChainBufferCount;
+
+	// 等待命令完成
+	FlushCmdQueue();
 }
 
 int WINAPI WinMain(
