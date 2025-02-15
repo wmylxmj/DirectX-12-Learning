@@ -15,6 +15,7 @@
 #pragma comment(lib, "dxgi.lib")
 
 #include <DirectXMath.h>
+#include "D3D12/d3dx12.h"
 // -----------------------------------------
 
 #include <string>
@@ -39,7 +40,9 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> g_cmdList;
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> g_cmdAllocator;
 Microsoft::WRL::ComPtr<IDXGISwapChain> g_swapChain;
 
-int swapChainBufferCount = 2;
+// 交换链缓冲数
+const int k_swapChainBufferCount = 2;
+Microsoft::WRL::ComPtr<ID3D12Resource> g_swapChainBuffers[k_swapChainBufferCount];
 
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvDescriptorHeap;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
@@ -166,7 +169,7 @@ bool InitDirect3D() {
 	swapChainDesc.SampleDesc.Count = 1; // 翻转模型无法使用多重采样
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.BufferCount = swapChainBufferCount;
+	swapChainDesc.BufferCount = k_swapChainBufferCount;
 	swapChainDesc.OutputWindow = g_hMainWnd;
 	swapChainDesc.Windowed = true;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
@@ -179,7 +182,7 @@ bool InitDirect3D() {
 
 	// 创建 RTV 及 DSV 描述符堆
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc;
-	rtvHeapDesc.NumDescriptors = swapChainBufferCount;
+	rtvHeapDesc.NumDescriptors = k_swapChainBufferCount;
 	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	rtvHeapDesc.NodeMask = 0;
@@ -200,6 +203,10 @@ bool InitDirect3D() {
 
 	// RTV 描述符大小
 	g_rtvDescriptorSize = g_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+	// 创建 RTV
 
 	return true;
 }
