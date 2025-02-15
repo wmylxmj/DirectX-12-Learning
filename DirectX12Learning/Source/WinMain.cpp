@@ -201,12 +201,14 @@ bool InitDirect3D() {
 		IID_PPV_ARGS(g_dsvDescriptorHeap.GetAddressOf())
 	));
 
-	// RTV 描述符大小
-	g_rtvDescriptorSize = g_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-
 	// 创建 RTV
+	g_rtvDescriptorSize = g_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	for (int i = 0; i < k_swapChainBufferCount; ++i) {
+		CHECK_HRESULT(g_swapChain->GetBuffer(i, IID_PPV_ARGS(&g_swapChainBuffers[i])));
+		g_device->CreateRenderTargetView(g_swapChainBuffers[i].Get(), nullptr, rtvHeapHandle);
+		rtvHeapHandle.Offset(1, g_rtvDescriptorSize);
+	}
 
 	return true;
 }
