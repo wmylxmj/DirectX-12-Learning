@@ -273,7 +273,7 @@ void Render() {
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
 	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
 
-	// 呈现
+	// 呈现当前的后台缓冲区
 	CHECK_HRESULT(g_swapChain->Present(1, 0));
 
 	// 交换前后缓存
