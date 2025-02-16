@@ -240,24 +240,27 @@ void Render() {
 
 	CD3DX12_RESOURCE_BARRIER barrier;
 	// 清除 Render Target
+	// 通知 GPU 资源的状态即将改变
 	barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		g_swapChainBuffers[g_currBackBufferIndex].Get(),
-		D3D12_RESOURCE_STATE_PRESENT,
-		D3D12_RESOURCE_STATE_RENDER_TARGET
+		g_swapChainBuffers[g_currBackBufferIndex].Get(), // 目标资源：当前后台缓冲区
+		D3D12_RESOURCE_STATE_PRESENT, // 当前状态：呈现到屏幕
+		D3D12_RESOURCE_STATE_RENDER_TARGET // 目标状态：作为渲染目标使用
 	);
 	g_cmdList->ResourceBarrier(1, &barrier);
 
-
-	FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
+	// 设置渲染目标
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
 		g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-		g_currBackBufferIndex, 
+		g_currBackBufferIndex,
 		g_rtvDescriptorSize
 	);
+	g_cmdList->OMSetRenderTargets(1, &rtv, true, nullptr);
 
+	// 清除渲染目标
+	FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
 	g_cmdList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
-
-	// 呈现
+	
+	// 通知 GPU 资源的状态即将改变
 	barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		g_swapChainBuffers[g_currBackBufferIndex].Get(),
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
@@ -265,13 +268,15 @@ void Render() {
 	);
 	g_cmdList->ResourceBarrier(1, &barrier);
 
+	// 提交命令
 	CHECK_HRESULT(g_cmdList->Close());
-
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
 	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
 
+	// 呈现
+	CHECK_HRESULT(g_swapChain->Present(1, 0));
+
 	// 交换前后缓存
-	CHECK_HRESULT(g_swapChain->Present(0, 0));
 	g_currBackBufferIndex = (g_currBackBufferIndex + 1) % k_swapChainBufferCount;
 
 	// 等待命令完成
