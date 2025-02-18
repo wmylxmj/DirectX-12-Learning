@@ -1,7 +1,7 @@
-#pragma once
+ï»¿#pragma once
 
 /*
-    ÕâÀï¶¨Òå 3D Ä£ĞÍ
+    è¿™é‡Œå®šä¹‰ 3D æ¨¡å‹
 */
 
 #include "DirectXMath.h"
