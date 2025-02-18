@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Source\D3D12\Helper.h" />
     <ClCompile Include="Source\Model.cpp" />
+    <ClCompile Include="Source\ModelLoader.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Model.h" />
+    <ClInclude Include="Source\ModelLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
