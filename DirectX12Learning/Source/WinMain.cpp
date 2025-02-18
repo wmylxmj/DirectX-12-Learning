@@ -21,8 +21,6 @@
 #include <string>
 #include <cassert>
 
-#include "assimp/Importer.hpp"
-
 // 自己的头文件
 #include "D3D12/Helper.h"
 

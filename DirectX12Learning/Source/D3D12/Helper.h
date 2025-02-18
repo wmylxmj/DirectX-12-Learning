@@ -1,6 +1,6 @@
-#pragma once
+ï»¿#pragma once
 
-#include <comdef.h> // ÓÃÓÚ´¦Àí HRESULT ´íÎó
+#include <comdef.h> // ç”¨äºå¤„ç† HRESULT é”™è¯¯
 
 // ----------------DirectX 12--------------
 #include <dxgi1_6.h>
@@ -27,7 +27,7 @@
 		L" failed in " + std::wstring(__FILEW__) + \
 		L"; line: " + std::to_wstring(__LINE__) + \
 		L"; error: " + wError; \
-		MessageBox(0, wErrMsg.c_str(), L"HRESULT ´íÎó", 0); \
+		MessageBox(0, wErrMsg.c_str(), L"â™¥æ‚é±¼ï½â™¥ HRESULT å‡ºé”™å•¦", 0); \
 	} \
 }                        
 #endif
