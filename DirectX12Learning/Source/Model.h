@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+    这里定义 3D 模型
+*/
+
 #include "DirectXMath.h"
 
 typedef struct {
