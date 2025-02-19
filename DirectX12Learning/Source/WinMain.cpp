@@ -46,6 +46,9 @@ const int k_swapChainBufferCount = 2;
 Microsoft::WRL::ComPtr<ID3D12Resource> g_swapChainBuffers[k_swapChainBufferCount];
 int g_currBackBufferIndex= 0;
 
+Microsoft::WRL::ComPtr<ID3D12Resource> g_depthStencilBuffer;
+
+
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvDescriptorHeap;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
 
@@ -150,19 +153,19 @@ bool InitDirect3D() {
 	// 创建围栏，用于CPU和GPU同步
 	CHECK_HRESULT(g_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&g_fence)));
 
-	// 创建命令队列
+	// 创建命令队列 To do: 不同类型的命令队列分开
 	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc = {};
 	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 	cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 	CHECK_HRESULT(g_device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&g_cmdQueue)));
 
-	// 创建命令分配器
+	// 创建命令分配器 To do: 不同类型的命令分配器分开
 	CHECK_HRESULT(g_device->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(g_cmdAllocator.GetAddressOf())
 	));
 
-	// 创建命令列表
+	// 创建命令列表 To do: 不同类型的命令列表分开
 	CHECK_HRESULT(g_device->CreateCommandList(
 		0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
@@ -221,10 +224,49 @@ bool InitDirect3D() {
 	g_rtvDescriptorSize = g_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 	for (int i = 0; i < k_swapChainBufferCount; ++i) {
+		// 获得交换链中的后台缓冲区
 		CHECK_HRESULT(g_swapChain->GetBuffer(i, IID_PPV_ARGS(&g_swapChainBuffers[i])));
 		g_device->CreateRenderTargetView(g_swapChainBuffers[i].Get(), nullptr, rtvHeapHandle);
 		rtvHeapHandle.Offset(1, g_rtvDescriptorSize);
 	}
+	
+	// 创建深度/模板缓冲区及其视图
+	D3D12_RESOURCE_DESC dsvBufferDesc;
+	dsvBufferDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	dsvBufferDesc.Alignment = 0;
+	dsvBufferDesc.Width = g_viewportWidth;
+	dsvBufferDesc.Height = g_viewportHeight;
+	dsvBufferDesc.DepthOrArraySize = 1;
+	dsvBufferDesc.MipLevels = 1;
+	dsvBufferDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+	dsvBufferDesc.SampleDesc.Count = 1;
+	dsvBufferDesc.SampleDesc.Quality = 0;
+	dsvBufferDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+	dsvBufferDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+	// 优化清除值
+	D3D12_CLEAR_VALUE clearValue;
+	clearValue.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	clearValue.DepthStencil.Depth = 1.0f;
+	clearValue.DepthStencil.Stencil = 0;
+	// 创建深度/模板缓冲区
+	CD3DX12_HEAP_PROPERTIES heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	CHECK_HRESULT(g_device->CreateCommittedResource(
+		&heapProperties, 
+		D3D12_HEAP_FLAG_NONE,
+		&dsvBufferDesc,
+		D3D12_RESOURCE_STATE_COMMON,
+		&clearValue,
+		IID_PPV_ARGS(g_depthStencilBuffer.GetAddressOf())
+	));
+	// 创建视图
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	dsvDesc.Texture2D.MipSlice = 0;
+	g_device->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+
+
 
 	return true;
 }
