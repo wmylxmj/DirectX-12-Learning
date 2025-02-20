@@ -266,7 +266,22 @@ bool InitDirect3D() {
 	dsvDesc.Texture2D.MipSlice = 0;
 	g_device->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
+	FlushCmdQueue();
+	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
+	// 将深度/模板缓冲区状态转为深度缓冲区
+	g_cmdList->ResourceBarrier(1,
+		&RvalueToLvalue(CD3DX12_RESOURCE_BARRIER::Transition(
+			g_depthStencilBuffer.Get(),
+			D3D12_RESOURCE_STATE_COMMON,
+			D3D12_RESOURCE_STATE_DEPTH_WRITE
+		))
+	);
 
+	// 发送命令
+	CHECK_HRESULT(g_cmdList->Close());
+	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
+	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+	FlushCmdQueue();
 
 	return true;
 }
