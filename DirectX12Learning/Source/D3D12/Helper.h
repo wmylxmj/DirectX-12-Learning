@@ -33,3 +33,9 @@
 #endif
 
 
+
+template <typename T>
+inline T& RvalueToLvalue(T&& value) {
+	return value; // 直接返回引用
+}
+
