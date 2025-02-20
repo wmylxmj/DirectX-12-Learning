@@ -8,4 +8,4 @@
 
 #include "Model.h"
 
-static bool AssimpSceneProcessing(const aiScene* scene, Model& model);
+static void AssimpSceneProcessing(const aiScene* scene, Model& model);
