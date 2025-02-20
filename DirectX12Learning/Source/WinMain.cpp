@@ -44,15 +44,19 @@ Microsoft::WRL::ComPtr<IDXGISwapChain> g_swapChain;
 // ½»»»Á´»º³åÊý
 const int k_swapChainBufferCount = 2;
 Microsoft::WRL::ComPtr<ID3D12Resource> g_swapChainBuffers[k_swapChainBufferCount];
-int g_currBackBufferIndex= 0;
+int g_currBackBufferIndex = 0;
 
 Microsoft::WRL::ComPtr<ID3D12Resource> g_depthStencilBuffer;
+Microsoft::WRL::ComPtr<ID3D12Resource> g_constantBuffer;
 
 
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvDescriptorHeap;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_cbvDescriptorHeap;
 
 UINT g_rtvDescriptorSize;
+
+BYTE* g_cbMappedData = nullptr;
 
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
