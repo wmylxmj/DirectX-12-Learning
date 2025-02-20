@@ -25,6 +25,6 @@ bool AssimpImportModel(const std::string& pFile, Model& model) {
 }
 
 void AssimpSceneProcessing(const aiScene* scene, Model& model) {
-	
+
 }
 	
