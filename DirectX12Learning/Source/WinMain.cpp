@@ -24,6 +24,13 @@
 // 自己的头文件
 #include "D3D12/Helper.h"
 
+
+struct ObjectConstants
+{
+
+};
+
+
 // ----------------全局变量------------------
 uint32_t g_viewportWidth = 640;
 uint32_t g_viewportHeight = 480;
@@ -233,7 +240,7 @@ bool InitDirect3D() {
 		g_device->CreateRenderTargetView(g_swapChainBuffers[i].Get(), nullptr, rtvHeapHandle);
 		rtvHeapHandle.Offset(1, g_rtvDescriptorSize);
 	}
-	
+
 	// 创建深度/模板缓冲区及其视图
 	D3D12_RESOURCE_DESC dsvBufferDesc;
 	dsvBufferDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -255,7 +262,7 @@ bool InitDirect3D() {
 	// 创建深度/模板缓冲区
 	CD3DX12_HEAP_PROPERTIES heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	CHECK_HRESULT(g_device->CreateCommittedResource(
-		&heapProperties, 
+		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&dsvBufferDesc,
 		D3D12_RESOURCE_STATE_COMMON,
@@ -285,6 +292,113 @@ bool InitDirect3D() {
 	CHECK_HRESULT(g_cmdList->Close());
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
 	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+	FlushCmdQueue();
+
+	return true;
+}
+
+
+Microsoft::WRL::ComPtr<ID3D12Resource> CreateDefaultBuffer(
+	ID3D12Device* device,
+	ID3D12GraphicsCommandList* cmdList,
+	const void* initData,
+	UINT64 byteSize,
+	Microsoft::WRL::ComPtr<ID3D12Resource>& uploadBuffer)
+{
+	Microsoft::WRL::ComPtr<ID3D12Resource> defaultBuffer;
+
+	// 建立实际的默认缓冲区资源
+	CHECK_HRESULT(device->CreateCommittedResource(
+		&RvalueToLvalue(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT)),
+		D3D12_HEAP_FLAG_NONE,
+		&RvalueToLvalue(CD3DX12_RESOURCE_DESC::Buffer(byteSize)), // Resource Desc
+		D3D12_RESOURCE_STATE_COMMON,
+		nullptr, // Clear Value
+		IID_PPV_ARGS(defaultBuffer.GetAddressOf())
+	));
+
+	// 建立中介上传堆，将CPU内存数据通过上传堆复制到默认堆
+	CHECK_HRESULT(device->CreateCommittedResource(
+		&RvalueToLvalue(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD)),
+		D3D12_HEAP_FLAG_NONE,
+		&RvalueToLvalue(CD3DX12_RESOURCE_DESC::Buffer(byteSize)),
+		D3D12_RESOURCE_STATE_GENERIC_READ, // 允许资源在 CPU 和 GPU 之间进行读取
+		nullptr,
+		IID_PPV_ARGS(uploadBuffer.GetAddressOf())
+	));
+
+	// 描述想要复制到默认堆的数据
+	D3D12_SUBRESOURCE_DATA subResourceData = {};
+	subResourceData.pData = initData;
+	subResourceData.RowPitch = byteSize; // 对于缓冲区，该参数为字节数
+	subResourceData.SlicePitch = byteSize; // 对于缓冲区，该参数为字节数
+
+	// CPU 内存数据上传至中介上传堆，再通过上传堆上传至默认堆
+	cmdList->ResourceBarrier(1,
+		&RvalueToLvalue(CD3DX12_RESOURCE_BARRIER::Transition(
+			defaultBuffer.Get(),
+			D3D12_RESOURCE_STATE_COMMON,
+			D3D12_RESOURCE_STATE_COPY_DEST
+		))
+	);
+	UpdateSubresources<1>(cmdList, defaultBuffer.Get(), uploadBuffer.Get(), 0, 0, 1, &subResourceData);
+	cmdList->ResourceBarrier(1,
+		&RvalueToLvalue(CD3DX12_RESOURCE_BARRIER::Transition(
+			defaultBuffer.Get(),
+			D3D12_RESOURCE_STATE_COPY_DEST,
+			D3D12_RESOURCE_STATE_GENERIC_READ
+		))
+	);
+
+	// 复制完成后才能释放上传堆
+
+	return defaultBuffer;
+}
+
+UINT CalcConstantBufferByteSize(UINT byteSize)
+{
+	// byteSize + 255：如果不是256的倍数则向上调整
+	// & ~255：清除低 8 位，确保结果是 256 字节对齐的
+	return (byteSize + 255) & ~255;
+}
+
+bool AppInit() {
+
+	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
+
+	// 建立常量缓冲区描述符堆
+	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc;
+	cbvHeapDesc.NumDescriptors = 1;
+	cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	cbvHeapDesc.NodeMask = 0;
+	CHECK_HRESULT(g_device->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&g_cbvDescriptorHeap)));
+
+	// 建立常量缓冲区
+	UINT cbByteSize = (sizeof(ObjectConstants) + 255) & ~255;
+	CHECK_HRESULT(g_device->CreateCommittedResource(
+		&RvalueToLvalue(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD)),
+		D3D12_HEAP_FLAG_NONE,
+		&RvalueToLvalue(CD3DX12_RESOURCE_DESC::Buffer(cbByteSize)),
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&g_constantBuffer)
+	));
+	CHECK_HRESULT(g_constantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&g_cbMappedData)));
+
+	// 创建常量缓冲区描述符堆
+	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
+	cbvDesc.BufferLocation = g_constantBuffer->GetGPUVirtualAddress();
+	cbvDesc.SizeInBytes = CalcConstantBufferByteSize(sizeof(ObjectConstants));
+	g_device->CreateConstantBufferView(
+		&cbvDesc,
+		g_cbvDescriptorHeap->GetCPUDescriptorHandleForHeapStart()
+	);
+
+	CHECK_HRESULT(g_cmdList->Close());
+	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
+	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+
 	FlushCmdQueue();
 
 	return true;
@@ -352,6 +466,7 @@ int WINAPI WinMain(
 ) {
 	InitMainWindow(hInstance);
 	InitDirect3D();
+	AppInit();
 	OutputDebugStringA("Hello World!\n");
 	MSG msg = {};
 	while (msg.message != WM_QUIT)
