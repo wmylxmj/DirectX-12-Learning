@@ -17,7 +17,7 @@ DirectX::XMMATRIX XM_CALLCONV RotMatrix::Rodrigues(DirectX::FXMVECTOR rotAxis, f
 	// º∆À„ (1 - cos(theta)) * k matmul k.T
 	DirectX::XMMATRIX matComp2 = (1.0f - cosTheta) * DirectX::XMMatrixVectorTensorProduct(k, k);
 
-	// º∆À„ sin(theta) * kæÿ’Û
+	// º∆À„ sin(theta) * Kæÿ’Û
 	DirectX::XMMATRIX matK;
 	matK.r[0] = DirectX::XMVectorSet(0, -DirectX::XMVectorGetZ(k), DirectX::XMVectorGetY(k), 0);
 	matK.r[1] = DirectX::XMVectorSet(DirectX::XMVectorGetZ(k), 0, -DirectX::XMVectorGetX(k), 0);
