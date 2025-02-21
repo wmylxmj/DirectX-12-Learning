@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\D3D12\Helper.h" />
+    <ClCompile Include="Source\D3D12\MathHelper.cpp" />
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModelLoader.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
@@ -140,6 +141,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\D3D12\MathHelper.h" />
     <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\ModelLoader.h" />
   </ItemGroup>
