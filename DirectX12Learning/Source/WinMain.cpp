@@ -553,7 +553,39 @@ bool AppInit() {
 	Microsoft::WRL::ComPtr<ID3D12Resource> VertexBufferUploader = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> IndexBufferUploader = nullptr;
 
+	CHECK_HRESULT(D3DCreateBlob(vbByteSize, &VertexBufferCPU));
+	CopyMemory(VertexBufferCPU->GetBufferPointer(), vertices.data(), vbByteSize);
 
+	CHECK_HRESULT(D3DCreateBlob(ibByteSize, &IndexBufferCPU));
+	CopyMemory(IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
+
+	VertexBufferGPU = CreateDefaultBuffer(
+		g_device.Get(),
+		g_cmdList.Get(),
+		vertices.data(),
+		vbByteSize,
+		VertexBufferUploader
+	);
+
+	IndexBufferGPU = CreateDefaultBuffer(
+		g_device.Get(),
+		g_cmdList.Get(), 
+		indices.data(), 
+		ibByteSize, 
+		IndexBufferUploader
+	);
+
+	// 创建顶点缓冲区视图
+	D3D12_VERTEX_BUFFER_VIEW vbv;
+	vbv.BufferLocation = VertexBufferGPU->GetGPUVirtualAddress();
+	vbv.StrideInBytes = sizeof(Vertex);
+	vbv.SizeInBytes = vbByteSize;
+
+	// 创建索引缓冲区视图
+	D3D12_INDEX_BUFFER_VIEW ibv;
+	ibv.BufferLocation = IndexBufferGPU->GetGPUVirtualAddress();
+	ibv.Format = DXGI_FORMAT_R16_UINT;
+	ibv.SizeInBytes = ibByteSize;
 
 
 	CHECK_HRESULT(g_cmdList->Close());
