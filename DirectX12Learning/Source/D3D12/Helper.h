@@ -18,10 +18,10 @@
 #ifndef CHECK_HRESULT
 #define CHECK_HRESULT(x) \
 { \
-	HRESULT hr = (x); \
-	if (FAILED(hr)) \
+	HRESULT CHECK_HRESULT_hr = (x); \
+	if (FAILED(CHECK_HRESULT_hr)) \
 	{ \
-		_com_error err(hr); \
+		_com_error err(CHECK_HRESULT_hr); \
 		std::wstring wError = err.ErrorMessage(); \
 		std::wstring wErrMsg = std::wstring(L ## #x) + \
 		L" failed in " + std::wstring(__FILEW__) + \

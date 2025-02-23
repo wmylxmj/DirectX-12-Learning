@@ -395,6 +395,44 @@ bool AppInit() {
 		g_cbvDescriptorHeap->GetCPUDescriptorHandleForHeapStart()
 	);
 
+	// 创建根签名
+	// 创建根参数
+	CD3DX12_ROOT_PARAMETER slotRootParameter[1];
+
+	// 创建描述符表
+	CD3DX12_DESCRIPTOR_RANGE cbvTable;
+	cbvTable.Init(
+		D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 
+		1, // 描述符数量
+		0 // 基准着色器寄存器
+	);
+	slotRootParameter[0].InitAsDescriptorTable(
+		1, // 描述符区域数量
+		&cbvTable // 描述符区域数组的指针
+	);
+
+	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(
+		1, // 根参数数量
+		slotRootParameter, // 指向根参数指针
+		0, 
+		nullptr,
+		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
+	);
+
+	// 创建仅包含一个槽位的根签名
+	Microsoft::WRL::ComPtr<ID3DBlob> serializedRootSig = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
+	CHECK_HRESULT(D3D12SerializeRootSignature(
+		&rootSigDesc, 
+		D3D_ROOT_SIGNATURE_VERSION_1,
+		serializedRootSig.GetAddressOf(), 
+		errorBlob.GetAddressOf()
+	));
+	if (errorBlob != nullptr)
+	{
+		MessageBoxA(0, (char*)errorBlob->GetBufferPointer(), "Failed To Serialize RootSignature", 0);
+	}
+
 	CHECK_HRESULT(g_cmdList->Close());
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
 	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
