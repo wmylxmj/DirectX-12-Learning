@@ -16,10 +16,13 @@
 
 #include <DirectXMath.h>
 #include "D3D12/d3dx12.h"
-// -----------------------------------------
 
+#include <DirectXColors.h>
+// -----------------------------------------
 #include <string>
 #include <cassert>
+#include <vector>
+#include <array>
 
 // 自己的头文件
 #include "D3D12/Helper.h"
@@ -27,7 +30,14 @@
 
 struct ObjectConstants
 {
+	DirectX::XMFLOAT4X4 WorldViewProj;
+};
 
+// 测试用
+struct Vertex
+{
+	DirectX::XMFLOAT3 Pos;
+	DirectX::XMFLOAT4 Color;
 };
 
 
@@ -478,6 +488,73 @@ bool AppInit() {
 		serializedRootSig->GetBufferSize(),
 		IID_PPV_ARGS(&g_rootSignature)
 	));
+
+	// 编译着色器
+	Microsoft::WRL::ComPtr<ID3DBlob> vsByteCode = CompileShader(L"Source\\Shaders\\color.hlsl", nullptr, "VS", "vs_5_1");
+	Microsoft::WRL::ComPtr<ID3DBlob> psByteCode = CompileShader(L"Source\\Shaders\\color.hlsl", nullptr, "PS", "ps_5_1");
+
+	// 顶点布局
+	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+
+	// 定义盒子几何体
+	std::array<Vertex, 8> vertices =
+	{
+		Vertex({ DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(DirectX::Colors::White) }),
+		Vertex({ DirectX::XMFLOAT3(-1.0f, +1.0f, -1.0f), DirectX::XMFLOAT4(DirectX::Colors::Black) }),
+		Vertex({ DirectX::XMFLOAT3(+1.0f, +1.0f, -1.0f), DirectX::XMFLOAT4(DirectX::Colors::Red) }),
+		Vertex({ DirectX::XMFLOAT3(+1.0f, -1.0f, -1.0f), DirectX::XMFLOAT4(DirectX::Colors::Green) }),
+		Vertex({ DirectX::XMFLOAT3(-1.0f, -1.0f, +1.0f), DirectX::XMFLOAT4(DirectX::Colors::Blue) }),
+		Vertex({ DirectX::XMFLOAT3(-1.0f, +1.0f, +1.0f), DirectX::XMFLOAT4(DirectX::Colors::Yellow) }),
+		Vertex({ DirectX::XMFLOAT3(+1.0f, +1.0f, +1.0f), DirectX::XMFLOAT4(DirectX::Colors::Cyan) }),
+		Vertex({ DirectX::XMFLOAT3(+1.0f, -1.0f, +1.0f), DirectX::XMFLOAT4(DirectX::Colors::Magenta) })
+	};
+
+	std::array<std::uint16_t, 36> indices =
+	{
+		// front face
+		0, 1, 2,
+		0, 2, 3,
+
+		// back face
+		4, 6, 5,
+		4, 7, 6,
+
+		// left face
+		4, 5, 1,
+		4, 1, 0,
+
+		// right face
+		3, 2, 6,
+		3, 6, 7,
+
+		// top face
+		1, 5, 6,
+		1, 6, 2,
+
+		// bottom face
+		4, 0, 3,
+		4, 3, 7
+	};
+
+	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
+	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
+
+
+	Microsoft::WRL::ComPtr<ID3DBlob> VertexBufferCPU = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> IndexBufferCPU = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> VertexBufferGPU = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> IndexBufferGPU = nullptr;
+
+	Microsoft::WRL::ComPtr<ID3D12Resource> VertexBufferUploader = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> IndexBufferUploader = nullptr;
+
+
+
 
 	CHECK_HRESULT(g_cmdList->Close());
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };

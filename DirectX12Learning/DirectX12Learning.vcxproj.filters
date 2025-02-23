@@ -44,5 +44,11 @@
     <ClInclude Include="Source\D3D12\MathHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\D3D12\d3dx12.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Source\Shaders\color.hlsl" />
   </ItemGroup>
 </Project>
