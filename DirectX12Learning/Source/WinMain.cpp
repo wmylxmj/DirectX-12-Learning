@@ -386,7 +386,7 @@ bool AppInit() {
 	));
 	CHECK_HRESULT(g_constantBuffer->Map(0, nullptr, reinterpret_cast<void**>(&g_cbMappedData)));
 
-	// 创建常量缓冲区描述符堆
+	// 创建常量缓冲区视图
 	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
 	cbvDesc.BufferLocation = g_constantBuffer->GetGPUVirtualAddress();
 	cbvDesc.SizeInBytes = CalcConstantBufferByteSize(sizeof(ObjectConstants));
