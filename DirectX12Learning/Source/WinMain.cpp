@@ -364,6 +364,42 @@ UINT CalcConstantBufferByteSize(UINT byteSize)
 	return (byteSize + 255) & ~255;
 }
 
+Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
+	const std::wstring& filename,
+	const D3D_SHADER_MACRO* defines,
+	const std::string& entrypoint,
+	const std::string& target)
+{
+	UINT compileFlags = 0;
+#if defined(_DEBUG)  
+	compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
+	HRESULT hr = S_OK;
+
+	Microsoft::WRL::ComPtr<ID3DBlob> byteCode = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> errors;
+
+	hr = D3DCompileFromFile(
+		filename.c_str(), 
+		defines, 
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		entrypoint.c_str(), // 入口点
+		target.c_str(), // 着色器类型和版本
+		compileFlags, // 编译标志选项
+		0, // 高级编译选项
+		&byteCode, 
+		&errors
+	);
+
+	if (errors != nullptr)
+		OutputDebugStringA((char*)errors->GetBufferPointer());
+
+	CHECK_HRESULT(hr);
+
+	return byteCode;
+}
+
 bool AppInit() {
 
 	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
@@ -424,16 +460,18 @@ bool AppInit() {
 	// 创建仅包含一个槽位的根签名
 	Microsoft::WRL::ComPtr<ID3DBlob> serializedRootSig = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
-	CHECK_HRESULT(D3D12SerializeRootSignature(
+	HRESULT hr = D3D12SerializeRootSignature(
 		&rootSigDesc, 
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		serializedRootSig.GetAddressOf(), 
 		errorBlob.GetAddressOf()
-	));
+	);
 	if (errorBlob != nullptr)
 	{
 		MessageBoxA(0, (char*)errorBlob->GetBufferPointer(), "Failed To Serialize RootSignature", 0);
 	}
+	CHECK_HRESULT(hr);
+
 	CHECK_HRESULT(g_device->CreateRootSignature(
 		0,
 		serializedRootSig->GetBufferPointer(),
