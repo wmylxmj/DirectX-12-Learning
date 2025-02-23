@@ -65,6 +65,8 @@ UINT g_rtvDescriptorSize;
 
 BYTE* g_cbMappedData = nullptr;
 
+Microsoft::WRL::ComPtr<ID3D12RootSignature> g_rootSignature;
+
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg) {
@@ -432,6 +434,12 @@ bool AppInit() {
 	{
 		MessageBoxA(0, (char*)errorBlob->GetBufferPointer(), "Failed To Serialize RootSignature", 0);
 	}
+	CHECK_HRESULT(g_device->CreateRootSignature(
+		0,
+		serializedRootSig->GetBufferPointer(),
+		serializedRootSig->GetBufferSize(),
+		IID_PPV_ARGS(&g_rootSignature)
+	));
 
 	CHECK_HRESULT(g_cmdList->Close());
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
