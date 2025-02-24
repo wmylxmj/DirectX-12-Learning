@@ -665,7 +665,7 @@ void Update() {
 void Render() {
 	
 	CHECK_HRESULT(g_cmdAllocator->Reset());
-	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
+	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), g_pso.Get()));
 
 	CD3DX12_RESOURCE_BARRIER barrier;
 	// Çå³ý Render Target
