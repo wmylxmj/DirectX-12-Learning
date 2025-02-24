@@ -80,6 +80,14 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> g_rootSignature;
 
 Microsoft::WRL::ComPtr<ID3D12PipelineState> g_pso = nullptr;
 
+Microsoft::WRL::ComPtr<ID3D12Resource> g_vertexBufferGPU = nullptr;
+Microsoft::WRL::ComPtr<ID3D12Resource> g_indexBufferGPU = nullptr;
+
+D3D12_VERTEX_BUFFER_VIEW g_vbv;
+D3D12_INDEX_BUFFER_VIEW g_ibv;
+
+UINT g_indicesCount = 0;
+
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg) {
@@ -543,15 +551,14 @@ bool AppInit() {
 		4, 3, 7
 	};
 
+	g_indicesCount = (UINT)indices.size();
+
 	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
 	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
 
 
 	Microsoft::WRL::ComPtr<ID3DBlob> VertexBufferCPU = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> IndexBufferCPU = nullptr;
-
-	Microsoft::WRL::ComPtr<ID3D12Resource> VertexBufferGPU = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12Resource> IndexBufferGPU = nullptr;
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> VertexBufferUploader = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> IndexBufferUploader = nullptr;
@@ -562,7 +569,7 @@ bool AppInit() {
 	CHECK_HRESULT(D3DCreateBlob(ibByteSize, &IndexBufferCPU));
 	CopyMemory(IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
 
-	VertexBufferGPU = CreateDefaultBuffer(
+	g_vertexBufferGPU = CreateDefaultBuffer(
 		g_device.Get(),
 		g_cmdList.Get(),
 		vertices.data(),
@@ -570,7 +577,7 @@ bool AppInit() {
 		VertexBufferUploader
 	);
 
-	IndexBufferGPU = CreateDefaultBuffer(
+	g_indexBufferGPU = CreateDefaultBuffer(
 		g_device.Get(),
 		g_cmdList.Get(), 
 		indices.data(), 
@@ -579,16 +586,14 @@ bool AppInit() {
 	);
 
 	// 创建顶点缓冲区视图
-	D3D12_VERTEX_BUFFER_VIEW vbv;
-	vbv.BufferLocation = VertexBufferGPU->GetGPUVirtualAddress();
-	vbv.StrideInBytes = sizeof(Vertex);
-	vbv.SizeInBytes = vbByteSize;
+	g_vbv.BufferLocation = g_vertexBufferGPU->GetGPUVirtualAddress();
+	g_vbv.StrideInBytes = sizeof(Vertex);
+	g_vbv.SizeInBytes = vbByteSize;
 
 	// 创建索引缓冲区视图
-	D3D12_INDEX_BUFFER_VIEW ibv;
-	ibv.BufferLocation = IndexBufferGPU->GetGPUVirtualAddress();
-	ibv.Format = DXGI_FORMAT_R16_UINT;
-	ibv.SizeInBytes = ibByteSize;
+	g_ibv.BufferLocation = g_indexBufferGPU->GetGPUVirtualAddress();
+	g_ibv.Format = DXGI_FORMAT_R16_UINT;
+	g_ibv.SizeInBytes = ibByteSize;
  
 	// 配置管线状态
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
@@ -678,7 +683,28 @@ void Render() {
 	// 清除渲染目标
 	FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
 	g_cmdList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+	g_cmdList->ClearDepthStencilView(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+
+	// 开始渲染
+	ID3D12DescriptorHeap* descriptorHeaps[] = { g_cbvDescriptorHeap.Get() };
+	g_cmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+	g_cmdList->SetGraphicsRootSignature(g_rootSignature.Get());
+
+	g_cmdList->IASetVertexBuffers(0, 1, &g_vbv);
+	g_cmdList->IASetIndexBuffer(&g_ibv);
+	g_cmdList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	g_cmdList->SetGraphicsRootDescriptorTable(0, g_cbvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 	
+	g_cmdList->DrawIndexedInstanced(
+		g_indicesCount, // 一个实例的索引数量
+		1, // INSTANCE COUNT
+		0, // START INDEX LOCATION
+		0, // BASE VERTEX LOCATION
+		0 // START INSTANCE LOCATION
+	);
+
 	// 通知 GPU 资源的状态即将改变
 	barrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		g_swapChainBuffers[g_currBackBufferIndex].Get(),
@@ -693,7 +719,7 @@ void Render() {
 	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
 
 	// 呈现当前的后台缓冲区
-	CHECK_HRESULT(g_swapChain->Present(1, 0));
+	CHECK_HRESULT(g_swapChain->Present(0, 0));
 
 	// 交换前后缓存
 	g_currBackBufferIndex = (g_currBackBufferIndex + 1) % k_swapChainBufferCount;
