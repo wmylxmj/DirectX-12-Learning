@@ -647,8 +647,13 @@ void Update() {
 	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(pos, target, up);
 
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
-	DirectX::XMMATRIX proj = DirectX::XMMatrixIdentity();
-	
+	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
+		DirectX::XM_PIDIV4,                          // 垂直视场角（45度）
+		static_cast<float>(g_viewportWidth) / g_viewportHeight, // 宽高比
+		0.1f,                                        // 近平面
+		1000.0f                                      // 远平面
+	);
+
 	DirectX::XMMATRIX worldViewProj = world * view * proj;
 
 	ObjectConstants objConstants;
@@ -678,7 +683,8 @@ void Render() {
 		g_currBackBufferIndex,
 		g_rtvDescriptorSize
 	);
-	g_cmdList->OMSetRenderTargets(1, &rtv, true, nullptr);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsv(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	g_cmdList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
 	// 设置裁剪矩形
 	D3D12_VIEWPORT viewport;
@@ -691,8 +697,7 @@ void Render() {
 	g_cmdList->RSSetViewports(1, &viewport);
 
 	// 清除渲染目标
-	FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
-	g_cmdList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
+	g_cmdList->ClearRenderTargetView(rtv, DirectX::Colors::LightSteelBlue, 0, nullptr);
 	g_cmdList->ClearDepthStencilView(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
 	// 开始渲染
