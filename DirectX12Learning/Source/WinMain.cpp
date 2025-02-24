@@ -77,6 +77,9 @@ BYTE* g_cbMappedData = nullptr;
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> g_rootSignature;
 
+
+Microsoft::WRL::ComPtr<ID3D12PipelineState> g_pso = nullptr;
+
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (Msg) {
@@ -586,7 +589,33 @@ bool AppInit() {
 	ibv.BufferLocation = IndexBufferGPU->GetGPUVirtualAddress();
 	ibv.Format = DXGI_FORMAT_R16_UINT;
 	ibv.SizeInBytes = ibByteSize;
-
+ 
+	// 配置管线状态
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
+	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
+	psoDesc.InputLayout = { inputLayout.data(), (UINT)inputLayout.size() }; // 输入顶点布局
+	psoDesc.pRootSignature = g_rootSignature.Get(); // 根签名
+	psoDesc.VS =
+	{
+		reinterpret_cast<BYTE*>(vsByteCode->GetBufferPointer()),
+		vsByteCode->GetBufferSize()
+	};
+	psoDesc.PS =
+	{
+		reinterpret_cast<BYTE*>(psByteCode->GetBufferPointer()),
+		psByteCode->GetBufferSize()
+	};
+	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT); // 光栅化状态
+	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT); // 混合状态
+	psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // 深度/模板状态（用于深度/模板测试）
+	psoDesc.SampleMask = UINT_MAX; // 禁用采样（禁用位置为0）
+	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE; // 图元的拓扑类型
+	psoDesc.NumRenderTargets = 1; // 渲染目标数量
+	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM; // 渲染目标的格式
+	psoDesc.SampleDesc.Count = 1;
+	psoDesc.SampleDesc.Quality = 0;
+	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // 深度/模板缓冲区的格式
+	CHECK_HRESULT(g_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
 
 	CHECK_HRESULT(g_cmdList->Close());
 	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
