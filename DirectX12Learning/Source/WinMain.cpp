@@ -686,7 +686,7 @@ void Render() {
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsv(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 	g_cmdList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
-	// 设置裁剪矩形
+	// 设置视口
 	D3D12_VIEWPORT viewport;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
@@ -695,6 +695,10 @@ void Render() {
 	viewport.MinDepth = D3D12_MIN_DEPTH;
 	viewport.MaxDepth = D3D12_MAX_DEPTH;
 	g_cmdList->RSSetViewports(1, &viewport);
+
+	// 设置裁剪矩形
+	D3D12_RECT scissorRect = { 0, 0, (LONG)g_viewportWidth, (LONG)g_viewportHeight };
+	g_cmdList->RSSetScissorRects(1, &scissorRect);
 
 	// 清除渲染目标
 	g_cmdList->ClearRenderTargetView(rtv, DirectX::Colors::LightSteelBlue, 0, nullptr);
