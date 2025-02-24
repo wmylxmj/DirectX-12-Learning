@@ -680,6 +680,16 @@ void Render() {
 	);
 	g_cmdList->OMSetRenderTargets(1, &rtv, true, nullptr);
 
+	// 设置裁剪矩形
+	D3D12_VIEWPORT viewport;
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = (FLOAT)g_viewportWidth;
+	viewport.Height = (FLOAT)g_viewportHeight;
+	viewport.MinDepth = D3D12_MIN_DEPTH;
+	viewport.MaxDepth = D3D12_MAX_DEPTH;
+	g_cmdList->RSSetViewports(1, &viewport);
+
 	// 清除渲染目标
 	FLOAT clearColor[] = { 0.4f, 0.6f, 0.9f, 1.0f };
 	g_cmdList->ClearRenderTargetView(rtv, clearColor, 0, nullptr);
