@@ -32,10 +32,9 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllo
 	return allocator;
 }
 
-void CommandAllocatorPool::DiscardAllocator(uint64_t fenceValue, ID3D12CommandAllocator* allocator)
+void CommandAllocatorPool::DiscardAllocator(uint64_t fenceValue, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> allocator)
 {
-
+	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
+	// πÈªπ∑÷≈‰∆˜
+	m_readyAllocators.push(std::make_pair(fenceValue, allocator));
 }
-
-
-
