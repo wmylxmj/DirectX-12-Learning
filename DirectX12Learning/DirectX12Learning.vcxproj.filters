@@ -18,7 +18,7 @@
     <ClCompile Include="Source\WinMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\D3D12\Helper.h">
+    <ClCompile Include="Source\Core\Helper.h">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Model.cpp">
@@ -27,7 +27,10 @@
     <ClCompile Include="Source\ModelLoader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\D3D12\MathHelper.cpp">
+    <ClCompile Include="Source\Core\MathHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\CommandAllocatorPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,10 +44,16 @@
     <ClInclude Include="Source\ModelLoader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Source\D3D12\MathHelper.h">
+    <ClInclude Include="Source\Core\MathHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Source\D3D12\d3dx12.h">
+    <ClInclude Include="Source\Core\d3dx12.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\CommandAllocatorPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\PrecompiledHeader.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

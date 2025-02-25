@@ -131,8 +131,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\D3D12\Helper.h" />
-    <ClCompile Include="Source\D3D12\MathHelper.cpp" />
+    <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
+    <ClCompile Include="Source\Core\Helper.h" />
+    <ClCompile Include="Source\Core\MathHelper.cpp" />
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModelLoader.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
@@ -141,8 +142,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\D3D12\d3dx12.h" />
-    <ClInclude Include="Source\D3D12\MathHelper.h" />
+    <ClInclude Include="Source\Core\CommandAllocatorPool.h" />
+    <ClInclude Include="Source\Core\d3dx12.h" />
+    <ClInclude Include="Source\Core\MathHelper.h" />
+    <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Model.h" />
     <ClInclude Include="Source\ModelLoader.h" />
   </ItemGroup>
