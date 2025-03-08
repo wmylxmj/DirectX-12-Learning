@@ -18,16 +18,10 @@
     <ClCompile Include="Source\WinMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Helper.h">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModelLoader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\MathHelper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp">
@@ -42,9 +36,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModelLoader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\MathHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\d3dx12.h">

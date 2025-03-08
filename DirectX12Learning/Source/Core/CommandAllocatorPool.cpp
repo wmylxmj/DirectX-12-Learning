@@ -1,5 +1,4 @@
 #include "PrecompiledHeader.h"
-#include "Helper.h"
 #include "CommandAllocatorPool.h"
 
 CommandAllocatorPool::CommandAllocatorPool(D3D12_COMMAND_LIST_TYPE type) : m_commandListType(type) {}

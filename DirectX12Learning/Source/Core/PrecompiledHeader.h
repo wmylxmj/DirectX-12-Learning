@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Windows.h>
 
-#include <wrl.h> // ÓÃÓÚ Microsoft µÄÖÇÄÜÖ¸Õë
-#include <comdef.h> // ÓÃÓÚ´¦Àí HRESULT ´íÎó
+#include <wrl.h> // ç”¨äº Microsoft çš„æ™ºèƒ½æŒ‡é’ˆ
+#include <comdef.h> // ç”¨äºå¤„ç† HRESULT é”™è¯¯
 
 // ----------------DirectX 12--------------
 #include <dxgi1_6.h>
@@ -20,4 +20,23 @@
 
 #include <DirectXColors.h>
 // -----------------------------------------
+
+#include <string>
+
+#ifndef CHECK_HRESULT
+#define CHECK_HRESULT(x) \
+{ \
+	HRESULT CHECK_HRESULT_hr = (x); \
+	if (FAILED(CHECK_HRESULT_hr)) \
+	{ \
+		_com_error err(CHECK_HRESULT_hr); \
+		std::wstring wError = err.ErrorMessage(); \
+		std::wstring wErrMsg = std::wstring(L ## #x) + \
+		L" failed in " + std::wstring(__FILEW__) + \
+		L"; line: " + std::to_wstring(__LINE__) + \
+		L"; error: " + wError; \
+		MessageBox(0, wErrMsg.c_str(), L"â™¥æ‚é±¼ï½â™¥ HRESULT å‡ºé”™å•¦", 0); \
+	} \
+}                        
+#endif
 

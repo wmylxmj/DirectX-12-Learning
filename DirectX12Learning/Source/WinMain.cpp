@@ -5,9 +5,11 @@
 #include <vector>
 #include <array>
 
-// 自己的头文件
-#include "Core/Helper.h"
 
+template <typename T>
+inline T& RvalueToLvalue(T&& value) {
+	return value; // 直接返回引用
+}
 
 struct ObjectConstants
 {
