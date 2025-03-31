@@ -18,8 +18,8 @@ private:
 public:
 	CommandAllocatorPool(D3D12_COMMAND_LIST_TYPE type);
 
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> RequestAllocator(Microsoft::WRL::ComPtr<ID3D12Device> device, uint64_t completedFenceValue);
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> RequestAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, uint64_t completedFenceValue);
 
-	void DiscardAllocator(uint64_t fenceValue, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> allocator);
+	void DiscardAllocator(uint64_t fenceValue, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pAllocator);
 
 };
