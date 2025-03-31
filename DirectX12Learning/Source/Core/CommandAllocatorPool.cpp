@@ -7,7 +7,7 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllo
 {
 	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
 
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> allocator = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pAllocator = nullptr;
 
 	// 在已归还的分配器中查看是否有空闲的分配器
 	if (!m_readyAllocators.empty()) {
@@ -15,20 +15,20 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllo
 		// 如果 GPU 已完成该分配器的命令
 		if (allocatorPair.first <= completedFenceValue)
 		{
-			allocator = allocatorPair.second;
-			CHECK_HRESULT(allocator->Reset());
+			pAllocator = allocatorPair.second;
+			CHECK_HRESULT(pAllocator->Reset());
 			m_readyAllocators.pop();
 		}
 	}
 
 	// 如果没有空闲的分配器，那么新建一个
-	if (allocator == nullptr)
+	if (pAllocator == nullptr)
 	{
-		CHECK_HRESULT(pDevice->CreateCommandAllocator(m_kCommandListType, IID_PPV_ARGS(&allocator)));
-		m_allocatorPool.push_back(allocator);
+		CHECK_HRESULT(pDevice->CreateCommandAllocator(m_kCommandListType, IID_PPV_ARGS(&pAllocator)));
+		m_allocatorPool.push_back(pAllocator);
 	}
 
-	return allocator;
+	return pAllocator;
 }
 
 void CommandAllocatorPool::DiscardAllocator(uint64_t fenceValue, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pAllocator)
