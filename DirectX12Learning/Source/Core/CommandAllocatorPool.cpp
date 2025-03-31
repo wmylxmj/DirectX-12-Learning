@@ -1,7 +1,7 @@
 #include "PrecompiledHeader.h"
 #include "CommandAllocatorPool.h"
 
-CommandAllocatorPool::CommandAllocatorPool(D3D12_COMMAND_LIST_TYPE type) : m_commandListType(type) {}
+CommandAllocatorPool::CommandAllocatorPool(D3D12_COMMAND_LIST_TYPE type) : m_kCommandListType(type) {}
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllocator(Microsoft::WRL::ComPtr<ID3D12Device> device, uint64_t completedFenceValue)
 {
@@ -24,7 +24,7 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllo
 	// 如果没有空闲的分配器，那么新建一个
 	if (allocator == nullptr)
 	{
-		CHECK_HRESULT(device->CreateCommandAllocator(m_commandListType, IID_PPV_ARGS(&allocator)));
+		CHECK_HRESULT(device->CreateCommandAllocator(m_kCommandListType, IID_PPV_ARGS(&allocator)));
 		m_allocatorPool.push_back(allocator);
 	}
 
