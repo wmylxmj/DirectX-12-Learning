@@ -5,6 +5,7 @@ CommandAllocatorPool::CommandAllocatorPool(D3D12_COMMAND_LIST_TYPE type) : m_kCo
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, uint64_t completedFenceValue)
 {
+	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
 
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pAllocator = nullptr;
