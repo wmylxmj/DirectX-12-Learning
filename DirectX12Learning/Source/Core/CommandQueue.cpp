@@ -1,4 +1,4 @@
-#include "CommandQueue.h"
+ï»¿#include "CommandQueue.h"
 
 CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType) : m_kCommandListType(commandListType)
 {
@@ -13,7 +13,7 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 
 bool CommandQueue::IsFenceComplete(uint64_t fenceValue)
 {
-	// ±ÜÃâ²éÑ¯¹ýÓÚÆµ·±
+	// é¿å…æŸ¥è¯¢è¿‡äºŽé¢‘ç¹
 	if (fenceValue > m_completedFenceValue) {
 		m_completedFenceValue = std::max(m_completedFenceValue, m_pFence->GetCompletedValue());
 	}
