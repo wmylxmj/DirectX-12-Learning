@@ -1,5 +1,8 @@
 ﻿#pragma once
 
+// Use the C++ standard templated min/max
+#define NOMINMAX
+
 #include <Windows.h>
 
 #include <wrl.h> // 用于 Microsoft 的智能指针
@@ -37,6 +40,5 @@
 		L"; error: " + wError; \
 		MessageBox(0, wErrMsg.c_str(), L"♥杂鱼～♥ HRESULT 出错啦", 0); \
 	} \
-}                        
+}
 #endif
-

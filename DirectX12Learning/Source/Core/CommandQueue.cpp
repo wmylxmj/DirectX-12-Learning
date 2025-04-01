@@ -10,3 +10,12 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
 	m_fenceValue = 0;
 }
+
+bool CommandQueue::IsFenceComplete(uint64_t fenceValue)
+{
+	// ±ÜÃâ²éÑ¯¹ýÓÚÆµ·±
+	if (fenceValue > m_completedFenceValue) {
+		m_completedFenceValue = std::max(m_completedFenceValue, m_pFence->GetCompletedValue());
+	}
+	return fenceValue <= m_completedFenceValue;
+}

@@ -14,7 +14,10 @@ private:
 	std::mutex m_fenceMutex;
 	Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
 	uint64_t m_fenceValue;
+	uint64_t m_completedFenceValue;
 
 public:
 	CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
+
+	bool IsFenceComplete(uint64_t fenceValue);
 };
