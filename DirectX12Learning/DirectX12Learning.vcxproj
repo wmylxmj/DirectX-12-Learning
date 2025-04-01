@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
+    <ClCompile Include="Source\Core\CommandQueue.cpp" />
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModelLoader.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\CommandAllocatorPool.h" />
+    <ClInclude Include="Source\Core\CommandQueue.h" />
     <ClInclude Include="Source\Core\d3dx12.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Model.h" />
