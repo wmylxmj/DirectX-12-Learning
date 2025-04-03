@@ -19,5 +19,5 @@ private:
 public:
 	CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
 
-	bool IsFenceComplete(uint64_t fenceValue);
+	bool IsFenceValueCompleted(uint64_t fenceValue);
 };
