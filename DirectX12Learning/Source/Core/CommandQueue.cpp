@@ -48,3 +48,8 @@ void CommandQueue::WaitForFence(uint64_t fenceValue)
 	m_pFence->SetEventOnCompletion(fenceValue, nullptr);
 	m_completedFenceValueCache = fenceValue;
 }
+
+void CommandQueue::WaitForIdle()
+{
+	WaitForFence(IncreaseFenceValue());
+}
