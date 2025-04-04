@@ -30,3 +30,8 @@ bool CommandQueue::IsFenceValueCompleted(uint64_t fenceValue)
 	}
 	return fenceValue <= m_completedFenceValueCache;
 }
+
+void CommandQueue::StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue)
+{
+	m_pCommandQueue->Wait(queue.m_pFence.Get(), fenceValue);
+}

@@ -24,4 +24,5 @@ public:
 
 	uint64_t IncreaseFenceValue();
 	bool IsFenceValueCompleted(uint64_t fenceValue);
+	void StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue);
 };
