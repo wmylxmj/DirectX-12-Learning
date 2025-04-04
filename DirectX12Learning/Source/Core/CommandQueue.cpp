@@ -3,7 +3,8 @@
 CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType) :
 	m_kCommandListType(commandListType),
 	m_fenceValue(0),
-	m_completedFenceValueCache(0)
+	m_completedFenceValueCache(0),
+	m_commandAllocatorPool(commandListType)
 {
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 	queueDesc.Type = commandListType;
