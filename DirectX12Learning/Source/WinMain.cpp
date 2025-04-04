@@ -5,12 +5,6 @@
 #include <vector>
 #include <array>
 
-
-template <typename T>
-inline T& RvalueToLvalue(T&& value) {
-	return value; // 直接返回引用
-}
-
 struct ObjectConstants
 {
 	DirectX::XMFLOAT4X4 WorldViewProj;
@@ -22,7 +16,6 @@ struct Vertex
 	DirectX::XMFLOAT3 Pos;
 	DirectX::XMFLOAT4 Color;
 };
-
 
 // ----------------全局变量------------------
 uint32_t g_viewportWidth = 640;
@@ -49,7 +42,6 @@ int g_currBackBufferIndex = 0;
 Microsoft::WRL::ComPtr<ID3D12Resource> g_depthStencilBuffer;
 Microsoft::WRL::ComPtr<ID3D12Resource> g_constantBuffer;
 
-
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_rtvDescriptorHeap;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_dsvDescriptorHeap;
 Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> g_cbvDescriptorHeap;
@@ -59,7 +51,6 @@ UINT g_rtvDescriptorSize;
 BYTE* g_cbMappedData = nullptr;
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> g_rootSignature;
-
 
 Microsoft::WRL::ComPtr<ID3D12PipelineState> g_pso = nullptr;
 
@@ -82,7 +73,6 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 }
 
 bool InitMainWindow(HINSTANCE hInstance) {
-
 	// 创建窗口类
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(wc); // 结构的大小
@@ -142,9 +132,7 @@ void FlushCmdQueue() {
 	}
 }
 
-
 bool InitDirect3D() {
-
 	// 开启调试层
 #if defined(_DEBUG)
 	Microsoft::WRL::ComPtr<ID3D12Debug> debugInterface;
@@ -303,7 +291,6 @@ bool InitDirect3D() {
 	return true;
 }
 
-
 Microsoft::WRL::ComPtr<ID3D12Resource> CreateDefaultBuffer(
 	ID3D12Device* device,
 	ID3D12GraphicsCommandList* cmdList,
@@ -375,7 +362,7 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 	const std::string& target)
 {
 	UINT compileFlags = 0;
-#if defined(_DEBUG)  
+#if defined(_DEBUG)
 	compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
 #endif
 
@@ -385,14 +372,14 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 	Microsoft::WRL::ComPtr<ID3DBlob> errors;
 
 	hr = D3DCompileFromFile(
-		filename.c_str(), 
-		defines, 
+		filename.c_str(),
+		defines,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		entrypoint.c_str(), // 入口点
 		target.c_str(), // 着色器类型和版本
 		compileFlags, // 编译标志选项
 		0, // 高级编译选项
-		&byteCode, 
+		&byteCode,
 		&errors
 	);
 
@@ -405,7 +392,6 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 }
 
 bool AppInit() {
-
 	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
 
 	// 建立常量缓冲区描述符堆
@@ -444,7 +430,7 @@ bool AppInit() {
 	// 创建描述符表
 	CD3DX12_DESCRIPTOR_RANGE cbvTable;
 	cbvTable.Init(
-		D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 
+		D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
 		1, // 描述符数量
 		0 // 基准着色器寄存器
 	);
@@ -456,7 +442,7 @@ bool AppInit() {
 	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(
 		1, // 根参数数量
 		slotRootParameter, // 指向根参数指针
-		0, 
+		0,
 		nullptr,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 	);
@@ -465,9 +451,9 @@ bool AppInit() {
 	Microsoft::WRL::ComPtr<ID3DBlob> serializedRootSig = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
 	HRESULT hr = D3D12SerializeRootSignature(
-		&rootSigDesc, 
+		&rootSigDesc,
 		D3D_ROOT_SIGNATURE_VERSION_1,
-		serializedRootSig.GetAddressOf(), 
+		serializedRootSig.GetAddressOf(),
 		errorBlob.GetAddressOf()
 	);
 	if (errorBlob != nullptr)
@@ -539,7 +525,6 @@ bool AppInit() {
 	const UINT vbByteSize = (UINT)vertices.size() * sizeof(Vertex);
 	const UINT ibByteSize = (UINT)indices.size() * sizeof(std::uint16_t);
 
-
 	Microsoft::WRL::ComPtr<ID3DBlob> VertexBufferCPU = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> IndexBufferCPU = nullptr;
 
@@ -562,9 +547,9 @@ bool AppInit() {
 
 	g_indexBufferGPU = CreateDefaultBuffer(
 		g_device.Get(),
-		g_cmdList.Get(), 
-		indices.data(), 
-		ibByteSize, 
+		g_cmdList.Get(),
+		indices.data(),
+		ibByteSize,
 		IndexBufferUploader
 	);
 
@@ -577,7 +562,7 @@ bool AppInit() {
 	g_ibv.BufferLocation = g_indexBufferGPU->GetGPUVirtualAddress();
 	g_ibv.Format = DXGI_FORMAT_R16_UINT;
 	g_ibv.SizeInBytes = ibByteSize;
- 
+
 	// 配置管线状态
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
@@ -646,7 +631,6 @@ void Update() {
 }
 
 void Render() {
-	
 	CHECK_HRESULT(g_cmdAllocator->Reset());
 	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), g_pso.Get()));
 
@@ -698,7 +682,7 @@ void Render() {
 	g_cmdList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	g_cmdList->SetGraphicsRootDescriptorTable(0, g_cbvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
-	
+
 	g_cmdList->DrawIndexedInstanced(
 		g_indicesCount, // 一个实例的索引数量
 		1, // INSTANCE COUNT

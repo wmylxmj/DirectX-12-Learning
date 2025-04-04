@@ -63,3 +63,16 @@ uint64_t CommandQueue::GetFenceValue() const
 {
 	return m_fenceValue;
 }
+
+uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
+{
+	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
+
+	CHECK_HRESULT(pCommandList->Close());
+	m_pCommandQueue->ExecuteCommandLists(1, &RvalueToLvalue((ID3D12CommandList*)pCommandList.Get()));
+
+	m_fenceValue++;
+	m_pCommandQueue->Signal(m_pFence.Get(), m_fenceValue);
+
+	return m_fenceValue;
+}
