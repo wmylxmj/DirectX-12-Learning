@@ -14,6 +14,14 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
 }
 
+uint64_t CommandQueue::IncreaseFenceValue()
+{
+	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
+	m_fenceValue++;
+	m_pCommandQueue->Signal(m_pFence.Get(), m_fenceValue);
+	return m_fenceValue;
+}
+
 bool CommandQueue::IsFenceValueCompleted(uint64_t fenceValue)
 {
 	// 避免查询过于频繁
