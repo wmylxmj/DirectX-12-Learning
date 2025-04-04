@@ -76,3 +76,8 @@ uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsC
 
 	return m_fenceValue;
 }
+
+Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandQueue::RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
+{
+	return m_commandAllocatorPool.RequestAllocator(pDevice, m_pFence->GetCompletedValue());
+}

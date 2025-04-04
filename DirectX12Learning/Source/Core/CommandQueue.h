@@ -33,4 +33,6 @@ public:
 	uint64_t GetFenceValue() const;
 
 	uint64_t ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList);
+
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice);
 };
