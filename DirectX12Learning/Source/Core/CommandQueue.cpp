@@ -35,3 +35,8 @@ void CommandQueue::StallForAnotherQueueFence(const CommandQueue& queue, uint64_t
 {
 	m_pCommandQueue->Wait(queue.m_pFence.Get(), fenceValue);
 }
+
+void CommandQueue::StallForAnotherQueueCompletion(const CommandQueue& queue)
+{
+	m_pCommandQueue->Wait(queue.m_pFence.Get(), queue.m_fenceValue);
+}
