@@ -53,3 +53,13 @@ void CommandQueue::WaitForIdle()
 {
 	WaitForFence(IncreaseFenceValue());
 }
+
+Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue::GetCommandQueue() const
+{
+	return m_pCommandQueue;
+}
+
+uint64_t CommandQueue::GetFenceValue() const
+{
+	return m_fenceValue;
+}
