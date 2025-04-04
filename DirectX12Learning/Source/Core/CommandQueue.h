@@ -26,4 +26,5 @@ public:
 	bool IsFenceValueCompleted(uint64_t fenceValue);
 	void StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue);
 	void StallForAnotherQueueCompletion(const CommandQueue& queue);
+	void WaitForFence(uint64_t fenceValue);
 };

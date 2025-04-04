@@ -40,3 +40,11 @@ void CommandQueue::StallForAnotherQueueCompletion(const CommandQueue& queue)
 {
 	m_pCommandQueue->Wait(queue.m_pFence.Get(), queue.m_fenceValue);
 }
+
+void CommandQueue::WaitForFence(uint64_t fenceValue)
+{
+	if (IsFenceValueCompleted(fenceValue)) return;
+
+	m_pFence->SetEventOnCompletion(fenceValue, nullptr);
+	m_completedFenceValueCache = fenceValue;
+}
