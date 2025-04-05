@@ -20,3 +20,9 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandListPool::RequestComman
 
 	return pCommandList;
 }
+
+void CommandListPool::DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
+{
+	std::lock_guard<std::mutex> lockGuard(m_poolMutex);
+	m_availableCommandLists.push(pCommandList);
+}
