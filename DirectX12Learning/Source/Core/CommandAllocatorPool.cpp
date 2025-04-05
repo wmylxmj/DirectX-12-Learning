@@ -26,7 +26,6 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllo
 	if (pAllocator == nullptr)
 	{
 		CHECK_HRESULT(pDevice->CreateCommandAllocator(m_kCommandListType, IID_PPV_ARGS(&pAllocator)));
-		m_allocatorPool.push_back(pAllocator);
 	}
 
 	return pAllocator;
@@ -38,4 +37,3 @@ void CommandAllocatorPool::DiscardAllocator(uint64_t fenceValue, Microsoft::WRL:
 	// πÈªπ∑÷≈‰∆˜
 	m_readyAllocators.push(std::make_pair(fenceValue, pAllocator));
 }
-
