@@ -1,4 +1,5 @@
 #include "Core/PrecompiledHeader.h"
+#include "Core/CommandQueue.h"
 
 #include <string>
 #include <cassert>
@@ -24,14 +25,10 @@ uint32_t g_viewportHeight = 480;
 HWND g_hMainWnd;
 Microsoft::WRL::ComPtr<ID3D12Device2> g_device;
 
-// 用于同步
-Microsoft::WRL::ComPtr<ID3D12Fence> g_fence;
-uint64_t g_fenceValue = 0;
+// 命令队列系统
+std::unique_ptr<CommandQueue> g_pDirectCommandQueue;
 
-Microsoft::WRL::ComPtr<ID3D12CommandQueue> g_cmdQueue;
-Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> g_cmdList;
-// 与后台缓冲区数量相关
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> g_cmdAllocator;
+// 交换链
 Microsoft::WRL::ComPtr<IDXGISwapChain> g_swapChain;
 
 // 交换链缓冲数
@@ -118,20 +115,6 @@ bool InitMainWindow(HINSTANCE hInstance) {
 	return true;
 }
 
-void FlushCmdQueue() {
-	g_fenceValue++;
-	// 发送同步信号
-	CHECK_HRESULT(g_cmdQueue->Signal(g_fence.Get(), g_fenceValue));
-	// 等待 GPU 命令完成
-	if (g_fence->GetCompletedValue() < g_fenceValue) {
-		HANDLE eventHandle = CreateEventEx(nullptr, L"Fence Event", false, EVENT_ALL_ACCESS);
-		assert(eventHandle != nullptr && "Create Fence Event Failed.");
-		CHECK_HRESULT(g_fence->SetEventOnCompletion(g_fenceValue, eventHandle));
-		WaitForSingleObject(eventHandle, INFINITE);
-		CloseHandle(eventHandle);
-	}
-}
-
 bool InitDirect3D() {
 	// 开启调试层
 #if defined(_DEBUG)
@@ -155,30 +138,8 @@ bool InitDirect3D() {
 		IID_PPV_ARGS(&g_device)
 	));
 
-	// 创建围栏，用于CPU和GPU同步
-	CHECK_HRESULT(g_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&g_fence)));
-
-	// 创建命令队列 To do: 不同类型的命令队列分开
-	D3D12_COMMAND_QUEUE_DESC cmdQueueDesc = {};
-	cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-	cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-	CHECK_HRESULT(g_device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(&g_cmdQueue)));
-
-	// 创建命令分配器 To do: 不同类型的命令分配器分开
-	CHECK_HRESULT(g_device->CreateCommandAllocator(
-		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		IID_PPV_ARGS(g_cmdAllocator.GetAddressOf())
-	));
-
-	// 创建命令列表 To do: 不同类型的命令列表分开
-	CHECK_HRESULT(g_device->CreateCommandList(
-		0,
-		D3D12_COMMAND_LIST_TYPE_DIRECT,
-		g_cmdAllocator.Get(), // 相关的命令分配器
-		nullptr, // 管线状态
-		IID_PPV_ARGS(g_cmdList.GetAddressOf())
-	));
-	g_cmdList->Close();
+	// 创建命令队列系统
+	g_pDirectCommandQueue = std::make_unique<CommandQueue>(g_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
 
 	// 创建交换链
 	g_swapChain.Reset();
@@ -199,7 +160,7 @@ bool InitDirect3D() {
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	CHECK_HRESULT(dxgiFactory->CreateSwapChain(
-		g_cmdQueue.Get(),
+		g_pDirectCommandQueue->GetCommandQueue().Get(),
 		&swapChainDesc,
 		g_swapChain.GetAddressOf()
 	));
@@ -271,10 +232,12 @@ bool InitDirect3D() {
 	dsvDesc.Texture2D.MipSlice = 0;
 	g_device->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
-	FlushCmdQueue();
-	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator(g_device);
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
+	CHECK_HRESULT(cmdList->Close());
+	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 	// 将深度/模板缓冲区状态转为深度缓冲区
-	g_cmdList->ResourceBarrier(1,
+	cmdList->ResourceBarrier(1,
 		&RvalueToLvalue(CD3DX12_RESOURCE_BARRIER::Transition(
 			g_depthStencilBuffer.Get(),
 			D3D12_RESOURCE_STATE_COMMON,
@@ -283,10 +246,10 @@ bool InitDirect3D() {
 	);
 
 	// 发送命令
-	CHECK_HRESULT(g_cmdList->Close());
-	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
-	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
-	FlushCmdQueue();
+	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator);
+	g_pDirectCommandQueue->WaitForIdle();
 
 	return true;
 }
@@ -392,7 +355,9 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 }
 
 bool AppInit() {
-	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), nullptr));
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator(g_device);
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
+	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 
 	// 建立常量缓冲区描述符堆
 	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc;
@@ -539,7 +504,7 @@ bool AppInit() {
 
 	g_vertexBufferGPU = CreateDefaultBuffer(
 		g_device.Get(),
-		g_cmdList.Get(),
+		cmdList.Get(),
 		vertices.data(),
 		vbByteSize,
 		VertexBufferUploader
@@ -547,7 +512,7 @@ bool AppInit() {
 
 	g_indexBufferGPU = CreateDefaultBuffer(
 		g_device.Get(),
-		g_cmdList.Get(),
+		cmdList.Get(),
 		indices.data(),
 		ibByteSize,
 		IndexBufferUploader
@@ -590,11 +555,10 @@ bool AppInit() {
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // 深度/模板缓冲区的格式
 	CHECK_HRESULT(g_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
 
-	CHECK_HRESULT(g_cmdList->Close());
-	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
-	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
-
-	FlushCmdQueue();
+	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator);
+	g_pDirectCommandQueue->WaitForIdle();
 
 	return true;
 }
@@ -631,8 +595,9 @@ void Update() {
 }
 
 void Render() {
-	CHECK_HRESULT(g_cmdAllocator->Reset());
-	CHECK_HRESULT(g_cmdList->Reset(g_cmdAllocator.Get(), g_pso.Get()));
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator(g_device);
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
+	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), g_pso.Get()));
 
 	CD3DX12_RESOURCE_BARRIER barrier;
 	// 清除 Render Target
@@ -642,7 +607,7 @@ void Render() {
 		D3D12_RESOURCE_STATE_PRESENT, // 当前状态：呈现到屏幕
 		D3D12_RESOURCE_STATE_RENDER_TARGET // 目标状态：作为渲染目标使用
 	);
-	g_cmdList->ResourceBarrier(1, &barrier);
+	cmdList->ResourceBarrier(1, &barrier);
 
 	// 设置渲染目标
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtv(
@@ -651,7 +616,7 @@ void Render() {
 		g_rtvDescriptorSize
 	);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE dsv(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-	g_cmdList->OMSetRenderTargets(1, &rtv, true, &dsv);
+	cmdList->OMSetRenderTargets(1, &rtv, true, &dsv);
 
 	// 设置视口
 	D3D12_VIEWPORT viewport;
@@ -661,29 +626,29 @@ void Render() {
 	viewport.Height = (FLOAT)g_viewportHeight;
 	viewport.MinDepth = D3D12_MIN_DEPTH;
 	viewport.MaxDepth = D3D12_MAX_DEPTH;
-	g_cmdList->RSSetViewports(1, &viewport);
+	cmdList->RSSetViewports(1, &viewport);
 
 	// 设置裁剪矩形
 	D3D12_RECT scissorRect = { 0, 0, (LONG)g_viewportWidth, (LONG)g_viewportHeight };
-	g_cmdList->RSSetScissorRects(1, &scissorRect);
+	cmdList->RSSetScissorRects(1, &scissorRect);
 
 	// 清除渲染目标
-	g_cmdList->ClearRenderTargetView(rtv, DirectX::Colors::LightSteelBlue, 0, nullptr);
-	g_cmdList->ClearDepthStencilView(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
+	cmdList->ClearRenderTargetView(rtv, DirectX::Colors::LightSteelBlue, 0, nullptr);
+	cmdList->ClearDepthStencilView(g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
 	// 开始渲染
 	ID3D12DescriptorHeap* descriptorHeaps[] = { g_cbvDescriptorHeap.Get() };
-	g_cmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+	cmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	g_cmdList->SetGraphicsRootSignature(g_rootSignature.Get());
+	cmdList->SetGraphicsRootSignature(g_rootSignature.Get());
 
-	g_cmdList->IASetVertexBuffers(0, 1, &g_vbv);
-	g_cmdList->IASetIndexBuffer(&g_ibv);
-	g_cmdList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	cmdList->IASetVertexBuffers(0, 1, &g_vbv);
+	cmdList->IASetIndexBuffer(&g_ibv);
+	cmdList->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	g_cmdList->SetGraphicsRootDescriptorTable(0, g_cbvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+	cmdList->SetGraphicsRootDescriptorTable(0, g_cbvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
 
-	g_cmdList->DrawIndexedInstanced(
+	cmdList->DrawIndexedInstanced(
 		g_indicesCount, // 一个实例的索引数量
 		1, // INSTANCE COUNT
 		0, // START INDEX LOCATION
@@ -697,12 +662,12 @@ void Render() {
 		D3D12_RESOURCE_STATE_RENDER_TARGET,
 		D3D12_RESOURCE_STATE_PRESENT
 	);
-	g_cmdList->ResourceBarrier(1, &barrier);
+	cmdList->ResourceBarrier(1, &barrier);
 
 	// 提交命令
-	CHECK_HRESULT(g_cmdList->Close());
-	ID3D12CommandList* cmdsLists[] = { g_cmdList.Get() };
-	g_cmdQueue->ExecuteCommandLists(_countof(cmdsLists), cmdsLists);
+	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator);
 
 	// 呈现当前的后台缓冲区
 	CHECK_HRESULT(g_swapChain->Present(0, 0));
@@ -711,7 +676,7 @@ void Render() {
 	g_currBackBufferIndex = (g_currBackBufferIndex + 1) % k_swapChainBufferCount;
 
 	// 等待命令完成
-	FlushCmdQueue();
+	g_pDirectCommandQueue->WaitForIdle();
 }
 
 int WINAPI WinMain(
