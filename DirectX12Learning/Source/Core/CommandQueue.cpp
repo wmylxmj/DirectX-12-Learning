@@ -6,11 +6,13 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 	m_completedFenceValueCache(0),
 	m_commandAllocatorPool(commandListType)
 {
+	// 创建命令队列
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 	queueDesc.Type = commandListType;
 	queueDesc.NodeMask = 1;
 	CHECK_HRESULT(pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue)));
 
+	// 创建围栏
 	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
 }
 
