@@ -30,6 +30,9 @@
     <ClCompile Include="Source\Core\CommandQueue.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\CommandListPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -54,6 +57,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\GpuResource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\CommandListPool.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
