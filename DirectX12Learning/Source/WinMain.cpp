@@ -234,7 +234,6 @@ bool InitDirect3D() {
 
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator(g_device);
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
-	CHECK_HRESULT(cmdList->Close());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 	// 将深度/模板缓冲区状态转为深度缓冲区
 	cmdList->ResourceBarrier(1,

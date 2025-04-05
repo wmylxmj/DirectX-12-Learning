@@ -16,6 +16,7 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandListPool::RequestComman
 	else
 	{
 		CHECK_HRESULT(pDevice->CreateCommandList(1, m_kCommandListType, pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&pCommandList)));
+		CHECK_HRESULT(pCommandList->Close());
 	}
 
 	return pCommandList;
