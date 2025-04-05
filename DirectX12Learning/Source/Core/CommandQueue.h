@@ -4,7 +4,7 @@
 
 #include "PrecompiledHeader.h"
 #include "CommandAllocatorPool.h"
-#include "wrl.h"
+#include "CommandListPool.h"
 
 class CommandQueue
 {
@@ -18,6 +18,7 @@ private:
 	uint64_t m_completedFenceValueCache;
 
 	CommandAllocatorPool m_commandAllocatorPool;
+	CommandListPool m_commandListPool;
 
 public:
 	CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
@@ -36,4 +37,7 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice);
 	void DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator);
+
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> RequestCommandList(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator);
+	void DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList);
 };

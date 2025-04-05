@@ -4,7 +4,8 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 	m_kCommandListType(commandListType),
 	m_fenceValue(0),
 	m_completedFenceValueCache(0),
-	m_commandAllocatorPool(commandListType)
+	m_commandAllocatorPool(commandListType),
+	m_commandListPool(commandListType)
 {
 	// 创建命令队列
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
@@ -87,4 +88,14 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandQueue::RequestCommandAlloc
 void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)
 {
 	m_commandAllocatorPool.DiscardAllocator(fenceValueForReset, pCommandAllocator);
+}
+
+Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandQueue::RequestCommandList(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)
+{
+	return m_commandListPool.RequestCommandList(pDevice, pCommandAllocator);
+}
+
+void CommandQueue::DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
+{
+	m_commandListPool.DiscardCommandList(pCommandList);
 }
