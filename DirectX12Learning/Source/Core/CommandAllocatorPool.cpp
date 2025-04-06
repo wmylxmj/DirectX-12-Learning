@@ -3,7 +3,7 @@
 
 CommandAllocatorPool::CommandAllocatorPool(D3D12_COMMAND_LIST_TYPE type) : m_kCommandListType(type) {}
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, uint64_t completedFenceValue)
+Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, uint64_t completedFenceValue)
 {
 	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
@@ -31,9 +31,10 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestAllo
 	return pAllocator;
 }
 
-void CommandAllocatorPool::DiscardAllocator(uint64_t fenceValue, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pAllocator)
+void CommandAllocatorPool::DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)
 {
+	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
 	// 归还分配器
-	m_readyAllocators.push(std::make_pair(fenceValue, pAllocator));
+	m_readyAllocators.push(std::make_pair(fenceValueForReset, pCommandAllocator));
 }
