@@ -5,6 +5,7 @@
 #include <cassert>
 #include <vector>
 #include <array>
+#include <sstream>
 
 struct ObjectConstants
 {
@@ -443,6 +444,9 @@ bool AppInit() {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
 	};
+	std::wstringstream ss;
+	ss << L"输入布局数量：" << inputLayout.size() << std::endl;
+	OutputDebugStringW(ss.str().c_str());
 
 	// 定义盒子几何体
 	std::array<Vertex, 8> vertices =
