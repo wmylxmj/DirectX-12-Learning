@@ -146,7 +146,7 @@
     <ClInclude Include="Source\Core\CommandListPool.h" />
     <ClInclude Include="Source\Core\CommandQueue.h" />
     <ClInclude Include="Source\Core\d3dx12.h">
-      <DeploymentContent>true</DeploymentContent>
+      <DeploymentContent>false</DeploymentContent>
     </ClInclude>
     <ClInclude Include="Source\Core\GpuResource.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
