@@ -18,6 +18,8 @@
 #pragma comment(lib, "D3D12.lib")
 #pragma comment(lib, "dxgi.lib")
 
+#pragma comment(lib, "dxguid.lib")
+
 #include <DirectXMath.h>
 #include "d3dx12.h"
 
