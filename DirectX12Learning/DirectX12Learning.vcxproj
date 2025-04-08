@@ -149,7 +149,7 @@
     <ClInclude Include="Source\Core\d3dx12.h">
       <DeploymentContent>false</DeploymentContent>
     </ClInclude>
-    <ClInclude Include="Source\Core\GpuResource.h" />
+    <ClInclude Include="Source\Core\Resource.h" />
     <ClInclude Include="Source\Core\PipelineState.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Model.h" />

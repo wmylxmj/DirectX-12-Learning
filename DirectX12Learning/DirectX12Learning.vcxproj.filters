@@ -33,6 +33,9 @@
     <ClCompile Include="Source\Core\CommandListPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\PipelineState.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -53,13 +56,16 @@
     <ClInclude Include="Source\Core\CommandQueue.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\GpuResource.h">
+    <ClInclude Include="Source\Core\Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\CommandListPool.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\d3dx12.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\PipelineState.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
