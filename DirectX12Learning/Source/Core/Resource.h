@@ -3,7 +3,7 @@
 #include <wrl.h>
 #include "PrecompiledHeader.h"
 
-class GpuResource
+class Resource
 {
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_pResource;
