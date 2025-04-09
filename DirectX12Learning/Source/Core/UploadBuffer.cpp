@@ -2,6 +2,8 @@
 
 UploadBuffer::UploadBuffer(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t bufferSize)
 {
+	m_bufferSize = bufferSize;
+
 	D3D12_HEAP_PROPERTIES heapProperties = {};
 	heapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -31,4 +33,11 @@ UploadBuffer::UploadBuffer(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t 
 	));
 
 	m_gpuVirtualAddress = m_pResource->GetGPUVirtualAddress();
+}
+
+void* UploadBuffer::Map()
+{
+	void* pData;
+	CHECK_HRESULT(m_pResource->Map(0, &RvalueToLvalue(CD3DX12_RANGE(0, m_bufferSize)), &pData));
+	return pData;
 }
