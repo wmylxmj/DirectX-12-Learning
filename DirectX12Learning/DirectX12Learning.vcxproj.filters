@@ -71,6 +71,9 @@
     <ClInclude Include="Source\Core\PipelineState.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\UploadBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\color.hlsl" />
