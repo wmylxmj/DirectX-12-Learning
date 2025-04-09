@@ -135,6 +135,7 @@
     <ClCompile Include="Source\Core\CommandListPool.cpp" />
     <ClCompile Include="Source\Core\CommandQueue.cpp" />
     <ClCompile Include="Source\Core\PipelineState.cpp" />
+    <ClCompile Include="Source\Core\UploadBuffer.cpp" />
     <ClCompile Include="Source\Model.cpp" />
     <ClCompile Include="Source\ModelLoader.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
