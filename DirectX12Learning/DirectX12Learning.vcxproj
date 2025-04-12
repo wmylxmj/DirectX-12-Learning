@@ -136,8 +136,7 @@
     <ClCompile Include="Source\Core\CommandQueue.cpp" />
     <ClCompile Include="Source\Core\PipelineState.cpp" />
     <ClCompile Include="Source\Core\UploadBuffer.cpp" />
-    <ClCompile Include="Source\Model.cpp" />
-    <ClCompile Include="Source\ModelLoader.cpp" />
+    <ClCompile Include="Source\Model\Model.cpp" />
     <ClCompile Include="Source\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,8 +153,7 @@
     <ClInclude Include="Source\Core\PipelineState.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
     <ClInclude Include="Source\Core\UploadBuffer.h" />
-    <ClInclude Include="Source\Model.h" />
-    <ClInclude Include="Source\ModelLoader.h" />
+    <ClInclude Include="Source\Model\Model.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\color.hlsl">

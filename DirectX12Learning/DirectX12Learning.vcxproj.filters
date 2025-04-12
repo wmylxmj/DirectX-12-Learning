@@ -18,10 +18,7 @@
     <ClCompile Include="Source\WinMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Model.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModelLoader.cpp">
+    <ClCompile Include="1\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp">
@@ -39,15 +36,15 @@
     <ClCompile Include="Source\Core\UploadBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Model\Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Model.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModelLoader.h">
+    <ClInclude Include="1\Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\CommandAllocatorPool.h">
@@ -72,6 +69,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\UploadBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
