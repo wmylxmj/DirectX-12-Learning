@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Core\LinearAllocator.cpp" />
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
     <ClCompile Include="Source\Core\CommandListPool.cpp" />
     <ClCompile Include="Source\Core\CommandQueue.cpp" />
@@ -143,6 +144,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Core\LinearAllocator.h" />
     <ClInclude Include="Source\Core\CommandAllocatorPool.h" />
     <ClInclude Include="Source\Core\CommandListPool.h" />
     <ClInclude Include="Source\Core\CommandQueue.h" />
