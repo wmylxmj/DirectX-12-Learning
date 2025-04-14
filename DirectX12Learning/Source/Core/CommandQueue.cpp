@@ -4,6 +4,7 @@ std::atomic_uint64_t CommandQueue::sm_nextNonReusableId = 1;
 
 CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType) :
 	m_kCommandListType(commandListType),
+	m_kNonReusableId(sm_nextNonReusableId++),
 	m_fenceValue(0),
 	m_completedFenceValueCache(0),
 	m_commandAllocatorPool(commandListType),
