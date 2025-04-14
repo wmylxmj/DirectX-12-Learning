@@ -1,5 +1,7 @@
 ﻿#include "CommandQueue.h"
 
+std::atomic_uint64_t CommandQueue::sm_nextNonReusableId = 1;
+
 CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType) :
 	m_kCommandListType(commandListType),
 	m_fenceValue(0),

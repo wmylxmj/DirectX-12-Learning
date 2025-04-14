@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mutex>
+#include <atomic>
 
 #include "PrecompiledHeader.h"
 #include "CommandAllocatorPool.h"
@@ -9,6 +10,8 @@
 class CommandQueue
 {
 private:
+	static std::atomic_uint64_t sm_nextNonReusableId;
+
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pCommandQueue;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
