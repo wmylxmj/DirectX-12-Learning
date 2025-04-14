@@ -70,6 +70,11 @@ uint64_t CommandQueue::GetFenceValue() const
 	return m_fenceValue;
 }
 
+uint64_t CommandQueue::GetNonReusableId() const
+{
+	return m_kNonReusableId;
+}
+
 uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
 {
 	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
