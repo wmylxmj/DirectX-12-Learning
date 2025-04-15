@@ -36,7 +36,6 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetCommandQueue() const;
 	uint64_t GetFenceValue() const;
-	uint64_t GetNonReusableId() const;
 
 	uint64_t ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList);
 
