@@ -10,6 +10,9 @@
 
 class LinearAllocatorPage : public Resource
 {
+public:
+
+	void* m_cpuMemoryAddress;
 };
 
 class LinearAllocatorPageManager
