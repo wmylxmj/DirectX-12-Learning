@@ -8,6 +8,10 @@ class LinearAllocatorPage : public Resource
 {
 };
 
+class LinearAllocatorPageManager
+{
+};
+
 class LinearAllocator
 {
 };
