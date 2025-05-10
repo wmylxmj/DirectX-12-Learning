@@ -72,7 +72,7 @@ uint64_t CommandQueue::GetFenceValue() const
 
 uint64_t CommandQueue::GetNonReusableId() const
 {
-	return 0;
+	return m_kNonReusableId;
 }
 
 uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
