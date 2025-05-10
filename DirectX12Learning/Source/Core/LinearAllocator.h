@@ -11,18 +11,15 @@
 class LinearAllocatorPage : public Resource
 {
 public:
-
 	void* m_cpuMemoryAddress;
 };
 
 class LinearAllocatorPageManager
 {
 public:
-
 	LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType);
 
 private:
-
 	const D3D12_HEAP_TYPE m_kHeapType;
 
 	std::vector<std::unique_ptr<LinearAllocatorPage>> m_pagePool;
