@@ -7,11 +7,13 @@
 #include <vector>
 #include <queue>
 #include <mutex>
+#include <unordered_map>
 
 class LinearAllocatorPage : public Resource
 {
 public:
 	void* m_cpuMemoryAddress;
+	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 };
 
 class LinearAllocatorPageManager
