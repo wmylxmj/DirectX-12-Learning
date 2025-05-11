@@ -21,8 +21,10 @@ public:
 
 private:
 	const D3D12_HEAP_TYPE m_kHeapType;
+	std::mutex m_mutex;
 
 	std::vector<std::unique_ptr<LinearAllocatorPage>> m_pagePool;
+	std::queue<LinearAllocatorPage*> m_availablePages;
 };
 
 class LinearAllocator
