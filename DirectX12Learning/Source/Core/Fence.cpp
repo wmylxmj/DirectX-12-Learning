@@ -14,3 +14,12 @@ uint64_t Fence::IncreaseFenceValue(Microsoft::WRL::ComPtr<ID3D12CommandQueue> pC
 	CHECK_HRESULT(pCommandQueue->Signal(m_pFence.Get(), m_fenceValue));
 	return m_fenceValue;
 }
+
+bool Fence::IsFenceValueCompleted(uint64_t fenceValue)
+{
+	// ±ÜÃâ²éÑ¯¹ýÓÚÆµ·±
+	if (fenceValue > m_completedFenceValueCache) {
+		m_completedFenceValueCache = std::max(m_completedFenceValueCache, m_pFence->GetCompletedValue());
+	}
+	return fenceValue <= m_completedFenceValueCache;
+}
