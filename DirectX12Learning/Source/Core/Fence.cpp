@@ -1,4 +1,4 @@
-#include "Fence.h"
+ï»¿#include "Fence.h"
 
 Fence::Fence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, uint64_t initialValue) :
 	m_fenceValue(initialValue),
@@ -17,7 +17,7 @@ uint64_t Fence::IncreaseFenceValue(Microsoft::WRL::ComPtr<ID3D12CommandQueue> pC
 
 bool Fence::IsFenceValueCompleted(uint64_t fenceValue)
 {
-	// ±ÜÃâ²éÑ¯¹ýÓÚÆµ·±
+	// é¿å…æŸ¥è¯¢è¿‡äºŽé¢‘ç¹
 	if (fenceValue > m_completedFenceValueCache) {
 		m_completedFenceValueCache = std::max(m_completedFenceValueCache, m_pFence->GetCompletedValue());
 	}
