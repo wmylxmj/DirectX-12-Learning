@@ -23,3 +23,13 @@ bool Fence::IsFenceValueCompleted(uint64_t fenceValue)
 	}
 	return fenceValue <= m_completedFenceValueCache;
 }
+
+Microsoft::WRL::ComPtr<ID3D12Fence> Fence::GetFence()
+{
+	return m_pFence;
+}
+
+uint64_t Fence::GetFenceValue() const
+{
+	return m_fenceValue;
+}
