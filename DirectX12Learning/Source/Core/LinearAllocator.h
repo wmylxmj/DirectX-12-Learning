@@ -3,6 +3,7 @@
 #include "PrecompiledHeader.h"
 #include "CommandQueue.h"
 #include "Resource.h"
+#include "Fence.h"
 
 #include <vector>
 #include <queue>
@@ -26,6 +27,8 @@ class LinearAllocatorPageManager
 {
 public:
 	LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType);
+
+	LinearAllocatorPage* CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
 
 private:
 	const D3D12_HEAP_TYPE m_kHeapType;
