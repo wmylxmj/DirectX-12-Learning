@@ -83,9 +83,10 @@ LinearAllocatorPage* LinearAllocatorPageManager::CreateNewPage(Microsoft::WRL::C
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 
-		LinearAllocatorPage* pPage = new LinearAllocatorPage(pResource, resourceState);
-		m_pagePool.emplace_back(pPage);
+		auto pPage = std::make_unique<LinearAllocatorPage>(pResource, resourceState);
+		LinearAllocatorPage* pagePtr = pPage.get();
+		m_pagePool.emplace_back(std::move(pPage));
 
-		return pPage;
+		return pagePtr;
 	}
 }
