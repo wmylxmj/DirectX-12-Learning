@@ -36,7 +36,7 @@ private:
 	std::mutex m_mutex;
 
 	// 记录每个命令队列的Fence对象
-	std::unordered_map<uint64_t, Fence> m_fenceMap;
+	std::unordered_map<uint64_t, std::unique_ptr<Fence>> m_fenceMap;
 
 	// 生命周期可能为程序的整个生命周期，在堆上分配内存
 	std::vector<std::unique_ptr<LinearAllocatorPage>> m_pagePool;
