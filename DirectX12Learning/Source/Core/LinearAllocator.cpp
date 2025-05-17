@@ -97,8 +97,4 @@ void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12D
 	}
 
 	m_fenceMap[commandQueue.GetNonReusableId()]->IncreaseFenceValue(commandQueue.GetCommandQueue());
-
-	for (auto& page : pages) {
-		page->m_pendingFences[commandQueue.GetNonReusableId()] = m_fenceMap[commandQueue.GetNonReusableId()]->GetFenceValue();
-	}
 }
