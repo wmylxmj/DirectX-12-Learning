@@ -30,7 +30,7 @@ void LinearAllocatorPage::Unmap()
 
 LinearAllocatorPageManager::LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType) : m_kHeapType(heapType) {}
 
-LinearAllocatorPage* LinearAllocatorPageManager::CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize)
+std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize)
 {
 	D3D12_HEAP_PROPERTIES heapProperties = {};
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -80,12 +80,7 @@ LinearAllocatorPage* LinearAllocatorPageManager::CreateNewPage(Microsoft::WRL::C
 		nullptr,
 		IID_PPV_ARGS(&pResource)));
 
-	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-
-		m_pagePool.emplace_back(std::make_unique<LinearAllocatorPage>(pResource, resourceState));
-		return m_pagePool.back().get();
-	}
+	return std::make_unique<LinearAllocatorPage>(pResource, resourceState);
 }
 
 void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages)
@@ -97,4 +92,8 @@ void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12D
 	}
 
 	m_fenceMap[commandQueue.GetNonReusableId()]->IncreaseFenceValue(commandQueue.GetCommandQueue());
+
+	for (auto page : pages) {
+		page->m_pendingFences[commandQueue.GetNonReusableId()] = m_fenceMap[commandQueue.GetNonReusableId()]->GetFenceValue();
+	}
 }
