@@ -83,6 +83,46 @@ std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(M
 	return std::make_unique<LinearAllocatorPage>(pResource, resourceState);
 }
 
+LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	while (!m_retiredPages.empty()) {
+		auto page = m_retiredPages.front();
+
+		// 检测围栏是否已完成
+		bool fencesCompleted = true;
+		for (auto& pendingFence : page->m_pendingFences) {
+			if (!m_fenceMap[pendingFence.first]->IsFenceValueCompleted(pendingFence.second)) {
+				fencesCompleted = false;
+				break;
+			}
+		}
+
+		if (fencesCompleted) {
+			m_availablePages.push(m_retiredPages.front());
+			m_retiredPages.pop();
+		}
+		else {
+			break;
+		}
+	}
+
+	LinearAllocatorPage* pagePtr = nullptr;
+	if (!m_availablePages.empty()) {
+		pagePtr = m_availablePages.front();
+		pagePtr->m_pendingFences.clear();
+		m_availablePages.pop();
+	}
+	else {
+		auto newPage = CreateNewPage(pDevice, m_kPageSize);
+		m_pagePool.push_back(std::move(newPage));
+		pagePtr = m_pagePool.back().get();
+	}
+
+	return pagePtr;
+}
+
 void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
