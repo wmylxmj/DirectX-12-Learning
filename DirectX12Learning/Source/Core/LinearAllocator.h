@@ -26,13 +26,15 @@ public:
 class LinearAllocatorPageManager
 {
 public:
-	LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType);
+	LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize);
 
 	std::unique_ptr<LinearAllocatorPage> CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
 	void RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages);
 
 private:
 	const D3D12_HEAP_TYPE m_kHeapType;
+	const size_t m_kPageSize;
+
 	std::mutex m_mutex;
 
 	// 记录每个命令队列的Fence对象
