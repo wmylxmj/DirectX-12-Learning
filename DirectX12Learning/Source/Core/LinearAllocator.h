@@ -29,7 +29,9 @@ public:
 	LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize);
 
 	std::unique_ptr<LinearAllocatorPage> CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
+
 	LinearAllocatorPage* RequestGeneralPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice);
+	LinearAllocatorPage* RequestLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
 
 	void RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages);
 
