@@ -132,4 +132,6 @@ void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12D
 	}
 
 	m_fenceMap[commandQueue.GetNonReusableId()]->IncreaseFenceValue(commandQueue.GetCommandQueue());
+
+	// 为每个页设置对应ID的围栏值
 }
