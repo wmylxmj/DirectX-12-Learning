@@ -1,4 +1,4 @@
-#include "LinearAllocator.h"
+ï»¿#include "LinearAllocator.h"
 
 LinearAllocatorPage::LinearAllocatorPage(Microsoft::WRL::ComPtr<ID3D12Resource> pResource, D3D12_RESOURCE_STATES resourceState) : Resource()
 {
@@ -90,7 +90,7 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage(Microsoft::W
 	while (!m_retiredPages.empty()) {
 		auto page = m_retiredPages.front();
 
-		// ¼ì²âÎ§À¸ÊÇ·ñÒÑÍê³É
+		// æ£€æµ‹å›´æ æ˜¯å¦å·²å®Œæˆ
 		bool fencesCompleted = true;
 		for (auto& pendingFence : page->m_pendingFences) {
 			if (!m_fenceMap[pendingFence.first]->IsFenceValueCompleted(pendingFence.second)) {
@@ -132,8 +132,4 @@ void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12D
 	}
 
 	m_fenceMap[commandQueue.GetNonReusableId()]->IncreaseFenceValue(commandQueue.GetCommandQueue());
-
-	for (auto page : pages) {
-		page->m_pendingFences[commandQueue.GetNonReusableId()] = m_fenceMap[commandQueue.GetNonReusableId()]->GetFenceValue();
-	}
 }

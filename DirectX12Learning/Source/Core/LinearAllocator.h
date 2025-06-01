@@ -44,6 +44,8 @@ private:
 
 	// 生命周期可能为程序的整个生命周期，在堆上分配内存
 	std::vector<std::unique_ptr<LinearAllocatorPage>> m_pagePool;
+	std::unordered_map<LinearAllocatorPage*, std::unique_ptr<LinearAllocatorPage>> m_largePagePtrMap;
+
 	std::queue<LinearAllocatorPage*> m_availablePages;
 	std::queue<LinearAllocatorPage*> m_retiredPages;
 	std::queue<LinearAllocatorPage*> m_deletionQueue;
