@@ -123,6 +123,57 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage(Microsoft::W
 	return pagePtr;
 }
 
+void LinearAllocatorPageManager::DiscardGeneralPages(std::vector<LinearAllocatorPage*>& pages)
+{
+	// 在记录围栏后调用
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	for (auto page : pages) {
+		m_retiredPages.push(page);
+	}
+}
+
+LinearAllocatorPage* LinearAllocatorPageManager::RequestLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	auto largePage = CreateNewPage(pDevice, pageSize);
+	LinearAllocatorPage* rawPtr = largePage.get();
+	m_largePagePtrMap.emplace(rawPtr, std::move(largePage));
+
+	return rawPtr;
+}
+
+void LinearAllocatorPageManager::DiscardLargePages(std::vector<LinearAllocatorPage*>& pages)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	while (!m_deletionQueue.empty()) {
+		auto page = m_deletionQueue.front();
+
+		bool fencesCompleted = true;
+		for (auto& pendingFence : page->m_pendingFences) {
+			if (!m_fenceMap[pendingFence.first]->IsFenceValueCompleted(pendingFence.second)) {
+				fencesCompleted = false;
+				break;
+			}
+		}
+
+		if (fencesCompleted) {
+			m_largePagePtrMap.erase(m_deletionQueue.front());
+			m_deletionQueue.pop();
+		}
+		else {
+			break;
+		}
+	}
+
+	for (auto& page : pages) {
+		page->Unmap();
+		m_deletionQueue.push(page);
+	}
+}
+
 void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
