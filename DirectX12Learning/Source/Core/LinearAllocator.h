@@ -57,6 +57,8 @@ private:
 };
 
 class LinearBlock {
+public:
+	Resource& resource;
 };
 
 class LinearAllocator
