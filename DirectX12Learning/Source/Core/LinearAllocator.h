@@ -56,6 +56,9 @@ private:
 	std::queue<LinearAllocatorPage*> m_deletionQueue;
 };
 
+class LinearBlock {
+};
+
 class LinearAllocator
 {
 };
