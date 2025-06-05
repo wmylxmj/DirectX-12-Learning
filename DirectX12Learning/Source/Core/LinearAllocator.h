@@ -59,6 +59,7 @@ private:
 class LinearBlock {
 public:
 	Resource& resource;
+	size_t offset;
 };
 
 class LinearAllocator
