@@ -60,6 +60,7 @@ class LinearBlock {
 public:
 	Resource& resource;
 	size_t offset;
+	size_t size;
 };
 
 class LinearAllocator
