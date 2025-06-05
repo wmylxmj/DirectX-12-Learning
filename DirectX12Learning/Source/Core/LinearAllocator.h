@@ -61,6 +61,7 @@ public:
 	Resource& resource;
 	size_t offset;
 	size_t size;
+	void* dataPtr;
 };
 
 class LinearAllocator
