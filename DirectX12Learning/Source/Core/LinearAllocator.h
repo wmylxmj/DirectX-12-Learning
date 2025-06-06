@@ -60,6 +60,7 @@ class LinearBlock {
 public:
 	Resource& resource;
 	size_t size;
+	size_t offset;
 	void* dataPtr;
 	D3D12_GPU_VIRTUAL_ADDRESS gpuVirtualAddress;
 };
