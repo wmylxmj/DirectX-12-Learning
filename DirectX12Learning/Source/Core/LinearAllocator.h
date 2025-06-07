@@ -68,5 +68,5 @@ public:
 class LinearAllocator
 {
 private:
-	static std::unordered_map<D3D12_HEAP_TYPE, LinearAllocatorPageManager> sm_pageManagerMap;
+	static std::unordered_map<D3D12_HEAP_TYPE, std::unique_ptr<LinearAllocatorPageManager>> sm_pageManagerMap;
 };
