@@ -13,6 +13,7 @@
 class LinearAllocatorPage : public Resource
 {
 public:
+	using Resource::m_gpuVirtualAddress;
 	void* m_cpuMemoryAddress;
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 
@@ -60,7 +61,6 @@ class LinearBlock {
 public:
 	Resource& resource;
 	size_t size;
-	size_t offset;
 	void* dataPtr;
 	D3D12_GPU_VIRTUAL_ADDRESS gpuVirtualAddress;
 };
