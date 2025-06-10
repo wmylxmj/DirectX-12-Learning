@@ -59,11 +59,16 @@ private:
 
 class LinearBlock {
 public:
+
 	Resource& resource;
 	size_t offset;
 	size_t size;
 	void* dataPtr;
 	D3D12_GPU_VIRTUAL_ADDRESS gpuVirtualAddress;
+
+	LinearBlock(Resource& resource, size_t offset, size_t size, void* dataPtr, D3D12_GPU_VIRTUAL_ADDRESS gpuVirtualAddress)
+		: resource(resource), offset(offset), size(size), dataPtr(dataPtr), gpuVirtualAddress(gpuVirtualAddress) {
+	}
 };
 
 class LinearAllocator
