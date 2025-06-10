@@ -89,5 +89,4 @@ private:
 	LinearBlock AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size);
 
 public:
-	LinearAllocator(D3D12_HEAP_TYPE heapType);
 };
