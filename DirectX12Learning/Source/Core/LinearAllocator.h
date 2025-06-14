@@ -91,6 +91,9 @@ private:
 public:
 	LinearAllocator(D3D12_HEAP_TYPE heapType);
 
+	// ¶ÔÆëÄ¬ÈÏ256×Ö½Ú
+	void Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
+
 	void RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
 	void DiscardUsedPages();
 };
