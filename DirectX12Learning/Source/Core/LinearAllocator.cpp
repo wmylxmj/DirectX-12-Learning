@@ -207,6 +207,22 @@ LinearAllocator::LinearAllocator(D3D12_HEAP_TYPE heapType) : m_kHeapType(heapTyp
 	}
 }
 
+LinearBlock LinearAllocator::AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size)
+{
+	LinearAllocatorPage* page = sm_pageManagerMap[m_kHeapType]->RequestLargePage(pDevice, size);
+	m_largePageList.push_back(page);
+
+	LinearBlock block(
+		*page,
+		0,
+		size,
+		page->m_cpuMemoryAddress,
+		page->m_gpuVirtualAddress
+	);
+
+	return block;
+}
+
 LinearBlock LinearAllocator::Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment)
 {
 	const size_t alignedSize = AlignUp(size, alignment);
