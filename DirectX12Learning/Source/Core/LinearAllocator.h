@@ -96,4 +96,5 @@ public:
 
 	// 为使用的页面记录围栏
 	void RecordFenceForUsedPages(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
+	void DiscardUsedPages();
 };
