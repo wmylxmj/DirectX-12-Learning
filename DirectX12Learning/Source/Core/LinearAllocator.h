@@ -94,6 +94,5 @@ public:
 	// 对齐默认256字节
 	LinearBlock Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
 
-	void RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
-	void DiscardUsedPages();
+	// 为使用的页面记录Fence
 };
