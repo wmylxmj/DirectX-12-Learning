@@ -207,6 +207,15 @@ LinearAllocator::LinearAllocator(D3D12_HEAP_TYPE heapType) : m_kHeapType(heapTyp
 	}
 }
 
+void LinearAllocator::RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue)
+{
+	if (m_currentPage != nullptr) {
+		sm_pageManagerMap[m_kHeapType]->RecordPagesFence(pDevice, commandQueue, { m_currentPage });
+	}
+	sm_pageManagerMap[m_kHeapType]->RecordPagesFence(pDevice, commandQueue, m_retiredPages);
+	sm_pageManagerMap[m_kHeapType]->RecordPagesFence(pDevice, commandQueue, m_largePageList);
+}
+
 LinearBlock LinearAllocator::AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size)
 {
 	LinearAllocatorPage* page = sm_pageManagerMap[m_kHeapType]->RequestLargePage(pDevice, size);
