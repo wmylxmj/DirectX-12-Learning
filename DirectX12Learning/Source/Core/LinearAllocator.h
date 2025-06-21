@@ -95,9 +95,4 @@ public:
 	LinearBlock Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
 
 	void RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
-	void DiscardUsedPages();
-
-	// 为使用的页面记录围栏
-	void RecordFenceForUsedPages(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
-	void DiscardUsedPages();
 };
