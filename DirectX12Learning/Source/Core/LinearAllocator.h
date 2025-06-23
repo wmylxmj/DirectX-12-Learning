@@ -95,4 +95,5 @@ public:
 	LinearBlock Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
 
 	void RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
+	void Deallocate();
 };
