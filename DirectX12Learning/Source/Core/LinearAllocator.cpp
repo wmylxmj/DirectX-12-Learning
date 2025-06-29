@@ -217,6 +217,12 @@ void LinearAllocator::RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, 
 }
 
 void LinearAllocator::Deallocate() {
+	if (m_currentPage != nullptr) {
+		m_retiredPages.push_back(m_currentPage);
+		m_currentPage = nullptr;
+		m_currentOffset = 0;
+	}
+
 	sm_pageManagerMap[m_kHeapType]->DiscardGeneralPages(m_retiredPages);
 	m_retiredPages.clear();
 
