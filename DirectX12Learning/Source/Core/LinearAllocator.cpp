@@ -216,6 +216,20 @@ void LinearAllocator::RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, 
 	sm_pageManagerMap[m_kHeapType]->RecordPagesFence(pDevice, commandQueue, m_largePageList);
 }
 
+void LinearAllocator::Deallocate() {
+	if (m_currentPage != nullptr) {
+		m_retiredPages.push_back(m_currentPage);
+		m_currentPage = nullptr;
+		m_currentOffset = 0;
+	}
+
+	sm_pageManagerMap[m_kHeapType]->DiscardGeneralPages(m_retiredPages);
+	m_retiredPages.clear();
+
+	sm_pageManagerMap[m_kHeapType]->DiscardLargePages(m_largePageList);
+	m_largePageList.clear();
+}
+
 LinearBlock LinearAllocator::AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size)
 {
 	LinearAllocatorPage* page = sm_pageManagerMap[m_kHeapType]->RequestLargePage(pDevice, size);
