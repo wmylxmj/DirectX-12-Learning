@@ -2,9 +2,10 @@
 
 #include "PrecompiledHeader.h"
 
-struct RootParameter : public CD3DX12_ROOT_PARAMETER
+struct DescriptorRange : public CD3DX12_DESCRIPTOR_RANGE1
 {
 };
-class RootSignature
+
+struct RootParameter : public CD3DX12_ROOT_PARAMETER
 {
 };
