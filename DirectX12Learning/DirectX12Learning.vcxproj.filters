@@ -42,7 +42,7 @@
     <ClCompile Include="Source\Core\Fence.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="RootSignature.cpp">
+    <ClCompile Include="Source\Core\RootSignature.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,7 +86,7 @@
     <ClInclude Include="Source\Core\Fence.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="RootSignature.h">
+    <ClInclude Include="Source\Core\RootSignature.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
