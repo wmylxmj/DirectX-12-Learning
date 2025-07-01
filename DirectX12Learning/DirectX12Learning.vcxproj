@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Source\Core\Fence.cpp" />
     <ClCompile Include="Source\Core\LinearAllocator.cpp" />
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
@@ -145,6 +146,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Source\Core\Fence.h" />
     <ClInclude Include="Source\Core\Helpers.h" />
     <ClInclude Include="Source\Core\LinearAllocator.h" />
