@@ -158,6 +158,7 @@
     <ClInclude Include="Source\Core\Resource.h" />
     <ClInclude Include="Source\Core\PipelineState.h" />
     <ClInclude Include="Source\Core\PrecompiledHeader.h" />
+    <ClInclude Include="Source\Core\RootSignature.h" />
     <ClInclude Include="Source\Core\UploadBuffer.h" />
     <ClInclude Include="Source\Model\Model.h" />
   </ItemGroup>
