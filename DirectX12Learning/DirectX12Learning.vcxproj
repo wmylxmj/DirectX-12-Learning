@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Core\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\Fence.cpp" />
     <ClCompile Include="Source\Core\LinearAllocator.cpp" />
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
