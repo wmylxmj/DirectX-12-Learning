@@ -5,6 +5,10 @@
 
 class Resource
 {
+public:
+
+	ID3D12Resource* GetResource();
+
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_pResource;
 	D3D12_RESOURCE_STATES m_resourceState;
