@@ -7,7 +7,7 @@ class Resource
 {
 public:
 
-	ID3D12Resource* GetResource();
+	ID3D12Resource* GetResource() const;
 
 protected:
 	Microsoft::WRL::ComPtr<ID3D12Resource> m_pResource;
