@@ -22,5 +22,5 @@ class DescriptorHeap
 public:
 
 private:
-	DescriptorHandle m_startHandle;
+	DescriptorHandle m_startDescriptorHandle;
 };
