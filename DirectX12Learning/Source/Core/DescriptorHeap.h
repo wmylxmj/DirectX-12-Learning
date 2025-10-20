@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
+#include <unordered_map>
 
 class DescriptorHandle
 {
@@ -29,6 +30,5 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_pDescriptorHeap;
 
-private:
 	DescriptorHandle m_startDescriptorHandle;
 };
