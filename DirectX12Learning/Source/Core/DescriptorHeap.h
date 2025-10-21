@@ -19,7 +19,11 @@ private:
 
 class DescriptorHeap
 {
-public:
+public:public:
+
+	DescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors);
+
+private:
 
 private:
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
