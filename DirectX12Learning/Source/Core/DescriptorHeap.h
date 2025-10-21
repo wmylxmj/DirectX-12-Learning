@@ -24,5 +24,6 @@ public:
 
 	DescriptorHandle operator[](uint32_t index) const;
 
+public:
 	DescriptorHandle m_startDescriptorHandle;
 };
