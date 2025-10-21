@@ -25,7 +25,6 @@ public:
 	DescriptorHandle operator[](uint32_t index) const;
 
 public:
-
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 
 private:
