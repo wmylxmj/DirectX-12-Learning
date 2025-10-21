@@ -1,5 +1,6 @@
 #include "Core/PrecompiledHeader.h"
 #include "Core/CommandQueue.h"
+#include "Core/RootSignature.h"
 
 #include <string>
 #include <cassert>
@@ -390,10 +391,10 @@ bool AppInit() {
 
 	// 创建根签名
 	// 创建根参数
-	CD3DX12_ROOT_PARAMETER slotRootParameter[1];
+	RootParameter slotRootParameter[1]{};
 
 	// 创建描述符表
-	CD3DX12_DESCRIPTOR_RANGE cbvTable;
+	DescriptorRange cbvTable;
 	cbvTable.Init(
 		D3D12_DESCRIPTOR_RANGE_TYPE_CBV,
 		1, // 描述符数量
