@@ -22,6 +22,8 @@ class DescriptorHeap
 public:
 	DescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors);
 
+	DescriptorHandle operator[](uint32_t index) const;
+
 private:
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 	const uint32_t m_kNumDescriptors;
