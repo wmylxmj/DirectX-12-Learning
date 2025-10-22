@@ -26,6 +26,7 @@
 #include <DirectXColors.h>
 // -----------------------------------------
 
+#include <cstdio>
 #include <string>
 
 #ifndef CHECK_HRESULT

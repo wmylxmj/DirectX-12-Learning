@@ -21,6 +21,7 @@ public:
 
 	void Reset(UINT numParameters, UINT numStaticSamplers = 0);
 
+	RootParameter& operator[](size_t index);
 protected:
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;

@@ -23,3 +23,9 @@ void RootSignature::Reset(UINT numParameters, UINT numStaticSamplers)
 	}
 	m_numStaticSamplers = numStaticSamplers;
 }
+
+RootParameter& RootSignature::operator[](size_t index)
+{
+	assert(index < m_numParameters);
+	return m_parameters.get()[index];
+}
