@@ -16,6 +16,8 @@ public:
 
 class RootSignature
 {
+public:
+	RootSignature(UINT numParameters, UINT numStaticSamplers = 0);
 protected:
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_rootSignature;
 };
