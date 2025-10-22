@@ -76,5 +76,9 @@ void RootSignature::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDe
 				m_descriptorTableSize[i] += parameter.DescriptorTable.pDescriptorRanges[j].NumDescriptors;
 			}
 		}
+
+		Microsoft::WRL::ComPtr<ID3DBlob> pRootSignatureBlob, pErrorBlob;
+
+		CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
 	}
 }
