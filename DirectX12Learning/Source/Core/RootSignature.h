@@ -19,6 +19,8 @@ class RootSignature
 public:
 	RootSignature(UINT numParameters, UINT numStaticSamplers = 0);
 
+	void Reset(UINT numParameters, UINT numStaticSamplers = 0);
+
 protected:
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;

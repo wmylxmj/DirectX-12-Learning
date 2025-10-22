@@ -2,6 +2,24 @@
 
 RootSignature::RootSignature(UINT numParameters, UINT numStaticSamplers)
 {
+	Reset(numParameters, numStaticSamplers);
+}
+
+void RootSignature::Reset(UINT numParameters, UINT numStaticSamplers)
+{
+	if (numParameters > 0) {
+		m_parameters.reset(new RootParameter[numParameters]);
+	}
+	else {
+		m_parameters = nullptr;
+	}
 	m_numParameters = numParameters;
+
+	if (numStaticSamplers > 0) {
+		m_staticSamplers.reset(new CD3DX12_STATIC_SAMPLER_DESC[numStaticSamplers]);
+	}
+	else {
+		m_staticSamplers = nullptr;
+	}
 	m_numStaticSamplers = numStaticSamplers;
 }
