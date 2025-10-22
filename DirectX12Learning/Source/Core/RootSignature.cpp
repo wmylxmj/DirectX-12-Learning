@@ -2,4 +2,6 @@
 
 RootSignature::RootSignature(UINT numParameters, UINT numStaticSamplers)
 {
+	m_numParameters = numParameters;
+	m_numStaticSamplers = numStaticSamplers;
 }
