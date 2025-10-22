@@ -82,9 +82,28 @@ void RootSignature::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDe
 		CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
 
 		std::vector<uint8_t> blobKey(
-
 			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()),
 			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()) + pRootSignatureBlob->GetBufferSize()
 		);
+
+		{
+			std::lock_guard<std::mutex> lock(sm_rootSignatureCacheMutex);
+			auto it = sm_rootSignatureCache.find(blobKey);
+			if (it != sm_rootSignatureCache.end()) {
+				m_rootSignature = it->second;
+				return;
+			}
+		}
+
+		CHECK_HRESULT(pDevice->CreateRootSignature(
+			0,
+			pRootSignatureBlob->GetBufferPointer(),
+			pRootSignatureBlob->GetBufferSize(),
+			IID_PPV_ARGS(&m_rootSignature)
+		));
+		{
+			std::lock_guard<std::mutex> lock(sm_rootSignatureCacheMutex);
+			sm_rootSignatureCache[blobKey] = m_rootSignature;
+		}
 	}
 }
