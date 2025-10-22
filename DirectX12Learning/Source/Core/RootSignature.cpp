@@ -1,5 +1,6 @@
 #include "RootSignature.h"
 
+std::mutex RootSignature::sm_rootSignatureCacheMutex;
 std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> RootSignature::sm_rootSignatureCache;
 
 RootSignature::RootSignature(UINT numParameters, UINT numStaticSamplers)

@@ -2,6 +2,7 @@
 
 #include "PrecompiledHeader.h"
 #include <map>
+#include <mutex>
 
 class DescriptorRange : public CD3DX12_DESCRIPTOR_RANGE
 {
@@ -30,7 +31,7 @@ public:
 	void CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
 protected:
-
+	static std::mutex sm_rootSignatureCacheMutex;
 	static std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> sm_rootSignatureCache;
 
 	UINT m_numParameters;
