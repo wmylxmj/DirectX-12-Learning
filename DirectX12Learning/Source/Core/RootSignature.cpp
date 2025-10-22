@@ -46,4 +46,13 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> RootSignature::GetRootSignature() co
 
 void RootSignature::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags)
 {
+	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc;
+	rootSignatureDesc.NumParameters = m_numParameters;
+	rootSignatureDesc.pParameters = (const D3D12_ROOT_PARAMETER*)m_parameters.get();
+	rootSignatureDesc.NumStaticSamplers = m_numStaticSamplers;
+	rootSignatureDesc.pStaticSamplers = (const D3D12_STATIC_SAMPLER_DESC*)m_staticSamplers.get();
+	rootSignatureDesc.Flags = flags;
+
+	m_cbvSrvUavDescriptorTableBitMap = 0;
+	m_samplerDescriptorTableBitMap = 0;
 }
