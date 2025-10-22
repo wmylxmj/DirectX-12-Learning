@@ -49,7 +49,7 @@ UINT g_rtvDescriptorSize;
 
 BYTE* g_cbMappedData = nullptr;
 
-Microsoft::WRL::ComPtr<ID3D12RootSignature> g_rootSignature;
+std::unique_ptr<RootSignature> g_pRootSignature;
 
 Microsoft::WRL::ComPtr<ID3D12PipelineState> g_pso = nullptr;
 
@@ -390,8 +390,9 @@ bool AppInit() {
 	);
 
 	// 创建根签名
+	g_pRootSignature = std::make_unique<RootSignature>(1);
 	// 创建根参数
-	RootParameter slotRootParameter[1]{};
+	RootParameter rootParameter;
 
 	// 创建描述符表
 	DescriptorRange cbvTable;
@@ -400,40 +401,14 @@ bool AppInit() {
 		1, // 描述符数量
 		0 // 基准着色器寄存器
 	);
-	slotRootParameter[0].InitAsDescriptorTable(
+	rootParameter.InitAsDescriptorTable(
 		1, // 描述符区域数量
 		&cbvTable // 描述符区域数组的指针
 	);
 
-	CD3DX12_ROOT_SIGNATURE_DESC rootSigDesc(
-		1, // 根参数数量
-		slotRootParameter, // 指向根参数指针
-		0,
-		nullptr,
-		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
-	);
+	g_pRootSignature->operator[](0) = rootParameter;
 
-	// 创建仅包含一个槽位的根签名
-	Microsoft::WRL::ComPtr<ID3DBlob> serializedRootSig = nullptr;
-	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr;
-	HRESULT hr = D3D12SerializeRootSignature(
-		&rootSigDesc,
-		D3D_ROOT_SIGNATURE_VERSION_1,
-		serializedRootSig.GetAddressOf(),
-		errorBlob.GetAddressOf()
-	);
-	if (errorBlob != nullptr)
-	{
-		MessageBoxA(0, (char*)errorBlob->GetBufferPointer(), "Failed To Serialize RootSignature", 0);
-	}
-	CHECK_HRESULT(hr);
-
-	CHECK_HRESULT(g_device->CreateRootSignature(
-		0,
-		serializedRootSig->GetBufferPointer(),
-		serializedRootSig->GetBufferSize(),
-		IID_PPV_ARGS(&g_rootSignature)
-	));
+	g_pRootSignature->CreateRootSignature(g_device, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	// 编译着色器
 	Microsoft::WRL::ComPtr<ID3DBlob> vsByteCode = CompileShader(L"Source\\Shaders\\color.hlsl", nullptr, "VS", "vs_5_1");
@@ -536,7 +511,7 @@ bool AppInit() {
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 	psoDesc.InputLayout = { inputLayout.data(), (UINT)inputLayout.size() }; // 输入顶点布局
-	psoDesc.pRootSignature = g_rootSignature.Get(); // 根签名
+	psoDesc.pRootSignature = g_pRootSignature->GetRootSignature().Get(); // 根签名
 	psoDesc.VS =
 	{
 		reinterpret_cast<BYTE*>(vsByteCode->GetBufferPointer()),
@@ -644,7 +619,7 @@ void Render() {
 	ID3D12DescriptorHeap* descriptorHeaps[] = { g_cbvDescriptorHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	cmdList->SetGraphicsRootSignature(g_rootSignature.Get());
+	cmdList->SetGraphicsRootSignature(g_pRootSignature->GetRootSignature().Get());
 
 	cmdList->IASetVertexBuffers(0, 1, &g_vbv);
 	cmdList->IASetIndexBuffer(&g_ibv);
