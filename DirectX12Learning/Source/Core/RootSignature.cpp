@@ -40,3 +40,7 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> RootSignature::GetRootSignature() co
 {
 	return m_rootSignature;
 }
+
+void RootSignature::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags)
+{
+}
