@@ -80,5 +80,11 @@ void RootSignature::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDe
 		Microsoft::WRL::ComPtr<ID3DBlob> pRootSignatureBlob, pErrorBlob;
 
 		CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
+
+		std::vector<uint8_t> blobKey(
+
+			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()),
+			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()) + pRootSignatureBlob->GetBufferSize()
+		);
 	}
 }
