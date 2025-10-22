@@ -37,6 +37,7 @@ protected:
 	std::unique_ptr<CD3DX12_STATIC_SAMPLER_DESC[]> m_staticSamplers;
 
 	uint64_t m_cbvSrvUavDescriptorTableBitMap;
+	uint64_t m_samplerDescriptorTableBitMap;
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_rootSignature;
 };
