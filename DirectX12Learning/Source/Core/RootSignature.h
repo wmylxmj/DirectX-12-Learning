@@ -23,6 +23,8 @@ public:
 
 	RootParameter& operator[](size_t index);
 	const RootParameter& operator[](size_t index) const;
+
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature() const;
 protected:
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;
