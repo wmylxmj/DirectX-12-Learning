@@ -1,5 +1,7 @@
 #include "RootSignature.h"
 
+std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> RootSignature::sm_rootSignatureCache;
+
 RootSignature::RootSignature(UINT numParameters, UINT numStaticSamplers)
 {
 	Reset(numParameters, numStaticSamplers);
