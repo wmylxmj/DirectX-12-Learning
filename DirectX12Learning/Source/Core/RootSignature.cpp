@@ -56,12 +56,25 @@ void RootSignature::CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDe
 	m_cbvSrvUavDescriptorTableBitMap = 0;
 	m_samplerDescriptorTableBitMap = 0;
 
-	for (UINT i = 0; i < m_numParameters; i++) {
+	for (UINT i = 0; i < m_numParameters; ++i) {
 		const D3D12_ROOT_PARAMETER& parameter = rootSignatureDesc.pParameters[i];
 		m_descriptorTableSize[i] = 0;
 
 		if (parameter.ParameterType == D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE) {
 			assert(parameter.DescriptorTable.pDescriptorRanges != nullptr);
+
+			// ±ê¼ÇÎ»Í¼
+			if (parameter.DescriptorTable.pDescriptorRanges->RangeType == D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER) {
+				m_samplerDescriptorTableBitMap |= ((uint64_t)1 << i);
+			}
+			else
+			{
+				m_cbvSrvUavDescriptorTableBitMap |= ((uint64_t)1 << i);
+			}
+
+			for (UINT j = 0; j < parameter.DescriptorTable.NumDescriptorRanges; ++j) {
+				m_descriptorTableSize[i] += parameter.DescriptorTable.pDescriptorRanges[j].NumDescriptors;
+			}
 		}
 	}
 }
