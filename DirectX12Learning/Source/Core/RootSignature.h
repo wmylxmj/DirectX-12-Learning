@@ -28,7 +28,7 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature() const;
 protected:
 
-	static std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> m_rootSignatureCache;
+	static std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> sm_rootSignatureCache;
 
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;
