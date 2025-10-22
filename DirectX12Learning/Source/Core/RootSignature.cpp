@@ -29,3 +29,9 @@ RootParameter& RootSignature::operator[](size_t index)
 	assert(index < m_numParameters);
 	return m_parameters.get()[index];
 }
+
+const RootParameter& RootSignature::operator[](size_t index) const
+{
+	assert(index < m_numParameters);
+	return m_parameters.get()[index];
+}
