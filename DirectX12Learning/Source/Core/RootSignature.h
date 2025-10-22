@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
+#include <map>
 
 class DescriptorRange : public CD3DX12_DESCRIPTOR_RANGE
 {
@@ -26,6 +27,9 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature() const;
 protected:
+
+	static std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> m_rootSignatureCache;
+
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;
 
