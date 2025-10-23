@@ -5,8 +5,6 @@ std::atomic_uint64_t CommandQueue::sm_nextNonReusableId = 1;
 CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType) :
 	m_kCommandListType(commandListType),
 	m_kNonReusableId(sm_nextNonReusableId++),
-	m_fenceValue(0),
-	m_completedFenceValueCache(0),
 	m_commandAllocatorPool(commandListType),
 	m_commandListPool(commandListType)
 {
@@ -17,42 +15,32 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 	CHECK_HRESULT(pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue)));
 
 	// 创建围栏
-	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
+	m_pFence = std::make_unique<Fence>(pDevice);
 }
 
 uint64_t CommandQueue::IncrementFenceValue()
 {
-	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
-	m_fenceValue++;
-	m_pCommandQueue->Signal(m_pFence.Get(), m_fenceValue);
-	return m_fenceValue;
+	return m_pFence->IncrementFenceValue(m_pCommandQueue);
 }
 
 bool CommandQueue::IsFenceValueCompleted(uint64_t fenceValue)
 {
-	// 避免查询过于频繁
-	if (fenceValue > m_completedFenceValueCache) {
-		m_completedFenceValueCache = std::max(m_completedFenceValueCache, m_pFence->GetCompletedValue());
-	}
-	return fenceValue <= m_completedFenceValueCache;
+	return m_pFence->IsFenceValueCompleted(fenceValue);
 }
 
 void CommandQueue::StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue)
 {
-	m_pCommandQueue->Wait(queue.m_pFence.Get(), fenceValue);
+	m_pCommandQueue->Wait(queue.m_pFence->GetFence().Get(), fenceValue);
 }
 
 void CommandQueue::StallForAnotherQueueCompletion(const CommandQueue& queue)
 {
-	m_pCommandQueue->Wait(queue.m_pFence.Get(), queue.m_fenceValue);
+	m_pCommandQueue->Wait(queue.m_pFence->GetFence().Get(), queue.m_pFence->GetFenceValue());
 }
 
 void CommandQueue::WaitForFence(uint64_t fenceValue)
 {
-	if (IsFenceValueCompleted(fenceValue)) return;
-
-	m_pFence->SetEventOnCompletion(fenceValue, nullptr);
-	m_completedFenceValueCache = fenceValue;
+	m_pFence->WaitForFenceValue(fenceValue, nullptr);
 }
 
 void CommandQueue::WaitForIdle()
@@ -67,7 +55,7 @@ Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue::GetCommandQueue() const
 
 uint64_t CommandQueue::GetFenceValue() const
 {
-	return m_fenceValue;
+	return m_pFence->GetFenceValue();
 }
 
 uint64_t CommandQueue::GetNonReusableId() const
@@ -90,7 +78,7 @@ uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsC
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandQueue::RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
 {
-	return m_commandAllocatorPool.RequestCommandAllocator(pDevice, m_pFence->GetCompletedValue());
+	return m_commandAllocatorPool.RequestCommandAllocator(pDevice, m_pFence->GetFence()->GetCompletedValue());
 }
 
 void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)

@@ -17,6 +17,7 @@ public:
 
 	uint64_t IncrementFenceValue(Microsoft::WRL::ComPtr<ID3D12CommandQueue> pCommandQueue);
 	bool IsFenceValueCompleted(uint64_t fenceValue);
+	void WaitForFenceValue(uint64_t fenceValue, HANDLE eventHandle);
 
 	Microsoft::WRL::ComPtr<ID3D12Fence> GetFence();
 	uint64_t GetFenceValue() const;
