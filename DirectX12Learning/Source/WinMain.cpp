@@ -543,9 +543,11 @@ bool AppInit() {
 }
 
 void Update() {
-	float mTheta = 1.5f * DirectX::XM_PI;
-	float mPhi = DirectX::XM_PIDIV4;
-	float mRadius = 5.0f;
+	static float mTheta = 1.5f * DirectX::XM_PI;
+	static float mPhi = DirectX::XM_PIDIV4;
+	static float mRadius = 5.0f;
+
+	mTheta += 0.01f;
 
 	float x = mRadius * sinf(mPhi) * cosf(mTheta);
 	float z = mRadius * sinf(mPhi) * sinf(mTheta);
@@ -553,7 +555,7 @@ void Update() {
 
 	DirectX::XMVECTOR pos = DirectX::XMVectorSet(x, y, z, 1.0f);
 	DirectX::XMVECTOR target = DirectX::XMVectorZero();
-	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, y > 0 ? 1.0f : -1.0f, 0.0f, 0.0f);
 
 	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(pos, target, up);
 
