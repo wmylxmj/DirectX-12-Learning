@@ -18,7 +18,6 @@ private:
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
 	std::mutex m_fenceMutex;
-
 	std::unique_ptr<Fence> m_pFence;
 
 	CommandAllocatorPool m_commandAllocatorPool;
