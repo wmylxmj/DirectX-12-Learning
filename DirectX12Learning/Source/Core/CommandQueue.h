@@ -27,7 +27,7 @@ private:
 public:
 	CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
 
-	uint64_t IncreaseFenceValue();
+	uint64_t IncrementFenceValue();
 	bool IsFenceValueCompleted(uint64_t fenceValue);
 	void StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue);
 	void StallForAnotherQueueCompletion(const CommandQueue& queue);

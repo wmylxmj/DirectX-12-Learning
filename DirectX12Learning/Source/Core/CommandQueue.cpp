@@ -20,7 +20,7 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
 }
 
-uint64_t CommandQueue::IncreaseFenceValue()
+uint64_t CommandQueue::IncrementFenceValue()
 {
 	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
 	m_fenceValue++;
@@ -57,7 +57,7 @@ void CommandQueue::WaitForFence(uint64_t fenceValue)
 
 void CommandQueue::WaitForIdle()
 {
-	WaitForFence(IncreaseFenceValue());
+	WaitForFence(IncrementFenceValue());
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue::GetCommandQueue() const
