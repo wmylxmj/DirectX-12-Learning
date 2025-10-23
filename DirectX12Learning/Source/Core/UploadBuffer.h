@@ -3,7 +3,7 @@
 #include "Resource.h"
 #include "PrecompiledHeader.h"
 
-class UploadBuffer : Resource
+class UploadBuffer : public Resource
 {
 protected:
 	size_t m_bufferSize;
