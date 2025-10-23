@@ -12,6 +12,7 @@
 class DescriptorHeapManager
 {
 public:
+	DescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap);
 
 private:
 	const uint32_t m_kNumDescriptorsPerHeap;
