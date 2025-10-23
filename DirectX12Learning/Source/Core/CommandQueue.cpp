@@ -20,6 +20,7 @@ CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_C
 
 uint64_t CommandQueue::IncrementFenceValue()
 {
+	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
 	return m_pFence->IncrementFenceValue(m_pCommandQueue);
 }
 
@@ -70,10 +71,7 @@ uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsC
 	CHECK_HRESULT(pCommandList->Close());
 	m_pCommandQueue->ExecuteCommandLists(1, &RvalueToLvalue((ID3D12CommandList*)pCommandList.Get()));
 
-	m_fenceValue++;
-	m_pCommandQueue->Signal(m_pFence.Get(), m_fenceValue);
-
-	return m_fenceValue;
+	return m_pFence->IncrementFenceValue(m_pCommandQueue);
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandQueue::RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
