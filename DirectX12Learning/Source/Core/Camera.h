@@ -5,6 +5,7 @@
 class Camera
 {
 public:
+	Camera();
 
 private:
 	DirectX::XMFLOAT3 m_eyePosition;
