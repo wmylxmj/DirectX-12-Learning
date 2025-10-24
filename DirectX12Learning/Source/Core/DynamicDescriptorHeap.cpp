@@ -53,3 +53,7 @@ void DescriptorHeapManager::DiscardDescriptorHeaps(std::vector<DescriptorHeap*>&
 		m_retiredDescriptorHeaps.push(descriptorHeap);
 	}
 }
+
+void DescriptorHeapManager::RecordDescriptorHeapsFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<DescriptorHeap*>& descriptorHeaps)
+{
+}
