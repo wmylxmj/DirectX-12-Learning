@@ -10,6 +10,7 @@ private:
 	DirectX::XMFLOAT3 m_eyePosition;
 
 	DirectX::XMVECTOR m_rightDirection;
+	DirectX::XMVECTOR m_upDirection;
 
 	float m_fovY;
 	float m_aspect;
