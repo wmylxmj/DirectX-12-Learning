@@ -15,6 +15,7 @@ public:
 	DescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap);
 
 	DescriptorHeap* RequestDescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> pDevice);
+	void DiscardDescriptorHeaps(std::vector<DescriptorHeap*>& descriptorHeaps);
 
 private:
 	const uint32_t m_kNumDescriptorsPerHeap;

@@ -43,3 +43,7 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap(Microsoft::WRL::Com
 
 	return descriptorHeapPtr;
 }
+
+void DescriptorHeapManager::DiscardDescriptorHeaps(std::vector<DescriptorHeap*>& descriptorHeaps)
+{
+}
