@@ -31,8 +31,6 @@ private:
 	const uint32_t m_kNumDescriptors;
 	const uint32_t m_kDescriptorSize;
 
-	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
-
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_pDescriptorHeap;
 
 	DescriptorHandle m_startDescriptorHandle;
