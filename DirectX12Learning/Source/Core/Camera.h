@@ -8,6 +8,8 @@ public:
 	Camera();
 
 private:
+	void UpdateProjectionMatrix();
+
 	DirectX::XMFLOAT3 m_eyePosition;
 
 	DirectX::XMVECTOR m_forwardDirection;

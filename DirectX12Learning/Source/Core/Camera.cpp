@@ -14,3 +14,8 @@ Camera::Camera()
 	m_zNear = 0.1f;
 	m_zFar = 1000.0f;
 }
+
+void Camera::UpdateProjectionMatrix()
+{
+	m_projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(m_fovY, m_aspect, m_zNear, m_zFar);
+}
