@@ -8,9 +8,10 @@ public:
 	Camera();
 
 private:
+	void UpdateViewMatrix();
 	void UpdateProjectionMatrix();
 
-	DirectX::XMFLOAT3 m_eyePosition;
+	DirectX::XMVECTOR m_eyePosition;
 
 	DirectX::XMVECTOR m_forwardDirection;
 	DirectX::XMVECTOR m_rightDirection;
@@ -21,5 +22,6 @@ private:
 	float m_zNear;
 	float m_zFar;
 
+	DirectX::XMMATRIX m_viewMatrix;
 	DirectX::XMMATRIX m_projectionMatrix;
 };
