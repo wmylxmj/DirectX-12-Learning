@@ -9,11 +9,11 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap(Microsoft::WRL::Com
 	std::lock_guard<std::mutex> lock(m_mutex);
 
 	while (!m_retiredDescriptorHeaps.empty()) {
-		auto descriptorHeap = m_retiredDescriptorHeaps.front();
+		DescriptorHeap* pDescriptorHeap = m_retiredDescriptorHeaps.front();
 
 		// 检测围栏是否已完成
 		bool fencesCompleted = true;
-		for (auto& pendingFence : descriptorHeap->m_pendingFences) {
+		for (auto& pendingFence : pDescriptorHeap->m_pendingFences) {
 			if (!m_fenceMap[pendingFence.first]->IsFenceValueCompleted(pendingFence.second)) {
 				fencesCompleted = false;
 				break;
