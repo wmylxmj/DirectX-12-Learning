@@ -56,4 +56,16 @@ void DescriptorHeapManager::DiscardDescriptorHeaps(std::vector<DescriptorHeap*>&
 
 void DescriptorHeapManager::RecordDescriptorHeapsFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<DescriptorHeap*>& descriptorHeaps)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	if (!m_fenceMap.contains(commandQueue.GetNonReusableId())) {
+		m_fenceMap.emplace(commandQueue.GetNonReusableId(), std::make_unique<Fence>(pDevice));
+	}
+
+	m_fenceMap[commandQueue.GetNonReusableId()]->IncrementFenceValue(commandQueue.GetCommandQueue());
+
+	// 为每个描述符堆记录对应ID的围栏值
+	for (auto descriptorHeap : descriptorHeaps) {
+		descriptorHeap->m_pendingFences[commandQueue.GetNonReusableId()] = m_fenceMap[commandQueue.GetNonReusableId()]->GetFenceValue();
+	}
 }
