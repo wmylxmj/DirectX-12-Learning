@@ -18,4 +18,6 @@ private:
 	float m_aspect;
 	float m_zNear;
 	float m_zFar;
+
+	DirectX::XMMATRIX m_projectionMatrix;
 };
