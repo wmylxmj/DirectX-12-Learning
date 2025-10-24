@@ -9,6 +9,7 @@ public:
 private:
 	DirectX::XMFLOAT3 m_eyePosition;
 
+	DirectX::XMVECTOR m_forwardDirection;
 	DirectX::XMVECTOR m_rightDirection;
 	DirectX::XMVECTOR m_upDirection;
 
