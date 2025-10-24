@@ -8,4 +8,7 @@ public:
 
 private:
 	float m_fovY;
+	float m_aspect;
+	float m_zNear;
+	float m_zFar;
 };
