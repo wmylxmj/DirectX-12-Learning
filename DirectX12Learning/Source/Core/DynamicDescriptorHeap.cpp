@@ -46,4 +46,10 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap(Microsoft::WRL::Com
 
 void DescriptorHeapManager::DiscardDescriptorHeaps(std::vector<DescriptorHeap*>& descriptorHeaps)
 {
+	// 在记录围栏后调用
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	for (auto& descriptorHeap : descriptorHeaps) {
+		m_retiredDescriptorHeaps.push(descriptorHeap);
+	}
 }
