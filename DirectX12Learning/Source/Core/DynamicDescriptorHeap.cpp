@@ -9,11 +9,11 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap(Microsoft::WRL::Com
 	std::lock_guard<std::mutex> lock(m_mutex);
 
 	while (!m_retiredDescriptorHeaps.empty()) {
-		DescriptorHeap* pDescriptorHeap = m_retiredDescriptorHeaps.front();
+		auto descriptorHeap = m_retiredDescriptorHeaps.front();
 
 		// 检测围栏是否已完成
 		bool fencesCompleted = true;
-		for (auto& pendingFence : pDescriptorHeap->m_pendingFences) {
+		for (auto& pendingFence : descriptorHeap->m_pendingFences) {
 			if (!m_fenceMap[pendingFence.first]->IsFenceValueCompleted(pendingFence.second)) {
 				fencesCompleted = false;
 				break;
@@ -28,5 +28,18 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap(Microsoft::WRL::Com
 			break;
 		}
 	}
-	return nullptr;
+
+	DescriptorHeap* descriptorHeapPtr = nullptr;
+	if (!m_availableDescriptorHeaps.empty()) {
+		descriptorHeapPtr = m_availableDescriptorHeaps.front();
+		descriptorHeapPtr->m_pendingFences.clear();
+		m_availableDescriptorHeaps.pop();
+	}
+	else {
+		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(pDevice, m_kDescriptorHeapType, m_kNumDescriptorsPerHeap);
+		m_descriptorHeapPool.push_back(std::move(descriptorHeap));
+		descriptorHeapPtr = m_descriptorHeapPool.back().get();
+	}
+
+	return descriptorHeapPtr;
 }
