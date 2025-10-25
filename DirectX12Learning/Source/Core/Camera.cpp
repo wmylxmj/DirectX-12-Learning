@@ -16,6 +16,8 @@ Camera::Camera()
 
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
+
+	m_viewMatrixNeedsUpdate = false;
 }
 
 void Camera::UpdateViewMatrix()

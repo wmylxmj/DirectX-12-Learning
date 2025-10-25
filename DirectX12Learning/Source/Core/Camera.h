@@ -24,4 +24,7 @@ private:
 
 	DirectX::XMMATRIX m_viewMatrix;
 	DirectX::XMMATRIX m_projectionMatrix;
+
+	// 矩阵是否需要更新
+	bool m_viewMatrixNeedsUpdate;
 };
