@@ -560,7 +560,7 @@ void Update() {
 	DirectX::XMVECTOR target = DirectX::XMVectorZero();
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, y > 0 ? 1.0f : -1.0f, 0.0f, 0.0f);
 
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(pos, target, up);
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(0, 0, -5, 1), DirectX::XMVectorSet(0, 0, -4, 1), DirectX::XMVectorSet(0, 1, 0, 0));
 
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
 	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
@@ -570,8 +570,28 @@ void Update() {
 		1000.0f                                      // 远平面
 	);
 
+	g_camera.SetAspectRatio(static_cast<float>(g_viewportWidth) / g_viewportHeight);
 	//g_camera.RotatePosition(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(1, 1, 0), 0.01);
 	//g_camera.RotateDirection(DirectX::XMFLOAT3(1, 1, 0), 0.01);
+	// 将XMMATRIX转换为XMFLOAT4X4
+	DirectX::XMFLOAT4X4 float4x4;
+	DirectX::XMStoreFloat4x4(&float4x4, view);
+
+	// 构建调试字符串
+	char buffer[1024];
+	snprintf(buffer, sizeof(buffer),
+		"Matrix:\n"
+		"%.4f %.4f %.4f %.4f\n"
+		"%.4f %.4f %.4f %.4f\n"
+		"%.4f %.4f %.4f %.4f\n"
+		"%.4f %.4f %.4f %.4f",
+		float4x4._11, float4x4._12, float4x4._13, float4x4._14,
+		float4x4._21, float4x4._22, float4x4._23, float4x4._24,
+		float4x4._31, float4x4._32, float4x4._33, float4x4._34,
+		float4x4._41, float4x4._42, float4x4._43, float4x4._44);
+
+	// 使用OutputDebugStringA输出到调试器
+	OutputDebugStringA(buffer);
 
 	DirectX::XMMATRIX worldViewProj = world * g_camera.GetViewMatrix() * g_camera.GetProjectionMatrix();
 
