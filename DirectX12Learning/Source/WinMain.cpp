@@ -546,52 +546,11 @@ bool AppInit() {
 }
 
 void Update() {
-	static float mTheta = 1.5f * DirectX::XM_PI;
-	static float mPhi = DirectX::XM_PIDIV4;
-	static float mRadius = 5.0f;
-
-	mTheta += 0.01f;
-
-	float x = mRadius * sinf(mPhi) * cosf(mTheta);
-	float z = mRadius * sinf(mPhi) * sinf(mTheta);
-	float y = mRadius * cosf(mPhi);
-
-	DirectX::XMVECTOR pos = DirectX::XMVectorSet(x, y, z, 1.0f);
-	DirectX::XMVECTOR target = DirectX::XMVectorZero();
-	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, y > 0 ? 1.0f : -1.0f, 0.0f, 0.0f);
-
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(0, 0, -5, 1), DirectX::XMVectorSet(0, 0, -4, 1), DirectX::XMVectorSet(0, 1, 0, 0));
-
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
-	DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(
-		DirectX::XM_PIDIV4,                          // 垂直视场角（45度）
-		static_cast<float>(g_viewportWidth) / g_viewportHeight, // 宽高比
-		0.1f,                                        // 近平面
-		1000.0f                                      // 远平面
-	);
 
 	g_camera.SetAspectRatio(static_cast<float>(g_viewportWidth) / g_viewportHeight);
-	//g_camera.RotatePosition(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(1, 1, 0), 0.01);
-	//g_camera.RotateDirection(DirectX::XMFLOAT3(1, 1, 0), 0.01);
-	// 将XMMATRIX转换为XMFLOAT4X4
-	DirectX::XMFLOAT4X4 float4x4;
-	DirectX::XMStoreFloat4x4(&float4x4, view);
-
-	// 构建调试字符串
-	char buffer[1024];
-	snprintf(buffer, sizeof(buffer),
-		"Matrix:\n"
-		"%.4f %.4f %.4f %.4f\n"
-		"%.4f %.4f %.4f %.4f\n"
-		"%.4f %.4f %.4f %.4f\n"
-		"%.4f %.4f %.4f %.4f",
-		float4x4._11, float4x4._12, float4x4._13, float4x4._14,
-		float4x4._21, float4x4._22, float4x4._23, float4x4._24,
-		float4x4._31, float4x4._32, float4x4._33, float4x4._34,
-		float4x4._41, float4x4._42, float4x4._43, float4x4._44);
-
-	// 使用OutputDebugStringA输出到调试器
-	OutputDebugStringA(buffer);
+	g_camera.RotatePosition(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(1, 1, 0), 0.01);
+	g_camera.RotateDirection(DirectX::XMFLOAT3(1, 1, 0), 0.01);
 
 	DirectX::XMMATRIX worldViewProj = world * g_camera.GetViewMatrix() * g_camera.GetProjectionMatrix();
 
