@@ -10,7 +10,7 @@ Camera::Camera()
 	m_rightDirection = DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 
 	m_fovY = DirectX::XM_PIDIV4;
-	m_aspect = 16.0f / 9.0f;
+	m_aspectRatio = 16.0f / 9.0f;
 	m_zNear = 0.1f;
 	m_zFar = 1000.0f;
 
@@ -78,5 +78,5 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectionMatrix()
 {
-	m_projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(m_fovY, m_aspect, m_zNear, m_zFar);
+	m_projectionMatrix = DirectX::XMMatrixPerspectiveFovLH(m_fovY, m_aspectRatio, m_zNear, m_zFar);
 }
