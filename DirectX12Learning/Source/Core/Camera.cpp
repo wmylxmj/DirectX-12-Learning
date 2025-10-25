@@ -41,6 +41,10 @@ DirectX::XMMATRIX Camera::GetProjectionMatrix()
 	return m_projectionMatrix;
 }
 
+void Camera::RotatePosition(const DirectX::XMFLOAT3& axisPosition, const DirectX::XMFLOAT3& axisDirection, float angleInRadians)
+{
+}
+
 void Camera::UpdateViewMatrix()
 {
 	m_viewMatrix = DirectX::XMMatrixLookToLH(m_eyePosition, DirectX::XMVectorAdd(m_eyePosition, m_forwardDirection), m_upDirection);
