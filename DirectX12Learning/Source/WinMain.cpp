@@ -1,6 +1,7 @@
 #include "Core/PrecompiledHeader.h"
 #include "Core/CommandQueue.h"
 #include "Core/RootSignature.h"
+#include "Core/Camera.h"
 
 #include <string>
 #include <cassert>
@@ -21,6 +22,8 @@ struct Vertex
 };
 
 // ----------------全局变量------------------
+Camera g_camera;
+
 uint32_t g_viewportWidth = 640;
 uint32_t g_viewportHeight = 480;
 
@@ -567,7 +570,10 @@ void Update() {
 		1000.0f                                      // 远平面
 	);
 
-	DirectX::XMMATRIX worldViewProj = world * view * proj;
+	//g_camera.RotatePosition(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(1, 1, 0), 0.01);
+	//g_camera.RotateDirection(DirectX::XMFLOAT3(1, 1, 0), 0.01);
+
+	DirectX::XMMATRIX worldViewProj = world * g_camera.GetViewMatrix() * g_camera.GetProjectionMatrix();
 
 	ObjectConstants objConstants;
 	XMStoreFloat4x4(&objConstants.WorldViewProj, XMMatrixTranspose(worldViewProj));

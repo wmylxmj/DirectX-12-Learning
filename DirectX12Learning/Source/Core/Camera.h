@@ -24,7 +24,7 @@ private:
 	DirectX::XMVECTOR m_upDirection;
 
 	float m_fovY;
-	float m_aspect;
+	float m_aspectRatio;
 	float m_zNear;
 	float m_zFar;
 
