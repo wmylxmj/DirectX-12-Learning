@@ -27,4 +27,5 @@ private:
 
 	// 矩阵是否需要更新
 	bool m_viewMatrixNeedsUpdate;
+	bool m_projectionMatrixNeedsUpdate;
 };
