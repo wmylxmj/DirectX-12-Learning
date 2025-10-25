@@ -11,6 +11,7 @@ public:
 	DirectX::XMMATRIX GetProjectionMatrix();
 
 	void RotatePosition(const DirectX::XMFLOAT3& axisPosition, const DirectX::XMFLOAT3& axisDirection, float angleInRadians);
+	void RotateDirection(const DirectX::XMFLOAT3& axisDirection, float angleInRadians);
 
 private:
 	void UpdateViewMatrix();
