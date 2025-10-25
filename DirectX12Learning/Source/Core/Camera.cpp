@@ -54,6 +54,8 @@ void Camera::RotatePosition(const DirectX::XMFLOAT3& axisPosition, const DirectX
 	DirectX::XMVECTOR rotatedAxisPosToEyeVec = DirectX::XMVector3Transform(axisPosToEyeVec, rotationMatrix);
 
 	m_eyePosition = DirectX::XMVectorAdd(axisPosVec, rotatedAxisPosToEyeVec);
+
+	m_viewMatrixNeedsUpdate = true;
 }
 
 void Camera::UpdateViewMatrix()
