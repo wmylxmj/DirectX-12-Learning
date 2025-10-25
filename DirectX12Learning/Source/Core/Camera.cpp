@@ -60,6 +60,13 @@ void Camera::RotatePosition(const DirectX::XMFLOAT3& axisPosition, const DirectX
 
 void Camera::RotateDirection(const DirectX::XMFLOAT3& axisDirection, float angleInRadians)
 {
+	DirectX::XMVECTOR axisDirVec = DirectX::XMLoadFloat3(&axisDirection);
+	axisDirVec = DirectX::XMVector3Normalize(axisDirVec);
+	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationAxis(axisDirVec, angleInRadians);
+	m_forwardDirection = DirectX::XMVector3TransformNormal(m_forwardDirection, rotationMatrix);
+	m_rightDirection = DirectX::XMVector3TransformNormal(m_rightDirection, rotationMatrix);
+	m_upDirection = DirectX::XMVector3TransformNormal(m_upDirection, rotationMatrix);
+	m_viewMatrixNeedsUpdate = true;
 }
 
 void Camera::UpdateViewMatrix()
