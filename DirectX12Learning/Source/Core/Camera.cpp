@@ -48,6 +48,12 @@ void Camera::RotatePosition(const DirectX::XMFLOAT3& axisPosition, const DirectX
 
 	DirectX::XMVECTOR axisDirVec = DirectX::XMLoadFloat3(&axisDirection);
 	axisDirVec = DirectX::XMVector3Normalize(axisDirVec);
+
+	DirectX::XMVECTOR axisPosToEyeVec = DirectX::XMVectorSubtract(m_eyePosition, axisPosVec);
+	DirectX::XMMATRIX rotationMatrix = DirectX::XMMatrixRotationAxis(axisDirVec, angleInRadians);
+	DirectX::XMVECTOR rotatedAxisPosToEyeVec = DirectX::XMVector3Transform(axisPosToEyeVec, rotationMatrix);
+
+	m_eyePosition = DirectX::XMVectorAdd(axisPosVec, rotatedAxisPosToEyeVec);
 }
 
 void Camera::UpdateViewMatrix()
