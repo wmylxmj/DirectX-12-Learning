@@ -6,6 +6,7 @@ class Camera
 {
 public:
 	Camera();
+	DirectX::XMMATRIX GetViewMatrix();
 
 private:
 	void UpdateViewMatrix();

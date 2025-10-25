@@ -21,6 +21,16 @@ Camera::Camera()
 	m_projectionMatrixNeedsUpdate = false;
 }
 
+DirectX::XMMATRIX Camera::GetViewMatrix()
+{
+	if (m_viewMatrixNeedsUpdate)
+	{
+		UpdateViewMatrix();
+		m_viewMatrixNeedsUpdate = false;
+	}
+	return m_viewMatrix;
+}
+
 void Camera::UpdateViewMatrix()
 {
 	m_viewMatrix = DirectX::XMMatrixLookToLH(m_eyePosition, DirectX::XMVectorAdd(m_eyePosition, m_forwardDirection), m_upDirection);
