@@ -7,6 +7,8 @@ class Camera
 public:
 	Camera();
 
+	void SetAspectRatio(float aspectRatio);
+
 	DirectX::XMMATRIX GetViewMatrix();
 	DirectX::XMMATRIX GetProjectionMatrix();
 

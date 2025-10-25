@@ -21,6 +21,12 @@ Camera::Camera()
 	m_projectionMatrixNeedsUpdate = false;
 }
 
+void Camera::SetAspectRatio(float aspectRatio)
+{
+	m_aspectRatio = aspectRatio;
+	m_projectionMatrixNeedsUpdate = true;
+}
+
 DirectX::XMMATRIX Camera::GetViewMatrix()
 {
 	if (m_viewMatrixNeedsUpdate)
