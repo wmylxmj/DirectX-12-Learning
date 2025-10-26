@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Camera.h" />
+    <ClInclude Include="Source\Core\ColorBuffer.h" />
     <ClInclude Include="Source\Core\DefaultBuffer.h" />
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Core\DescriptorHeap.h" />

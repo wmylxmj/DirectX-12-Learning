@@ -113,6 +113,9 @@
     <ClInclude Include="Source\Core\DefaultBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\ColorBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\color.hlsl" />
