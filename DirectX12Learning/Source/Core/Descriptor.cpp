@@ -1,4 +1,4 @@
-#include "Descriptor.h"#include "DescriptorHeap.h"
+#include "Descriptor.h"
 
 DescriptorHandle::DescriptorHandle()
 {
