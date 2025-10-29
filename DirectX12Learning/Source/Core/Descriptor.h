@@ -20,4 +20,6 @@ private:
 
 class Descriptor
 {
+public:
+	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 };
