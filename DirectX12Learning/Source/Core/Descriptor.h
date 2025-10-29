@@ -28,3 +28,7 @@ public:
 
 	size_t m_offset;
 };
+
+class DescriptorArray
+{
+};
