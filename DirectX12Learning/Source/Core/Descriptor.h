@@ -25,4 +25,6 @@ public:
 
 	DescriptorHandle m_descriptorHandle;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_descriptorHeap;
+
+	size_t m_offset;
 };
