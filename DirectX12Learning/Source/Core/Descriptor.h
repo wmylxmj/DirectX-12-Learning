@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
+
 #include <unordered_map>
 
 class DescriptorHandle
@@ -15,4 +16,8 @@ public:
 private:
 	D3D12_CPU_DESCRIPTOR_HANDLE m_cpuDescriptorHandle;
 	D3D12_GPU_DESCRIPTOR_HANDLE m_gpuDescriptorHandle;
+};
+
+class Descriptor
+{
 };
