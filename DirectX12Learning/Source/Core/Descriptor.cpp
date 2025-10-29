@@ -35,3 +35,8 @@ DescriptorHandle DescriptorHandle::operator+(int offsetScaledByDescriptorSize) c
 	ret += offsetScaledByDescriptorSize;
 	return ret;
 }
+
+Descriptor::operator DescriptorHandle() const
+{
+	return m_descriptorHandle;
+}
