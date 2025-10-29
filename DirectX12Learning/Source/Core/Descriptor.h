@@ -27,6 +27,4 @@ public:
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 	DescriptorHandle m_descriptorHandle;
 	size_t offset;
-
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_pDescriptorHeap;
 };
