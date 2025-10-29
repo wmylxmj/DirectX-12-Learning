@@ -8,6 +8,7 @@ class DescriptorHandle
 {
 public:
 	DescriptorHandle();
+	DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle);
 	DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorHandle);
 
 	void operator +=(int offsetScaledByDescriptorSize);
@@ -25,14 +26,11 @@ public:
 
 	DescriptorHandle m_descriptorHandle;
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_descriptorHeap;
-
-	size_t m_offset;
 };
 
 class DescriptorArray
 {
 private:
 	size_t m_count;
-	// ¿ªÊ¼µÄÃèÊö·û
 	Descriptor m_startDescriptor;
 };

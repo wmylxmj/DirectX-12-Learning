@@ -6,6 +6,12 @@ DescriptorHandle::DescriptorHandle()
 	m_gpuDescriptorHandle.ptr = (D3D12_GPU_VIRTUAL_ADDRESS)-1;
 }
 
+DescriptorHandle::DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle)
+	: m_cpuDescriptorHandle(cpuDescriptorHandle)
+{
+	m_gpuDescriptorHandle.ptr = (D3D12_GPU_VIRTUAL_ADDRESS)-1;
+}
+
 DescriptorHandle::DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandle, D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorHandle)
 	: m_cpuDescriptorHandle(cpuDescriptorHandle), m_gpuDescriptorHandle(gpuDescriptorHandle)
 {
