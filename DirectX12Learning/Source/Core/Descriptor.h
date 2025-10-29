@@ -33,4 +33,6 @@ class DescriptorArray
 {
 private:
 	size_t m_count;
+	// ¿ªÊ¼µÄÃèÊö·û
+	Descriptor m_startDescriptor;
 };
