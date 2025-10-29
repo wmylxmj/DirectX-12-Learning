@@ -31,4 +31,6 @@ public:
 
 class DescriptorArray
 {
+private:
+	size_t m_count;
 };
