@@ -16,6 +16,9 @@ public:
 
 	operator D3D12_CPU_DESCRIPTOR_HANDLE() const;
 	operator D3D12_GPU_DESCRIPTOR_HANDLE() const;
+
+	bool IsShaderVisible() const;
+
 private:
 	D3D12_CPU_DESCRIPTOR_HANDLE m_cpuDescriptorHandle;
 	D3D12_GPU_DESCRIPTOR_HANDLE m_gpuDescriptorHandle;
