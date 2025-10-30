@@ -24,14 +24,6 @@ bool Fence::IsFenceValueCompleted(uint64_t fenceValue)
 	return fenceValue <= m_completedFenceValueCache;
 }
 
-void Fence::WaitForFenceValue(uint64_t fenceValue)
-{
-	if (IsFenceValueCompleted(fenceValue)) return;
-
-	m_pFence->SetEventOnCompletion(fenceValue, nullptr);
-	m_completedFenceValueCache = fenceValue;
-}
-
 Microsoft::WRL::ComPtr<ID3D12Fence> Fence::GetFence()
 {
 	return m_pFence;
