@@ -24,11 +24,11 @@ bool Fence::IsFenceValueCompleted(uint64_t fenceValue)
 	return fenceValue <= m_completedFenceValueCache;
 }
 
-void Fence::WaitForFenceValue(uint64_t fenceValue, HANDLE eventHandle)
+void Fence::WaitForFenceValue(uint64_t fenceValue)
 {
 	if (IsFenceValueCompleted(fenceValue)) return;
 
-	m_pFence->SetEventOnCompletion(fenceValue, eventHandle);
+	m_pFence->SetEventOnCompletion(fenceValue, nullptr);
 	m_completedFenceValueCache = fenceValue;
 }
 
