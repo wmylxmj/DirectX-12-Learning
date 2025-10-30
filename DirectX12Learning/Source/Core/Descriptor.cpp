@@ -36,6 +36,16 @@ DescriptorHandle DescriptorHandle::operator+(int offsetScaledByDescriptorSize) c
 	return ret;
 }
 
+DescriptorHandle::operator D3D12_CPU_DESCRIPTOR_HANDLE() const
+{
+	return m_cpuDescriptorHandle;
+}
+
+DescriptorHandle::operator D3D12_GPU_DESCRIPTOR_HANDLE() const
+{
+	return m_gpuDescriptorHandle;
+}
+
 Descriptor::operator DescriptorHandle() const
 {
 	return m_descriptorHandle;

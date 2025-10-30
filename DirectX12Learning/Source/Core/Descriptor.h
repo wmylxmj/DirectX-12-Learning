@@ -14,6 +14,8 @@ public:
 	void operator +=(int offsetScaledByDescriptorSize);
 	DescriptorHandle operator +(int offsetScaledByDescriptorSize) const;
 
+	operator D3D12_CPU_DESCRIPTOR_HANDLE() const;
+	operator D3D12_GPU_DESCRIPTOR_HANDLE() const;
 private:
 	D3D12_CPU_DESCRIPTOR_HANDLE m_cpuDescriptorHandle;
 	D3D12_GPU_DESCRIPTOR_HANDLE m_gpuDescriptorHandle;
