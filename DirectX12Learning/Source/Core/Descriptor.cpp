@@ -46,6 +46,11 @@ DescriptorHandle::operator D3D12_GPU_DESCRIPTOR_HANDLE() const
 	return m_gpuDescriptorHandle;
 }
 
+bool DescriptorHandle::IsShaderVisible() const
+{
+	return m_gpuDescriptorHandle.ptr != (D3D12_GPU_VIRTUAL_ADDRESS)-1;
+}
+
 Descriptor::operator DescriptorHandle() const
 {
 	return m_descriptorHandle;
