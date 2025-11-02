@@ -5,7 +5,7 @@
 #include <mutex>
 #include <stdint.h>
 
-#include "wrl.h"
+#include "PrecompiledHeader.h"
 
 class CommandAllocatorPool
 {
