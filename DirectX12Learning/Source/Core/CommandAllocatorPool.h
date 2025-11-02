@@ -1,11 +1,9 @@
 #pragma once
 
-#include <vector>
+#include "PrecompiledHeader.h"
+
 #include <queue>
 #include <mutex>
-#include <stdint.h>
-
-#include "PrecompiledHeader.h"
 
 class CommandAllocatorPool
 {
