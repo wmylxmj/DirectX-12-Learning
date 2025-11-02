@@ -41,7 +41,7 @@ void CommandQueue::StallForAnotherQueueCompletion(const CommandQueue& queue)
 
 void CommandQueue::WaitForFence(uint64_t fenceValue)
 {
-	m_pFence->WaitForFenceValue(fenceValue, nullptr);
+	m_pFence->WaitForFenceValue(fenceValue);
 }
 
 void CommandQueue::WaitForIdle()

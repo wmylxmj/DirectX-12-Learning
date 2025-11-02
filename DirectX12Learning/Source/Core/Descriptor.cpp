@@ -36,7 +36,17 @@ DescriptorHandle DescriptorHandle::operator+(int offsetScaledByDescriptorSize) c
 	return ret;
 }
 
-Descriptor::operator DescriptorHandle() const
+DescriptorHandle::operator D3D12_CPU_DESCRIPTOR_HANDLE() const
 {
-	return m_descriptorHandle;
+	return m_cpuDescriptorHandle;
+}
+
+DescriptorHandle::operator D3D12_GPU_DESCRIPTOR_HANDLE() const
+{
+	return m_gpuDescriptorHandle;
+}
+
+bool DescriptorHandle::IsShaderVisible() const
+{
+	return m_gpuDescriptorHandle.ptr != (D3D12_GPU_VIRTUAL_ADDRESS)-1;
 }
