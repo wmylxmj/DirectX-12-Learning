@@ -2,6 +2,7 @@
 
 #include "PrecompiledHeader.h"
 
+#include <vector>
 #include <queue>
 #include <mutex>
 
@@ -19,4 +20,6 @@ private:
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
 	std::mutex m_allocatorMutex;
+	// ∑÷≈‰∆˜≥ÿ
+	std::queue<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_allocatorPool;
 };
