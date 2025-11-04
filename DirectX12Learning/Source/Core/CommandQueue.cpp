@@ -80,7 +80,7 @@ ID3D12CommandAllocator* CommandQueue::RequestCommandAllocator()
 	return m_commandAllocatorPool.RequestCommandAllocator(m_pFence->GetFence()->GetCompletedValue());
 }
 
-void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)
+void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12CommandAllocator* pCommandAllocator)
 {
 	m_commandAllocatorPool.DiscardCommandAllocator(fenceValueForReset, pCommandAllocator);
 }
