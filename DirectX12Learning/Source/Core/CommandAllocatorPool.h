@@ -15,7 +15,8 @@ public:
 
 private:
 	std::queue<std::pair<uint64_t, Microsoft::WRL::ComPtr<ID3D12CommandAllocator>>> m_readyAllocators;
-	std::mutex m_allocatorMutex;
-	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
+	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
+
+	std::mutex m_allocatorMutex;
 };
