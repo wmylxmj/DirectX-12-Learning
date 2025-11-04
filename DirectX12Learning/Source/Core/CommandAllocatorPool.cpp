@@ -5,12 +5,12 @@ CommandAllocatorPool::CommandAllocatorPool(ID3D12Device* pDevice, D3D12_COMMAND_
 {
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestCommandAllocator(uint64_t completedFenceValue)
+ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t completedFenceValue)
 {
 	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
 
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pAllocator = nullptr;
+	ID3D12CommandAllocator* pAllocator = nullptr;
 
 	// 在已归还的分配器中查看是否有空闲的分配器
 	if (!m_readyAllocators.empty()) {

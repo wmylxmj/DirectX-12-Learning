@@ -11,7 +11,7 @@ class CommandAllocatorPool
 public:
 	CommandAllocatorPool(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE type);
 
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> RequestCommandAllocator(uint64_t completedFenceValue);
+	ID3D12CommandAllocator* RequestCommandAllocator(uint64_t completedFenceValue);
 	void DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator);
 
 private:
