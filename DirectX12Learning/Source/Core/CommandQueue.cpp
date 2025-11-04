@@ -5,7 +5,7 @@ std::atomic_uint64_t CommandQueue::sm_nextNonReusableId = 1;
 CommandQueue::CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType) :
 	m_kCommandListType(commandListType),
 	m_kNonReusableId(sm_nextNonReusableId++),
-	m_commandAllocatorPool(commandListType),
+	m_commandAllocatorPool(pDevice, commandListType),
 	m_commandListPool(commandListType)
 {
 	// 创建命令队列
@@ -76,7 +76,7 @@ uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsC
 
 Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandQueue::RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
 {
-	return m_commandAllocatorPool.RequestCommandAllocator(pDevice, m_pFence->GetFence()->GetCompletedValue());
+	return m_commandAllocatorPool.RequestCommandAllocator(m_pFence->GetFence()->GetCompletedValue());
 }
 
 void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)

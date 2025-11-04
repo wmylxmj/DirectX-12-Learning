@@ -10,19 +10,6 @@
 
 class CommandQueue
 {
-private:
-	static std::atomic_uint64_t sm_nextNonReusableId;
-	const uint64_t m_kNonReusableId;
-
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pCommandQueue;
-	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
-
-	std::mutex m_fenceMutex;
-	std::unique_ptr<Fence> m_pFence;
-
-	CommandAllocatorPool m_commandAllocatorPool;
-	CommandListPool m_commandListPool;
-
 public:
 	CommandQueue(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
 
@@ -44,4 +31,17 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> RequestCommandList(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator);
 	void DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList);
+
+private:
+	static std::atomic_uint64_t sm_nextNonReusableId;
+	const uint64_t m_kNonReusableId;
+
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pCommandQueue;
+	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
+
+	std::mutex m_fenceMutex;
+	std::unique_ptr<Fence> m_pFence;
+
+	CommandAllocatorPool m_commandAllocatorPool;
+	CommandListPool m_commandListPool;
 };
