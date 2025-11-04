@@ -27,7 +27,10 @@ ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t c
 	// 如果没有空闲的分配器，那么新建一个
 	if (pAllocator == nullptr)
 	{
-		CHECK_HRESULT(m_pDevice->CreateCommandAllocator(m_kCommandListType, IID_PPV_ARGS(&pAllocator)));
+		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pNewAllocator;
+		CHECK_HRESULT(m_pDevice->CreateCommandAllocator(m_kCommandListType, IID_PPV_ARGS(&pNewAllocator)));
+		m_allocatorPool.push_back(pNewAllocator);
+		pAllocator = pNewAllocator.Get();
 	}
 
 	return pAllocator;

@@ -19,6 +19,6 @@ private:
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
 	std::mutex m_allocatorMutex;
-	std::queue<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_allocatorPool;
+	std::vector<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_allocatorPool;
 	std::queue<std::pair<uint64_t, ID3D12CommandAllocator*>> m_readyAllocators;
 };
