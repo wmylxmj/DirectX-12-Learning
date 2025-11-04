@@ -14,7 +14,7 @@ Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandAllocatorPool::RequestComm
 
 	// 在已归还的分配器中查看是否有空闲的分配器
 	if (!m_readyAllocators.empty()) {
-		std::pair<uint64_t, Microsoft::WRL::ComPtr<ID3D12CommandAllocator>>& allocatorPair = m_readyAllocators.front();
+		std::pair<uint64_t, ID3D12CommandAllocator*>& allocatorPair = m_readyAllocators.front();
 		// 如果 GPU 已完成该分配器的命令
 		if (allocatorPair.first <= completedFenceValue)
 		{
