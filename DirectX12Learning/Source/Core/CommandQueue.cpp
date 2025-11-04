@@ -75,7 +75,7 @@ uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsC
 	return m_pFence->IncrementFenceValue(m_pCommandQueue);
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandAllocator> CommandQueue::RequestCommandAllocator(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
+ID3D12CommandAllocator* CommandQueue::RequestCommandAllocator()
 {
 	return m_commandAllocatorPool.RequestCommandAllocator(m_pFence->GetFence()->GetCompletedValue());
 }
