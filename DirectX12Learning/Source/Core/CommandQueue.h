@@ -36,6 +36,8 @@ private:
 	static std::atomic_uint64_t sm_nextNonReusableId;
 	const uint64_t m_kNonReusableId;
 
+	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
+
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pCommandQueue;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
