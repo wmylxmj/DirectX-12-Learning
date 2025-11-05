@@ -143,6 +143,27 @@ bool InitDirect3D() {
 		IID_PPV_ARGS(&g_device)
 	));
 
+	UINT adapterIndex = 0;
+	Microsoft::WRL::ComPtr<IDXGIAdapter1> adapter;
+	while (dxgiFactory->EnumAdapters1(adapterIndex, &adapter) != DXGI_ERROR_NOT_FOUND) {
+		DXGI_ADAPTER_DESC1 desc;
+		adapter->GetDesc1(&desc);
+
+		// 跳过软件适配器（如WARP）
+		if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) {
+			adapterIndex++;
+			continue;
+		}
+
+		OutputDebugStringW((std::wstring(desc.Description) + std::wstring(L"\n")).c_str());
+
+		adapterIndex++;
+		adapter.Reset();
+	}
+	OutputDebugStringA("节点数量：");
+	OutputDebugStringA(std::to_string(g_device->GetNodeCount()).c_str());
+	OutputDebugStringA("\n");
+
 	// 创建命令队列系统
 	g_pDirectCommandQueue = std::make_unique<CommandQueue>(g_device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT);
 
