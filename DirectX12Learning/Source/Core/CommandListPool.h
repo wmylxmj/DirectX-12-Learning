@@ -1,6 +1,8 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
+
+#include <vector>
 #include <queue>
 #include <mutex>
 
@@ -14,6 +16,8 @@ public:
 
 private:
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
+
+	std::vector<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>> m_commandListPool;
 	std::queue<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>> m_availableCommandLists;
 	std::mutex m_poolMutex;
 };
