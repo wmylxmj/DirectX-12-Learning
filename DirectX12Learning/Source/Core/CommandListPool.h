@@ -20,6 +20,7 @@ private:
 
 	std::mutex m_poolMutex;
 	// ÃüÁîÁĞ±í³Ø
+	std::vector<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>> m_commandListPool;
 
 	std::queue<ID3D12GraphicsCommandList*> m_availableCommandLists;
 };
