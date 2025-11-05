@@ -18,8 +18,11 @@ ID3D12GraphicsCommandList* CommandListPool::RequestCommandList(ID3D12CommandAllo
 	}
 	else
 	{
-		CHECK_HRESULT(m_pDevice->CreateCommandList(1, m_kCommandListType, pCommandAllocator, nullptr, IID_PPV_ARGS(&pCommandList)));
-		CHECK_HRESULT(pCommandList->Close());
+		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pNewCommandList;
+		CHECK_HRESULT(m_pDevice->CreateCommandList(1, m_kCommandListType, pCommandAllocator, nullptr, IID_PPV_ARGS(&pNewCommandList)));
+		CHECK_HRESULT(pNewCommandList->Close());
+		m_commandListPool.push_back(pNewCommandList);
+		pCommandList = pNewCommandList.Get();
 	}
 
 	return pCommandList;
