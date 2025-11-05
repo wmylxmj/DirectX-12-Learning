@@ -19,8 +19,6 @@ private:
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
 	std::mutex m_poolMutex;
-	// √¸¡Ó¡–±Ì≥ÿ
 	std::vector<Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>> m_commandListPool;
-
 	std::queue<ID3D12GraphicsCommandList*> m_availableCommandLists;
 };
