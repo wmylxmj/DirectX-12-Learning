@@ -7,7 +7,7 @@ CommandQueue::CommandQueue(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE comman
 	m_kNonReusableId(sm_nextNonReusableId++),
 	m_pDevice(pDevice),
 	m_commandAllocatorPool(pDevice, commandListType),
-	m_commandListPool(commandListType)
+	m_commandListPool(pDevice, commandListType)
 {
 	// 创建命令队列
 	D3D12_COMMAND_QUEUE_DESC queueDesc = {};

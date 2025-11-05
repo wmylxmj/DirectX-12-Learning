@@ -1,6 +1,9 @@
 #include "CommandListPool.h"
 
-CommandListPool::CommandListPool(D3D12_COMMAND_LIST_TYPE commandListType) : m_kCommandListType(commandListType) {}
+CommandListPool::CommandListPool(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType)
+	: m_kCommandListType(commandListType)
+{
+}
 
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandListPool::RequestCommandList(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)
 {
