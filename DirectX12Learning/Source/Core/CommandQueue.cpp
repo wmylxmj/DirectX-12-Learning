@@ -87,10 +87,10 @@ void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12Co
 
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandQueue::RequestCommandList(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, Microsoft::WRL::ComPtr<ID3D12CommandAllocator> pCommandAllocator)
 {
-	return m_commandListPool.RequestCommandList(pDevice, pCommandAllocator);
+	return m_commandListPool.RequestCommandList(pCommandAllocator.Get());
 }
 
 void CommandQueue::DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
 {
-	m_commandListPool.DiscardCommandList(pCommandList);
+	m_commandListPool.DiscardCommandList(pCommandList.Get());
 }
