@@ -8,7 +8,7 @@ CommandAllocatorPool::CommandAllocatorPool(ID3D12Device* pDevice, D3D12_COMMAND_
 ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t completedFenceValue)
 {
 	// 互斥锁，确保线程安全
-	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
+	std::lock_guard<std::mutex> lockGuard(m_poolMutex);
 
 	ID3D12CommandAllocator* pAllocator = nullptr;
 
@@ -39,7 +39,7 @@ ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t c
 void CommandAllocatorPool::DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12CommandAllocator* pCommandAllocator)
 {
 	// 互斥锁，确保线程安全
-	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
+	std::lock_guard<std::mutex> lockGuard(m_poolMutex);
 	// 归还分配器
 	m_retiredCommandAllocators.push(std::make_pair(fenceValueForReset, pCommandAllocator));
 }
