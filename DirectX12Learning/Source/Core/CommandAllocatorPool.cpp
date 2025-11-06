@@ -13,14 +13,14 @@ ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t c
 	ID3D12CommandAllocator* pAllocator = nullptr;
 
 	// 在已归还的分配器中查看是否有空闲的分配器
-	if (!m_readyAllocators.empty()) {
-		std::pair<uint64_t, ID3D12CommandAllocator*>& allocatorPair = m_readyAllocators.front();
+	if (!m_retiredCommandAllocators.empty()) {
+		std::pair<uint64_t, ID3D12CommandAllocator*>& allocatorPair = m_retiredCommandAllocators.front();
 		// 如果 GPU 已完成该分配器的命令
 		if (allocatorPair.first <= completedFenceValue)
 		{
 			pAllocator = allocatorPair.second;
 			CHECK_HRESULT(pAllocator->Reset());
-			m_readyAllocators.pop();
+			m_retiredCommandAllocators.pop();
 		}
 	}
 
@@ -41,5 +41,5 @@ void CommandAllocatorPool::DiscardCommandAllocator(uint64_t fenceValueForReset, 
 	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_allocatorMutex);
 	// 归还分配器
-	m_readyAllocators.push(std::make_pair(fenceValueForReset, pCommandAllocator));
+	m_retiredCommandAllocators.push(std::make_pair(fenceValueForReset, pCommandAllocator));
 }
