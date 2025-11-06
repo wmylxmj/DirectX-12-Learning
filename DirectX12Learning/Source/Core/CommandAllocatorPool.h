@@ -20,5 +20,6 @@ private:
 
 	std::mutex m_poolMutex;
 	std::vector<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_commandAllocatorPool;
+	std::queue<ID3D12CommandAllocator*> m_availableCommandAllocators;
 	std::queue<std::pair<uint64_t, ID3D12CommandAllocator*>> m_retiredCommandAllocators;
 };
