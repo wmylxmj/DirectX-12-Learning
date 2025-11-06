@@ -18,7 +18,10 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
+	std::mutex m_poolMutex;
+
 	std::mutex m_allocatorMutex;
 	std::vector<Microsoft::WRL::ComPtr<ID3D12CommandAllocator>> m_commandAllocatorPool;
+
 	std::queue<std::pair<uint64_t, ID3D12CommandAllocator*>> m_retiredCommandAllocators;
 };
