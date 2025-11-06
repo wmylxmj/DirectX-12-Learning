@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Core\Camera.cpp" />
+    <ClCompile Include="Source\Core\CommandQueueManager.cpp" />
     <ClCompile Include="Source\Core\Descriptor.cpp" />
     <ClCompile Include="Source\Core\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\DynamicDescriptorHeap.cpp" />
