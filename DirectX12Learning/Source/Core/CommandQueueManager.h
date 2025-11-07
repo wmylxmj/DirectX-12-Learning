@@ -3,6 +3,8 @@
 #include "PrecompiledHeader.h"
 #include "CommandQueue.h"
 
+#include <unordered_map>
+
 class CommandQueueManager
 {
 public:
