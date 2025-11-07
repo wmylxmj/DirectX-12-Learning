@@ -131,6 +131,9 @@
     <ClInclude Include="Source\Core\CommandQueueManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Core\FenceTracker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\color.hlsl" />
