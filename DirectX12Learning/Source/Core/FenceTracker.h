@@ -9,4 +9,6 @@ public:
 	FenceTracker(CommandQueueManager& commandQueueManager);
 
 private:
+
+	CommandQueueManager& m_commandQueueManager;
 };
