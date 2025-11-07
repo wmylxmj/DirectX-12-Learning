@@ -17,7 +17,7 @@ ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t c
 	{
 		std::pair<uint64_t, ID3D12CommandAllocator*>& allocatorPair = m_retiredCommandAllocators.front();
 
-		// 如果 GPU 已完成该分配器的命令
+		// 如果 GPU 已完成该分配器的命令，则将其放入可用队列中
 		if (allocatorPair.first <= completedFenceValue)
 		{
 			m_availableCommandAllocators.push(allocatorPair.second);
