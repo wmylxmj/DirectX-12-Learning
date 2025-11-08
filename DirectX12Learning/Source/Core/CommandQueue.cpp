@@ -40,13 +40,9 @@ void CommandQueue::StallForAnotherQueueCompletion(const CommandQueue& queue)
 	m_pCommandQueue->Wait(queue.m_pFence->GetFence().Get(), queue.m_pFence->GetFenceValue());
 }
 
-void Fence::WaitForFenceValue(uint64_t fenceValue)
-{
-}
-
 void CommandQueue::WaitForIdle()
 {
-	WaitForFence(IncrementFenceValue());
+	WaitForFenceValue(IncrementFenceValue());
 }
 
 Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue::GetCommandQueue() const
