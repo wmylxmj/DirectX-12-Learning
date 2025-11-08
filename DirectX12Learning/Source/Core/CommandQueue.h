@@ -15,8 +15,14 @@ public:
 
 	uint64_t IncrementFenceValue();
 	bool IsFenceValueCompleted(uint64_t fenceValue);
+
 	void StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue);
 	void StallForAnotherQueueCompletion(const CommandQueue& queue);
+	Fence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, uint64_t initialValue = 0);
+
+	uint64_t IncrementFenceValue(Microsoft::WRL::ComPtr<ID3D12CommandQueue> pCommandQueue);
+	bool IsFenceValueCompleted(uint64_t fenceValue);
+	void WaitForFenceValue(uint64_t fenceValue);
 
 	void WaitForIdle();
 
