@@ -162,7 +162,6 @@
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Core\DescriptorHeap.h" />
     <ClInclude Include="Source\Core\Fence.h" />
-    <ClInclude Include="Source\Core\FenceRecorder.h" />
     <ClInclude Include="Source\Core\FenceTracker.h" />
     <ClInclude Include="Source\Core\Helpers.h" />
     <ClInclude Include="Source\Core\LinearAllocator.h" />

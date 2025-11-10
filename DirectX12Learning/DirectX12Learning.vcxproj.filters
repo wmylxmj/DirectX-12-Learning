@@ -128,9 +128,6 @@
     <ClInclude Include="Source\Core\Descriptor.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\FenceRecorder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\CommandQueueManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
