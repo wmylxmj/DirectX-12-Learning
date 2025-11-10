@@ -259,7 +259,7 @@ bool InitDirect3D() {
 	g_device->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator();
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 	// 将深度/模板缓冲区状态转为深度缓冲区
 	cmdList->ResourceBarrier(1,
@@ -381,7 +381,7 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 
 bool AppInit() {
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator();
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 
 	// 建立常量缓冲区描述符堆
@@ -583,7 +583,7 @@ void Update() {
 
 void Render() {
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator();
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(g_device, cmdAllocator);
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), g_pso.Get()));
 
 	CD3DX12_RESOURCE_BARRIER barrier;
