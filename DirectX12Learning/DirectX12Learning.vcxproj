@@ -177,6 +177,7 @@
     <ClInclude Include="Source\Core\RootSignature.h" />
     <ClInclude Include="Source\Core\UploadBuffer.h" />
     <ClInclude Include="Source\Model\Model.h" />
+    <ClInclude Include="Source\Utilities\Hash.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\color.hlsl">
