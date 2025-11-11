@@ -65,12 +65,12 @@ uint64_t CommandQueue::GetNonReusableId() const
 	return m_kNonReusableId;
 }
 
-uint64_t CommandQueue::ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
+uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList)
 {
 	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
 
 	CHECK_HRESULT(pCommandList->Close());
-	m_pCommandQueue->ExecuteCommandLists(1, &RvalueToLvalue((ID3D12CommandList*)pCommandList.Get()));
+	m_pCommandQueue->ExecuteCommandLists(1, &RvalueToLvalue((ID3D12CommandList*)pCommandList));
 
 	return m_pFence->IncrementFenceValue(m_pCommandQueue);
 }

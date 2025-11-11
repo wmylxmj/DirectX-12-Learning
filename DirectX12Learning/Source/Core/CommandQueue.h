@@ -26,7 +26,7 @@ public:
 	uint64_t GetFenceValue() const;
 	uint64_t GetNonReusableId() const;
 
-	uint64_t ExecuteCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList);
+	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
 	ID3D12CommandAllocator* RequestCommandAllocator();
 	void DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12CommandAllocator* pCommandAllocator);
