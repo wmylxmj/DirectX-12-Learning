@@ -68,7 +68,7 @@ ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 
 uint64_t CommandQueue::GetFenceValue() const
 {
-	return m_pFence->GetFenceValue();
+	return m_fenceValue;
 }
 
 uint64_t CommandQueue::GetNonReusableId() const
