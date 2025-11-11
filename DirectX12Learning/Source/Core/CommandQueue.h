@@ -22,7 +22,7 @@ public:
 	void WaitForFenceValue(uint64_t fenceValue);
 	void WaitForIdle();
 
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> GetCommandQueue() const;
+	ID3D12CommandQueue* GetCommandQueue() const;
 	uint64_t GetFenceValue() const;
 	uint64_t GetNonReusableId() const;
 
