@@ -186,7 +186,7 @@ bool InitDirect3D() {
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	CHECK_HRESULT(dxgiFactory->CreateSwapChain(
-		g_pDirectCommandQueue->GetCommandQueue().Get(),
+		g_pDirectCommandQueue->GetCommandQueue(),
 		&swapChainDesc,
 		g_swapChain.GetAddressOf()
 	));
