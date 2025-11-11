@@ -83,7 +83,9 @@ uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandLis
 	CHECK_HRESULT(pCommandList->Close());
 	m_pCommandQueue->ExecuteCommandLists(1, &RvalueToLvalue((ID3D12CommandList*)pCommandList));
 
-	return m_pFence->IncrementFenceValue(m_pCommandQueue);
+	m_fenceValue++;
+	CHECK_HRESULT(m_pCommandQueue->Signal(m_pFence.Get(), m_fenceValue));
+	return m_fenceValue;
 }
 
 ID3D12CommandAllocator* CommandQueue::RequestCommandAllocator()
