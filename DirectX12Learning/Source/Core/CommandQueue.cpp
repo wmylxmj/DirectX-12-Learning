@@ -88,7 +88,7 @@ uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandLis
 
 ID3D12CommandAllocator* CommandQueue::RequestCommandAllocator()
 {
-	return m_commandAllocatorPool.RequestCommandAllocator(m_pFence->GetFence()->GetCompletedValue());
+	return m_commandAllocatorPool.RequestCommandAllocator(m_pFence->GetCompletedValue());
 }
 
 void CommandQueue::DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12CommandAllocator* pCommandAllocator)
