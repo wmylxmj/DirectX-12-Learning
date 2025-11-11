@@ -50,9 +50,9 @@ void CommandQueue::WaitForIdle()
 	WaitForFenceValue(IncrementFenceValue());
 }
 
-Microsoft::WRL::ComPtr<ID3D12CommandQueue> CommandQueue::GetCommandQueue() const
+ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 {
-	return m_pCommandQueue;
+	return m_pCommandQueue.Get();
 }
 
 uint64_t CommandQueue::GetFenceValue() const
