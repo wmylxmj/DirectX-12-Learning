@@ -32,7 +32,7 @@ public:
 	void DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12CommandAllocator* pCommandAllocator);
 
 	ID3D12GraphicsCommandList* RequestCommandList(ID3D12CommandAllocator* pCommandAllocator);
-	void DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList);
+	void DiscardCommandList(ID3D12GraphicsCommandList* pCommandList);
 
 private:
 	static std::atomic_uint64_t sm_nextNonReusableId;

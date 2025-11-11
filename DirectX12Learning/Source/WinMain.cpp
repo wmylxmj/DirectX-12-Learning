@@ -272,7 +272,7 @@ bool InitDirect3D() {
 
 	// 发送命令
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
-	g_pDirectCommandQueue->DiscardCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
 
@@ -559,7 +559,7 @@ bool AppInit() {
 	CHECK_HRESULT(g_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
 
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
-	g_pDirectCommandQueue->DiscardCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
 
@@ -653,7 +653,7 @@ void Render() {
 
 	// 提交命令
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
-	g_pDirectCommandQueue->DiscardCommandList(cmdList);
+	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
 
 	// 呈现当前的后台缓冲区

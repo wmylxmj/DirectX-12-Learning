@@ -90,7 +90,7 @@ ID3D12GraphicsCommandList* CommandQueue::RequestCommandList(ID3D12CommandAllocat
 	return m_commandListPool.RequestCommandList(pCommandAllocator);
 }
 
-void CommandQueue::DiscardCommandList(Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pCommandList)
+void CommandQueue::DiscardCommandList(ID3D12GraphicsCommandList* pCommandList)
 {
-	m_commandListPool.DiscardCommandList(pCommandList.Get());
+	m_commandListPool.DiscardCommandList(pCommandList);
 }
