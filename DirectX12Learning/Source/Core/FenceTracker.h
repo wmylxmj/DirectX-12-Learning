@@ -10,6 +10,8 @@ class FenceTracker
 public:
 	FenceTracker(CommandQueueManager& commandQueueManager);
 
+	bool ArePendingFencesCompleted();
+
 private:
 
 	CommandQueueManager& m_commandQueueManager;
