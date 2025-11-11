@@ -271,7 +271,7 @@ bool InitDirect3D() {
 	);
 
 	// 发送命令
-	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
+	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
@@ -558,7 +558,7 @@ bool AppInit() {
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // 深度/模板缓冲区的格式
 	CHECK_HRESULT(g_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
 
-	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
+	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
@@ -652,7 +652,7 @@ void Render() {
 	cmdList->ResourceBarrier(1, &barrier);
 
 	// 提交命令
-	g_pDirectCommandQueue->ExecuteCommandList(cmdList);
+	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
 
