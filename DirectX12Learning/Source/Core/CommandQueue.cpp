@@ -31,7 +31,11 @@ uint64_t CommandQueue::IncrementFenceValue()
 
 bool CommandQueue::IsFenceValueCompleted(uint64_t fenceValue)
 {
-	return m_pFence->IsFenceValueCompleted(fenceValue);
+	// 避免查询过于频繁
+	if (fenceValue > m_completedFenceValueCache) {
+		m_completedFenceValueCache = std::max(m_completedFenceValueCache, m_pFence->GetCompletedValue());
+	}
+	return fenceValue <= m_completedFenceValueCache;
 }
 
 void CommandQueue::StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue)
