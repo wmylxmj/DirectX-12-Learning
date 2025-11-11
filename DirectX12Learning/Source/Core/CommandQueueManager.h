@@ -10,6 +10,8 @@ class CommandQueueManager
 public:
 	CommandQueueManager(ID3D12Device* pDevice);
 
+	CommandQueue& GetCommandQueue(D3D12_COMMAND_LIST_TYPE type);
+
 private:
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
