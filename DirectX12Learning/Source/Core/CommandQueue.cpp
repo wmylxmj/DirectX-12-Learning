@@ -24,7 +24,9 @@ CommandQueue::CommandQueue(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE comman
 uint64_t CommandQueue::IncrementFenceValue()
 {
 	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
-	return m_pFence->IncrementFenceValue(m_pCommandQueue);
+	m_fenceValue++;
+	CHECK_HRESULT(m_pCommandQueue->Signal(m_pFence.Get(), m_fenceValue));
+	return m_fenceValue;
 }
 
 bool CommandQueue::IsFenceValueCompleted(uint64_t fenceValue)
