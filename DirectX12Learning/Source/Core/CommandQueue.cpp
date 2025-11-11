@@ -6,6 +6,8 @@ CommandQueue::CommandQueue(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE comman
 	m_kCommandListType(commandListType),
 	m_kNonReusableId(sm_nextNonReusableId++),
 	m_pDevice(pDevice),
+	m_fenceValue(0),
+	m_completedFenceValueCache(0),
 	m_commandAllocatorPool(pDevice, commandListType),
 	m_commandListPool(pDevice, commandListType)
 {
@@ -16,7 +18,7 @@ CommandQueue::CommandQueue(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE comman
 	CHECK_HRESULT(pDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue)));
 
 	// 创建围栏
-	m_pFence = std::make_unique<Fence>(pDevice);
+	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
 }
 
 uint64_t CommandQueue::IncrementFenceValue()
