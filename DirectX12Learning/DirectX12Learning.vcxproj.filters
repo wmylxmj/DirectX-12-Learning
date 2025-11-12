@@ -137,6 +137,9 @@
     <ClInclude Include="Source\Utilities\Hash.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Math\Align.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Source\Shaders\color.hlsl" />
