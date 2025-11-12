@@ -11,6 +11,7 @@ public:
 	CommandQueueManager(ID3D12Device* pDevice);
 
 	CommandQueue& GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
+	bool IsFenceValueCompleted(D3D12_COMMAND_LIST_TYPE commandListType, uint64_t fenceValue);
 
 private:
 
