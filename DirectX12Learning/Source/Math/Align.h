@@ -11,3 +11,15 @@ inline T AlignUp(T size, size_t alignment) noexcept
 	}
 	return size;
 }
+
+template<typename T>
+inline T AlignDown(T size, size_t alignment) noexcept
+{
+	if (alignment > 0)
+	{
+		assert(((alignment - 1) & alignment) == 0);
+		auto mask = static_cast<T>(alignment - 1);
+		return size & ~mask;
+	}
+	return size;
+}
