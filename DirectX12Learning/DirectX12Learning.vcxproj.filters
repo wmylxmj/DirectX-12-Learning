@@ -101,9 +101,6 @@
     <ClInclude Include="Source\Core\LinearAllocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\Helpers.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\Fence.h">
       <Filter>头文件</Filter>
     </ClInclude>
