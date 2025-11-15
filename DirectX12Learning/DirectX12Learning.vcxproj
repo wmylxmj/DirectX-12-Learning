@@ -159,6 +159,7 @@
     <ClInclude Include="Source\Core\CommandQueueManager.h" />
     <ClInclude Include="Source\Core\DefaultBuffer.h" />
     <ClInclude Include="Source\Core\Descriptor.h" />
+    <ClInclude Include="Source\Core\DescriptorHandle.h" />
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Core\DescriptorHeap.h" />
     <ClInclude Include="Source\Core\Fence.h" />
