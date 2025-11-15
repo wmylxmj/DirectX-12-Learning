@@ -3,6 +3,8 @@
 #include <intrin.h>
 #include <vector>
 
+#include "../Math/Align.h"
+
 bool IsSSE42Supported()
 {
 	int CPUInfo[4];
@@ -26,33 +28,39 @@ struct Hash<std::vector<uint8_t>>
 	{
 		static bool isSSE42Supported = IsSSE42Supported();
 
+		size_t hashValue = 2166136261U;
+
 		if (IsSSE42Supported())
 		{
-			uint32_t crc = 0xFFFFFFFF;
-			size_t length = data.size();
-			const uint8_t* ptr = data.data();
-			size_t i = 0;
-			// Process 8 bytes at a time
-			for (; i + 8 <= length; i += 8)
-			{
-				crc = _mm_crc32_u64(crc, *reinterpret_cast<const uint64_t*>(ptr + i));
+			const uint64_t* iter64 = (const uint64_t*)AlignUp(data.data(), 8);
+			const uint64_t* end64 = (const uint64_t*)AlignDown(data.data() + data.size(), 8);
+
+			if ((uint8_t*)iter64 > data.data()) {
+				for (const uint8_t* bytePtr = data.data(); bytePtr < (uint8_t*)iter64; ++bytePtr) {
+					hashValue = _mm_crc32_u8((uint32_t)hashValue, *bytePtr);
+				}
 			}
-			// Process remaining bytes
-			for (; i < length; ++i)
+
+			while (iter64 < end64)
 			{
-				crc = _mm_crc32_u8(crc, ptr[i]);
+				hashValue = _mm_crc32_u64((uint64_t)hashValue, *iter64);
+				++iter64;
 			}
-			return static_cast<size_t>(crc);
+
+			if ((uint8_t*)end64 < data.data() + data.size()) {
+				for (const uint8_t* bytePtr = (uint8_t*)end64; bytePtr < data.data() + data.size(); ++bytePtr) {
+					hashValue = _mm_crc32_u8((uint32_t)hashValue, *bytePtr);
+				}
+			}
 		}
+
 		else
 		{
-			// Fallback hash function (e.g., std::hash)
-			size_t hash = 0;
-			for (const auto& byte : data)
-			{
-				hash ^= std::hash<uint8_t>()(byte) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
+			for (const uint8_t* bytePtr = data.data(); bytePtr < data.data() + data.size(); ++bytePtr) {
+				hashValue = 16777619U * hashValue ^ *bytePtr;
 			}
-			return hash;
 		}
+
+		return hashValue;
 	}
 };
