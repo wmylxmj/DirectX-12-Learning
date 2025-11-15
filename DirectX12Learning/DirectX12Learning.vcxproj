@@ -134,7 +134,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Core\Camera.cpp" />
     <ClCompile Include="Source\Core\CommandQueueManager.cpp" />
-    <ClCompile Include="Source\Core\Descriptor.cpp" />
+    <ClCompile Include="Source\Core\DescriptorHandle.cpp" />
     <ClCompile Include="Source\Core\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\DynamicDescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\Fence.cpp" />
@@ -158,7 +158,6 @@
     <ClInclude Include="Source\Core\ColorBuffer.h" />
     <ClInclude Include="Source\Core\CommandQueueManager.h" />
     <ClInclude Include="Source\Core\DefaultBuffer.h" />
-    <ClInclude Include="Source\Core\Descriptor.h" />
     <ClInclude Include="Source\Core\DescriptorHandle.h" />
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Core\DescriptorHeap.h" />

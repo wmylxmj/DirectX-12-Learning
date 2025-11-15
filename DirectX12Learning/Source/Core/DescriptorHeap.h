@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
-#include "Descriptor.h"
+#include "DescriptorHandle.h"
 #include <unordered_map>
 
 class DescriptorHeap
