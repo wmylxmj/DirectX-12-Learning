@@ -53,7 +53,6 @@ struct Hash<std::vector<uint8_t>>
 				}
 			}
 		}
-
 		else
 		{
 			for (const uint8_t* bytePtr = data.data(); bytePtr < data.data() + data.size(); ++bytePtr) {
