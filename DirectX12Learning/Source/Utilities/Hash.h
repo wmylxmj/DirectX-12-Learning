@@ -30,7 +30,7 @@ struct Hash<std::vector<uint8_t>>
 
 		size_t hashValue = 2166136261U;
 
-		if (IsSSE42Supported())
+		if (isSSE42Supported)
 		{
 			const uint64_t* iter64 = (const uint64_t*)AlignUp(data.data(), 8);
 			const uint64_t* end64 = (const uint64_t*)AlignDown(data.data() + data.size(), 8);
