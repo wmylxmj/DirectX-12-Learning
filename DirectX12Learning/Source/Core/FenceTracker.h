@@ -12,8 +12,6 @@ public:
 
 	void SetPendingFenceValue(D3D12_COMMAND_LIST_TYPE commandListType, uint64_t fenceValue);
 
-	bool ArePendingFencesCompleted();
-
 private:
 
 	CommandQueueManager& m_commandQueueManager;
