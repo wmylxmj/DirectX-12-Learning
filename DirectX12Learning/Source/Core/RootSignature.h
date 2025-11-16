@@ -1,7 +1,9 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
-#include <map>
+#include "../Utilities/Hash.h"
+
+#include <unordered_map>
 #include <mutex>
 
 class DescriptorRange : public CD3DX12_DESCRIPTOR_RANGE
@@ -32,7 +34,7 @@ public:
 
 protected:
 	static std::mutex sm_rootSignatureCacheMutex;
-	static std::map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>> sm_rootSignatureCache;
+	static std::unordered_map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>, Hash<std::vector<uint8_t>>> sm_rootSignatureCache;
 
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;

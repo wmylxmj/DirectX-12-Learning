@@ -6,8 +6,8 @@ inline T AlignUp(T size, size_t alignment) noexcept
 	if (alignment > 0)
 	{
 		assert(((alignment - 1) & alignment) == 0);
-		auto mask = static_cast<T>(alignment - 1);
-		return (size + mask) & ~mask;
+		size_t mask = alignment - 1;
+		return (T)(((size_t)size + mask) & ~mask);
 	}
 	return size;
 }
@@ -18,8 +18,8 @@ inline T AlignDown(T size, size_t alignment) noexcept
 	if (alignment > 0)
 	{
 		assert(((alignment - 1) & alignment) == 0);
-		auto mask = static_cast<T>(alignment - 1);
-		return size & ~mask;
+		size_t mask = alignment - 1;
+		return (T)((size_t)size & ~mask);
 	}
 	return size;
 }

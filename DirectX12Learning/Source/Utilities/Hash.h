@@ -5,7 +5,7 @@
 
 #include "../Math/Align.h"
 
-bool IsSSE42Supported()
+inline bool IsSSE42Supported()
 {
 	int CPUInfo[4];
 	__cpuid(CPUInfo, 1);

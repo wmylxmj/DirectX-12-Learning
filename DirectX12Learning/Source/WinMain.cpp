@@ -570,8 +570,8 @@ void Update() {
 	DirectX::XMMATRIX world = DirectX::XMMatrixIdentity();
 
 	g_camera.SetAspectRatio(static_cast<float>(g_viewportWidth) / g_viewportHeight);
-	g_camera.RotatePosition(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(1, 1, 0), 0.01);
-	g_camera.RotateDirection(DirectX::XMFLOAT3(1, 1, 0), 0.01);
+	g_camera.RotatePosition(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(1, 1, 0), 0.01f);
+	g_camera.RotateDirection(DirectX::XMFLOAT3(1, 1, 0), 0.01f);
 
 	DirectX::XMMATRIX worldViewProj = world * g_camera.GetViewMatrix() * g_camera.GetProjectionMatrix();
 
