@@ -28,7 +28,7 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature() const;
 
-	void CreateRootSignature(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
+	void CreateRootSignature(ID3D12Device* pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
 protected:
 	static std::mutex sm_rootSignatureCacheMutex;

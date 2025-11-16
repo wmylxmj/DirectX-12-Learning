@@ -432,7 +432,7 @@ bool AppInit() {
 
 	g_pRootSignature->operator[](0) = rootParameter;
 
-	g_pRootSignature->CreateRootSignature(g_device, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	g_pRootSignature->CreateRootSignature(g_device.Get(), D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	// ±àÒë×ÅÉ«Æ÷
 	Microsoft::WRL::ComPtr<ID3DBlob> vsByteCode = CompileShader(L"Source\\Shaders\\color.hlsl", nullptr, "VS", "vs_5_1");
