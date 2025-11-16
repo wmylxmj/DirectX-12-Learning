@@ -138,7 +138,6 @@
     <ClCompile Include="Source\Core\DescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\DynamicDescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\Fence.cpp" />
-    <ClCompile Include="Source\Core\FenceTracker.cpp" />
     <ClCompile Include="Source\Core\LinearAllocator.cpp" />
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
     <ClCompile Include="Source\Core\CommandListPool.cpp" />
@@ -162,7 +161,6 @@
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Core\DescriptorHeap.h" />
     <ClInclude Include="Source\Core\Fence.h" />
-    <ClInclude Include="Source\Core\FenceTracker.h" />
     <ClInclude Include="Source\Core\LinearAllocator.h" />
     <ClInclude Include="Source\Core\CommandAllocatorPool.h" />
     <ClInclude Include="Source\Core\CommandListPool.h" />
