@@ -88,14 +88,15 @@ void RootSignature::CreateRootSignature(ID3D12Device* pDevice, D3D12_ROOT_SIGNAT
 
 		CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
 
-		std::vector<uint8_t> blobKey(
+		rootSignatureCacheKey.insert(
+			rootSignatureCacheKey.end(),
 			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()),
 			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()) + pRootSignatureBlob->GetBufferSize()
 		);
 
 		{
 			std::lock_guard<std::mutex> lock(sm_rootSignatureCacheMutex);
-			auto it = sm_rootSignatureCache.find(blobKey);
+			auto it = sm_rootSignatureCache.find(rootSignatureCacheKey);
 			if (it != sm_rootSignatureCache.end()) {
 				m_rootSignature = it->second;
 				return;
@@ -110,7 +111,7 @@ void RootSignature::CreateRootSignature(ID3D12Device* pDevice, D3D12_ROOT_SIGNAT
 		));
 		{
 			std::lock_guard<std::mutex> lock(sm_rootSignatureCacheMutex);
-			sm_rootSignatureCache[blobKey] = m_rootSignature;
+			sm_rootSignatureCache[rootSignatureCacheKey] = m_rootSignature;
 		}
 	}
 }
