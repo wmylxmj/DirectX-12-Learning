@@ -50,3 +50,8 @@ bool DescriptorHandle::IsShaderVisible() const
 {
 	return m_gpuDescriptorHandle.ptr != (D3D12_GPU_VIRTUAL_ADDRESS)-1;
 }
+
+bool DescriptorHandle::IsNull() const
+{
+	return m_cpuDescriptorHandle.ptr == (D3D12_GPU_VIRTUAL_ADDRESS)-1;
+}
