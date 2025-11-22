@@ -6,7 +6,6 @@
 #include "PrecompiledHeader.h"
 #include "CommandAllocatorPool.h"
 #include "CommandListPool.h"
-#include "Fence.h"
 
 class CommandQueue
 {

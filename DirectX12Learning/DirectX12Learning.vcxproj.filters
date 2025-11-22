@@ -36,19 +36,10 @@
     <ClCompile Include="Source\Model\Model.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\LinearAllocator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Resource.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\DescriptorHeap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\RootSignature.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Core\DynamicDescriptorHeap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Camera.cpp">
@@ -58,6 +49,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\DescriptorHandle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\DescriptorHeap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,13 +86,7 @@
     <ClInclude Include="Source\Model\Model.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Core\LinearAllocator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\RootSignature.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\DynamicDescriptorHeap.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\DescriptorHeap.h">
