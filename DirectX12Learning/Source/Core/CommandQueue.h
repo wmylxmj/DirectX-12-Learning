@@ -34,13 +34,10 @@ public:
 	void DiscardCommandList(ID3D12GraphicsCommandList* pCommandList);
 
 private:
-	// √¸¡Ó∂”¡–id
-	const uint64_t m_kCommandQueueId;
-
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
+	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pCommandQueue;
-	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
 	std::mutex m_fenceMutex;
 	Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
