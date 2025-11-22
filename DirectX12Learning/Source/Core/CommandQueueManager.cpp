@@ -1,5 +1,10 @@
 #include "CommandQueueManager.h"
 
+// static 变量定义
+std::atomic_uint64_t CommandQueueManager::sm_nextCommandQueueId = 1;
+std::mutex CommandQueueManager::sm_commandQueueMapMutex;
+std::unordered_map<uint64_t, std::unique_ptr<CommandQueue>> CommandQueueManager::sm_commandQueueMap;
+
 CommandQueueManager::CommandQueueManager(ID3D12Device* pDevice)
 	: m_pDevice(pDevice)
 {
