@@ -24,7 +24,6 @@ public:
 
 	ID3D12CommandQueue* GetCommandQueue() const;
 	uint64_t GetFenceValue() const;
-	uint64_t GetNonReusableId() const;
 
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
@@ -35,8 +34,6 @@ public:
 	void DiscardCommandList(ID3D12GraphicsCommandList* pCommandList);
 
 private:
-	static std::atomic_uint64_t sm_nextNonReusableId;
-	const uint64_t m_kNonReusableId;
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 
