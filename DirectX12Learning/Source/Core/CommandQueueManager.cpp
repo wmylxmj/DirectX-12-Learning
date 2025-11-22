@@ -3,9 +3,19 @@
 CommandQueueManager::CommandQueueManager(ID3D12Device* pDevice)
 	: m_pDevice(pDevice)
 {
-	m_commandQueueMap.emplace(D3D12_COMMAND_LIST_TYPE_DIRECT, std::make_unique<CommandQueue>(pDevice, D3D12_COMMAND_LIST_TYPE_DIRECT));
-	m_commandQueueMap.emplace(D3D12_COMMAND_LIST_TYPE_COMPUTE, std::make_unique<CommandQueue>(pDevice, D3D12_COMMAND_LIST_TYPE_COMPUTE));
-	m_commandQueueMap.emplace(D3D12_COMMAND_LIST_TYPE_COPY, std::make_unique<CommandQueue>(pDevice, D3D12_COMMAND_LIST_TYPE_COPY));
+	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);
+
+	uint64_t commandQueueId = sm_nextCommandQueueId++;
+	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(pDevice, D3D12_COMMAND_LIST_TYPE_DIRECT, commandQueueId));
+	m_commandQueueIdMap.emplace(D3D12_COMMAND_LIST_TYPE_DIRECT, commandQueueId);
+
+	commandQueueId = sm_nextCommandQueueId++;
+	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(pDevice, D3D12_COMMAND_LIST_TYPE_COMPUTE, commandQueueId));
+	m_commandQueueIdMap.emplace(D3D12_COMMAND_LIST_TYPE_COMPUTE, commandQueueId);
+
+	commandQueueId = sm_nextCommandQueueId++;
+	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(pDevice, D3D12_COMMAND_LIST_TYPE_COPY, commandQueueId));
+	m_commandQueueIdMap.emplace(D3D12_COMMAND_LIST_TYPE_COPY, commandQueueId);
 }
 
 CommandQueue& CommandQueueManager::GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)

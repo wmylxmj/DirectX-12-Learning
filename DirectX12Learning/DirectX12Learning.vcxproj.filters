@@ -39,9 +39,6 @@
     <ClCompile Include="Source\Core\LinearAllocator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\Fence.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\Resource.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\LinearAllocator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\Fence.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\RootSignature.h">
