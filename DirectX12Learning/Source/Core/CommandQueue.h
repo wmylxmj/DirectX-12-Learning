@@ -11,6 +11,8 @@ class CommandQueue
 {
 public:
 
+	CommandQueue(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType, uint64_t commandQueueId);
+
 	uint64_t IncrementFenceValue();
 	bool IsFenceValueCompleted(uint64_t fenceValue);
 
