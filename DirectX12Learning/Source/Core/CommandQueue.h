@@ -34,6 +34,7 @@ public:
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
+	const uint64_t m_kCommandQueueId;
 
 	Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_pCommandQueue;
 
