@@ -34,6 +34,8 @@ public:
 	void DiscardCommandList(ID3D12GraphicsCommandList* pCommandList);
 
 private:
+	// √¸¡Ó∂”¡–id
+	const uint64_t m_kCommandQueueId;
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 
