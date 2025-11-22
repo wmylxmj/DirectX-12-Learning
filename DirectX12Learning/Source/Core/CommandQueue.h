@@ -23,6 +23,7 @@ public:
 	void WaitForIdle();
 
 	ID3D12CommandQueue* GetCommandQueue() const;
+	uint64_t GetCommandQueueId() const;
 	uint64_t GetFenceValue() const;
 
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);

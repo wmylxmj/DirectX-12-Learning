@@ -66,14 +66,14 @@ ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 	return m_pCommandQueue.Get();
 }
 
+uint64_t CommandQueue::GetCommandQueueId() const
+{
+	return m_kCommandQueueId;
+}
+
 uint64_t CommandQueue::GetFenceValue() const
 {
 	return m_fenceValue;
-}
-
-uint64_t CommandQueue::GetNonReusableId() const
-{
-	return m_kNonReusableId;
 }
 
 uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList)
