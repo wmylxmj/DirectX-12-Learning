@@ -22,3 +22,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	std::unordered_map<D3D12_COMMAND_LIST_TYPE, uint64_t> m_commandQueueIdMap;
 };
+
+// Î§À¸×·×ÙÆ÷
