@@ -15,5 +15,5 @@ CommandQueue& CommandQueueManager::GetCommandQueue(D3D12_COMMAND_LIST_TYPE comma
 
 bool CommandQueueManager::IsFenceValueCompleted(D3D12_COMMAND_LIST_TYPE commandListType, uint64_t fenceValue)
 {
-	return m_commandQueueMap.at(commandListType)->IsFenceValueCompleted(fenceValue);
+	return GetCommandQueue(commandListType).IsFenceValueCompleted(fenceValue);
 }
