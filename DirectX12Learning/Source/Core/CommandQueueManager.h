@@ -16,6 +16,7 @@ public:
 
 private:
 	static std::atomic_uint64_t sm_nextCommandQueueId;
+	static std::mutex sm_commandQueueMapMutex;
 	static std::unordered_map<uint64_t, std::unique_ptr<CommandQueue>> sm_commandQueueMap;
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
