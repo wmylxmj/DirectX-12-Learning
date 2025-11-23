@@ -28,6 +28,5 @@ class FenceTracker
 public:
 
 private:
-
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 };
