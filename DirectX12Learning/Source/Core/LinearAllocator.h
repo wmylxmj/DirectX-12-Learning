@@ -39,6 +39,7 @@ public:
 	void RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages);
 
 private:
+	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_HEAP_TYPE m_kHeapType;
 	const size_t m_kPageSize;
 
