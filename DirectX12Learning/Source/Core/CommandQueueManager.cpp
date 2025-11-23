@@ -34,6 +34,7 @@ void FenceTracker::SetPendingFenceValue(uint64_t commandQueueId, uint64_t fenceV
 bool FenceTracker::ArePendingFencesCompleted()
 {
 	std::lock_guard<std::mutex> lockGuard(CommandQueueManager::sm_commandQueueMapMutex);
+
 	for (const auto& [commandQueueId, fenceValue] : m_pendingFences)
 	{
 		CommandQueue& commandQueue = *CommandQueueManager::sm_commandQueueMap.at(commandQueueId);
