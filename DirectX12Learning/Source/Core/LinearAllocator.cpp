@@ -29,7 +29,12 @@ void LinearAllocatorPage::Unmap()
 	}
 }
 
-LinearAllocatorPageManager::LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize) : m_kHeapType(heapType), m_kPageSize(pageSize) {}
+LinearAllocatorPageManager::LinearAllocatorPageManager(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType, size_t pageSize) :
+	m_pDevice(pDevice),
+	m_kHeapType(heapType),
+	m_kPageSize(pageSize)
+{
+}
 
 std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize)
 {
