@@ -24,3 +24,5 @@ private:
 };
 
 // Î§À¸×·×ÙÆ÷
+class FenceTracker
+{
