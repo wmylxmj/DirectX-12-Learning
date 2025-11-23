@@ -63,11 +63,6 @@ ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 	return m_pCommandQueue.Get();
 }
 
-uint64_t CommandQueue::GetCommandQueueId() const
-{
-	return m_kCommandQueueId;
-}
-
 uint64_t CommandQueue::GetFenceValue() const
 {
 	return m_fenceValue;
