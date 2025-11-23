@@ -26,7 +26,7 @@ public:
 class LinearAllocatorPageManager
 {
 public:
-	LinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize);
+	LinearAllocatorPageManager(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType, size_t pageSize);
 
 	std::unique_ptr<LinearAllocatorPage> CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
 
