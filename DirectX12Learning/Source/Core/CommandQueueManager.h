@@ -13,7 +13,6 @@ public:
 
 	uint64_t CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 	CommandQueue& GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
-	bool IsFenceValueCompleted(D3D12_COMMAND_LIST_TYPE commandListType, uint64_t fenceValue);
 
 private:
 	static std::atomic_uint64_t sm_nextCommandQueueId;

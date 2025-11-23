@@ -25,8 +25,3 @@ CommandQueue& CommandQueueManager::GetCommandQueue(D3D12_COMMAND_LIST_TYPE comma
 	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);
 	return *sm_commandQueueMap.at(m_commandQueueIdMap.at(commandListType));
 }
-
-bool CommandQueueManager::IsFenceValueCompleted(D3D12_COMMAND_LIST_TYPE commandListType, uint64_t fenceValue)
-{
-	return GetCommandQueue(commandListType).IsFenceValueCompleted(fenceValue);
-}
