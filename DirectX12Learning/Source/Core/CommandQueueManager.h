@@ -29,6 +29,5 @@ public:
 	void SetPendingFenceValue(uint64_t commandQueueId, uint64_t fenceValue);
 
 private:
-
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 };
