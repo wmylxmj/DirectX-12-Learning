@@ -8,6 +8,8 @@
 
 class CommandQueueManager
 {
+	friend class FenceTracker;
+
 public:
 	CommandQueueManager(ID3D12Device* pDevice);
 
