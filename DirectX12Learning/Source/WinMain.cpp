@@ -165,7 +165,7 @@ bool InitDirect3D() {
 	OutputDebugStringA("\n");
 
 	// 创建命令队列系统
-	g_pDirectCommandQueue = std::make_unique<CommandQueue>(g_device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT, 0);
+	g_pDirectCommandQueue = std::make_unique<CommandQueue>(g_device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT);
 
 	// 创建交换链
 	g_swapChain.Reset();
