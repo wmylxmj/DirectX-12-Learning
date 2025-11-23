@@ -1,7 +1,7 @@
 ﻿#include "LinearAllocator.h"
 #include "../Math/Align.h"
 
-LinearAllocatorPage::LinearAllocatorPage(Microsoft::WRL::ComPtr<ID3D12Resource> pResource, D3D12_RESOURCE_STATES resourceState) : Resource()
+LinearAllocatorPage::LinearAllocatorPage(ID3D12Resource* pResource, D3D12_RESOURCE_STATES resourceState)
 {
 	m_pResource = pResource;
 	m_resourceState = resourceState;

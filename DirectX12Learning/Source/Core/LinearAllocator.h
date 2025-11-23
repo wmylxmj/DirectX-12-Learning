@@ -17,7 +17,7 @@ public:
 	void* m_cpuMemoryAddress;
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 
-	LinearAllocatorPage(Microsoft::WRL::ComPtr<ID3D12Resource> pResource, D3D12_RESOURCE_STATES resourceState);
+	LinearAllocatorPage(ID3D12Resource* pResource, D3D12_RESOURCE_STATES resourceState);
 	~LinearAllocatorPage();
 
 	void Map();
