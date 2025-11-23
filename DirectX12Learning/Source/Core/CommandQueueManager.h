@@ -31,6 +31,3 @@ private:
 
 	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 };
-std::unordered_map<D3D12_COMMAND_LIST_TYPE, uint64_t> m_pendingFences;
-};
-};
