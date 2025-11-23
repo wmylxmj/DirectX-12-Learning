@@ -23,6 +23,13 @@ CommandQueueManager::CommandQueueManager(ID3D12Device* pDevice)
 	m_commandQueueIdMap.emplace(D3D12_COMMAND_LIST_TYPE_COPY, commandQueueId);
 }
 
+uint64_t CommandQueueManager::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
+{
+	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);
+
+	uint64_t commandQueueId = sm_nextCommandQueueId++;
+}
+
 CommandQueue& CommandQueueManager::GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
 {
 	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);

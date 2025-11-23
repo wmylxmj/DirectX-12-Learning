@@ -11,6 +11,7 @@ class CommandQueueManager
 public:
 	CommandQueueManager(ID3D12Device* pDevice);
 
+	uint64_t CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 	CommandQueue& GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 	bool IsFenceValueCompleted(D3D12_COMMAND_LIST_TYPE commandListType, uint64_t fenceValue);
 
