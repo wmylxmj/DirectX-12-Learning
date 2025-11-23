@@ -13,7 +13,6 @@ public:
 
 	uint64_t CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 	CommandQueue& GetCommandQueue(uint64_t commandQueueId);
-	CommandQueue& GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 
 private:
 	static std::atomic_uint64_t sm_nextCommandQueueId;
