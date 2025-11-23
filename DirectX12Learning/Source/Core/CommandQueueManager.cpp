@@ -25,3 +25,8 @@ CommandQueue& CommandQueueManager::GetCommandQueue(D3D12_COMMAND_LIST_TYPE comma
 	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);
 	return *sm_commandQueueMap.at(m_commandQueueIdMap.at(commandListType));
 }
+
+void FenceTracker::SetPendingFenceValue(uint64_t commandQueueId, uint64_t fenceValue)
+{
+	m_pendingFences[commandQueueId] = fenceValue;
+}
