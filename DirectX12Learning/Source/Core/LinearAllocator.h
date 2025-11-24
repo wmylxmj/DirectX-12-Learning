@@ -12,14 +12,14 @@
 class LinearAllocatorPage : public Resource
 {
 public:
-	using Resource::m_gpuVirtualAddress;
-	void* m_cpuMemoryAddress;
-
 	LinearAllocatorPage(ID3D12Resource* pResource, D3D12_RESOURCE_STATES resourceState);
 	~LinearAllocatorPage();
 
 	void Map();
 	void Unmap();
+
+	using Resource::m_gpuVirtualAddress;
+	void* m_cpuMemoryAddress;
 };
 
 class LinearAllocatorPageManager
