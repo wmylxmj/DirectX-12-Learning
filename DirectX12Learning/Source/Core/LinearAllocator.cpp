@@ -121,7 +121,7 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
 		m_availablePages.pop();
 	}
 	else {
-		auto newPage = CreateNewPage(pDevice, m_kPageSize);
+		auto newPage = CreateNewPage(m_kPageSize);
 		m_pagePool.push_back(std::move(newPage));
 		pagePtr = m_pagePool.back().get();
 	}
