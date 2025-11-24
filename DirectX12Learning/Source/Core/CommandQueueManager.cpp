@@ -16,14 +16,14 @@ uint64_t CommandQueueManager::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE command
 
 	uint64_t commandQueueId = sm_nextCommandQueueId++;
 	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(m_pDevice.Get(), commandListType));
+	m_commandQueues.emplace(commandQueueId, sm_commandQueueMap.at(commandQueueId).get());
 
 	return commandQueueId;
 }
 
 CommandQueue& CommandQueueManager::GetCommandQueue(uint64_t commandQueueId)
 {
-	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);
-	return *sm_commandQueueMap.at(commandQueueId);
+	return *m_commandQueues.at(commandQueueId);
 }
 
 void FenceTracker::SetPendingFenceValue(uint64_t commandQueueId, uint64_t fenceValue)
