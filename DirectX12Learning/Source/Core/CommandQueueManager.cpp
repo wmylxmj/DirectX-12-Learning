@@ -12,8 +12,6 @@ CommandQueueManager::CommandQueueManager(ID3D12Device* pDevice)
 
 uint64_t CommandQueueManager::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
 {
-	std::lock_guard<std::mutex> lockGuard(sm_commandQueueMapMutex);
-
 	uint64_t commandQueueId = sm_nextCommandQueueId++;
 	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(m_pDevice.Get(), commandListType));
 
@@ -33,7 +31,7 @@ void FenceTracker::SetPendingFenceValue(uint64_t commandQueueId, uint64_t fenceV
 
 bool FenceTracker::ArePendingFencesCompleted()
 {
-	std::lock_guard<std::mutex> lockGuard(CommandQueueManager::sm_commandQueueMapMutex);
+	std::shared_lock<std::shared_mutex> sharedLock(CommandQueueManager::sm_commandQueueMapMutex);
 
 	for (const auto& [commandQueueId, fenceValue] : m_pendingFences)
 	{
