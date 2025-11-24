@@ -50,7 +50,7 @@ private:
 	std::unordered_map<LinearAllocatorPage*, std::unique_ptr<LinearAllocatorPage>> m_largePagePtrMap;
 
 	std::queue<LinearAllocatorPage*> m_availablePages;
-	std::queue<LinearAllocatorPage*> m_retiredPages;
+	std::queue<std::pair<FenceTracker, LinearAllocatorPage*>> m_retiredPages;
 	std::queue<LinearAllocatorPage*> m_deletionQueue;
 };
 
