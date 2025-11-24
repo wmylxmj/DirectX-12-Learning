@@ -80,6 +80,7 @@ private:
 	static std::unordered_map<D3D12_HEAP_TYPE, std::unique_ptr<LinearAllocatorPageManager>> sm_pageManagerMap;
 	static const std::unordered_map<D3D12_HEAP_TYPE, size_t> sm_kPageSizeMap;
 
+	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_HEAP_TYPE m_kHeapType;
 	const size_t m_kPageSize;
 
