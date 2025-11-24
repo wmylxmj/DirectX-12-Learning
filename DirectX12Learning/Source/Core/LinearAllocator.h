@@ -33,7 +33,7 @@ public:
 	void DiscardGeneralPages(std::vector<LinearAllocatorPage*>& pages);
 
 	LinearAllocatorPage* RequestLargePage(size_t pageSize);
-	void DiscardLargePages(std::vector<LinearAllocatorPage*>& pages);
+	void DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
