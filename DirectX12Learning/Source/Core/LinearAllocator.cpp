@@ -171,22 +171,6 @@ void LinearAllocatorPageManager::DiscardLargePages(std::vector<LinearAllocatorPa
 	}
 }
 
-void LinearAllocatorPageManager::RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages)
-{
-	std::lock_guard<std::mutex> lock(m_mutex);
-
-	if (!m_fenceMap.contains(commandQueue.GetNonReusableId())) {
-		m_fenceMap.emplace(commandQueue.GetNonReusableId(), std::make_unique<Fence>(pDevice));
-	}
-
-	m_fenceMap[commandQueue.GetNonReusableId()]->IncrementFenceValue(commandQueue.GetCommandQueue());
-
-	// 为每个页设置对应ID的围栏值
-	for (auto page : pages) {
-		page->m_pendingFences[commandQueue.GetNonReusableId()] = m_fenceMap[commandQueue.GetNonReusableId()]->GetFenceValue();
-	}
-}
-
 std::unordered_map<D3D12_HEAP_TYPE, std::unique_ptr<LinearAllocatorPageManager>> LinearAllocator::sm_pageManagerMap;
 
 const std::unordered_map<D3D12_HEAP_TYPE, size_t> LinearAllocator::sm_kPageSizeMap = {
