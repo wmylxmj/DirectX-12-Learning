@@ -67,6 +67,15 @@ public:
 
 class LinearAllocator
 {
+public:
+	LinearAllocator(D3D12_HEAP_TYPE heapType);
+
+	// 对齐默认256字节
+	LinearBlock Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
+
+	void RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
+	void Deallocate();
+
 private:
 	static std::unordered_map<D3D12_HEAP_TYPE, std::unique_ptr<LinearAllocatorPageManager>> sm_pageManagerMap;
 	static const std::unordered_map<D3D12_HEAP_TYPE, size_t> sm_kPageSizeMap;
@@ -81,13 +90,4 @@ private:
 	size_t m_currentOffset;
 
 	LinearBlock AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size);
-
-public:
-	LinearAllocator(D3D12_HEAP_TYPE heapType);
-
-	// 对齐默认256字节
-	LinearBlock Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
-
-	void RecordFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue);
-	void Deallocate();
 };
