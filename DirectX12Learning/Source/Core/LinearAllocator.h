@@ -76,7 +76,7 @@ public:
 	void Deallocate();
 
 private:
-	static std::unordered_map<D3D12_HEAP_TYPE, std::unique_ptr<LinearAllocatorPageManager>> sm_pageManagerMap;
+	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> sm_pageManagerMap;
 	static const std::unordered_map<D3D12_HEAP_TYPE, size_t> sm_kPageSizeMap;
 
 	LinearBlock AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size);
