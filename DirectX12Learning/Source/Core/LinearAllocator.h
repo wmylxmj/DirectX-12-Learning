@@ -30,7 +30,7 @@ public:
 
 	std::unique_ptr<LinearAllocatorPage> CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
 
-	LinearAllocatorPage* RequestGeneralPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice);
+	LinearAllocatorPage* RequestGeneralPage();
 	void DiscardGeneralPages(std::vector<LinearAllocatorPage*>& pages);
 
 	LinearAllocatorPage* RequestLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
