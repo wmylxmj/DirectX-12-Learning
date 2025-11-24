@@ -109,7 +109,6 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
 	LinearAllocatorPage* pagePtr = nullptr;
 	if (!m_availablePages.empty()) {
 		pagePtr = m_availablePages.front();
-		pagePtr->m_pendingFences.clear();
 		m_availablePages.pop();
 	}
 	else {
