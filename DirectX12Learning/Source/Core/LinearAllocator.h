@@ -32,7 +32,7 @@ public:
 	LinearAllocatorPage* RequestGeneralPage();
 	void DiscardGeneralPages(std::vector<LinearAllocatorPage*>& pages);
 
-	LinearAllocatorPage* RequestLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize);
+	LinearAllocatorPage* RequestLargePage(size_t pageSize);
 	void DiscardLargePages(std::vector<LinearAllocatorPage*>& pages);
 
 	void RecordPagesFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<LinearAllocatorPage*>& pages);
