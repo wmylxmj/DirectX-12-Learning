@@ -139,11 +139,11 @@ void LinearAllocatorPageManager::DiscardGeneralPages(std::vector<LinearAllocator
 	}
 }
 
-LinearAllocatorPage* LinearAllocatorPageManager::RequestLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize)
+LinearAllocatorPage* LinearAllocatorPageManager::RequestLargePage(size_t pageSize)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
-	auto largePage = CreateNewPage(pDevice, pageSize);
+	auto largePage = CreateNewPage(pageSize);
 	LinearAllocatorPage* rawPtr = largePage.get();
 	m_largePagePtrMap.emplace(rawPtr, std::move(largePage));
 
