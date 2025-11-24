@@ -141,7 +141,7 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestLargePage(size_t pageSiz
 	return rawPtr;
 }
 
-void LinearAllocatorPageManager::DiscardLargePages(std::vector<LinearAllocatorPage*>& pages)
+void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages)
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
