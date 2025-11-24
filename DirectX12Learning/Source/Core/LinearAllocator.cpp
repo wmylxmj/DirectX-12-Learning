@@ -171,8 +171,12 @@ const std::unordered_map<D3D12_HEAP_TYPE, size_t> LinearAllocator::sm_kPageSizeM
 { D3D12_HEAP_TYPE_UPLOAD, 0x200000 }, // 2MB
 { D3D12_HEAP_TYPE_READBACK, 0x10000 }, // 64KB
 };
-
-LinearAllocator::LinearAllocator(D3D12_HEAP_TYPE heapType) : m_kHeapType(heapType), m_kPageSize(sm_kPageSizeMap.at(heapType)), m_currentPage(nullptr), m_currentOffset(0)
+LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType) :
+	m_pDevice(pDevice),
+	m_kHeapType(heapType),
+	m_kPageSize(sm_kPageSizeMap.at(heapType)),
+	m_currentPage(nullptr),
+	m_currentOffset(0)
 {
 	if (!sm_pageManagerMap.contains(heapType))
 	{
