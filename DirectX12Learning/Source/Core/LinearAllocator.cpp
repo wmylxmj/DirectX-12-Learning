@@ -120,7 +120,7 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
 	return pagePtr;
 }
 
-void LinearAllocatorPageManager::DiscardGeneralPages(std::vector<LinearAllocatorPage*>& pages)
+void LinearAllocatorPageManager::DiscardGeneralPages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages)
 {
 	// 在记录围栏后调用
 	std::lock_guard<std::mutex> lock(m_mutex);
