@@ -150,7 +150,7 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 
 		if (pair.first.ArePendingFencesCompleted())
 		{
-			m_largePagePtrMap.erase(m_deletionQueue.front().second);
+			m_largePagePtrMap.erase(pair.second);
 			m_deletionQueue.pop();
 		}
 		else {
