@@ -126,7 +126,7 @@ void LinearAllocatorPageManager::DiscardGeneralPages(FenceTracker fenceTracker, 
 	std::lock_guard<std::mutex> lock(m_mutex);
 
 	for (auto page : pages) {
-		m_retiredPages.push(page);
+		m_retiredPages.push(std::make_pair(fenceTracker, page));
 	}
 }
 
