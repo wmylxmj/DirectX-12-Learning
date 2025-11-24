@@ -12,6 +12,8 @@ CommandQueueManager::CommandQueueManager(ID3D12Device* pDevice)
 
 uint64_t CommandQueueManager::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
 {
+	std::unique_lock<std::shared_mutex> uniqueLock(sm_commandQueueMapMutex);
+
 	uint64_t commandQueueId = sm_nextCommandQueueId++;
 	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(m_pDevice.Get(), commandListType));
 
