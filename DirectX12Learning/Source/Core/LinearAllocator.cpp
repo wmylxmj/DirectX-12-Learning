@@ -160,7 +160,7 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 
 	for (auto& page : pages) {
 		page->Unmap();
-		m_deletionQueue.push(page);
+		m_deletionQueue.push(std::make_pair(fenceTracker, page));
 	}
 }
 
