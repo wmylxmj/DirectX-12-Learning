@@ -72,7 +72,7 @@ public:
 	LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType);
 
 	// ¶ÔÆëÄ¬ÈÏ256×Ö½Ú
-	LinearBlock Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment = 256);
+	LinearBlock Allocate(size_t size, size_t alignment = 256);
 	void Deallocate();
 
 private:
