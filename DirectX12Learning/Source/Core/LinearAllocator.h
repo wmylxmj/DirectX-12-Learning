@@ -14,7 +14,6 @@ class LinearAllocatorPage : public Resource
 public:
 	using Resource::m_gpuVirtualAddress;
 	void* m_cpuMemoryAddress;
-	std::unordered_map<uint64_t, uint64_t> m_pendingFences;
 
 	LinearAllocatorPage(ID3D12Resource* pResource, D3D12_RESOURCE_STATES resourceState);
 	~LinearAllocatorPage();

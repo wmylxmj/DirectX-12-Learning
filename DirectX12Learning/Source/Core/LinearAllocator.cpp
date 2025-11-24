@@ -36,7 +36,7 @@ LinearAllocatorPageManager::LinearAllocatorPageManager(ID3D12Device* pDevice, D3
 {
 }
 
-std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t pageSize)
+std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(size_t pageSize)
 {
 	D3D12_HEAP_PROPERTIES heapProperties = {};
 	heapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
@@ -78,7 +78,7 @@ std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(M
 	}
 
 	Microsoft::WRL::ComPtr<ID3D12Resource> pResource;
-	CHECK_HRESULT(pDevice->CreateCommittedResource(
+	CHECK_HRESULT(m_pDevice->CreateCommittedResource(
 		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&resourceDesc,
