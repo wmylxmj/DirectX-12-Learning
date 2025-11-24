@@ -31,7 +31,6 @@ public:
 
 	LinearAllocatorPage* RequestGeneralPage();
 	void DiscardGeneralPages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
-	void DiscardGeneralPages(std::vector<LinearAllocatorPage*>& pages);
 
 	LinearAllocatorPage* RequestLargePage(size_t pageSize);
 	void DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
