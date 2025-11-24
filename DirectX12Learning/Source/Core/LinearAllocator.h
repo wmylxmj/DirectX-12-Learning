@@ -48,7 +48,7 @@ private:
 
 	std::queue<LinearAllocatorPage*> m_availablePages;
 	std::queue<std::pair<FenceTracker, LinearAllocatorPage*>> m_retiredPages;
-	std::queue<LinearAllocatorPage*> m_deletionQueue;
+	std::queue<std::pair<FenceTracker, LinearAllocatorPage*>> m_deletionQueue;
 };
 
 class LinearBlock {
