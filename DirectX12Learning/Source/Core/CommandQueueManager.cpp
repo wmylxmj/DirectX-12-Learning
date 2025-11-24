@@ -43,5 +43,6 @@ bool FenceTracker::ArePendingFencesCompleted()
 			return false;
 		}
 	}
+
 	return true;
 }
