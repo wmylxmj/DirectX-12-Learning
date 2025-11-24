@@ -89,7 +89,7 @@ std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(M
 	return std::make_unique<LinearAllocatorPage>(pResource, resourceState);
 }
 
-LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
+LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
