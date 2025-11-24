@@ -164,7 +164,7 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 	}
 }
 
-std::unordered_map<D3D12_HEAP_TYPE, std::unique_ptr<LinearAllocatorPageManager>> LinearAllocator::sm_pageManagerMap;
+std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> LinearAllocator::sm_pageManagerMap;
 
 const std::unordered_map<D3D12_HEAP_TYPE, size_t> LinearAllocator::sm_kPageSizeMap = {
 { D3D12_HEAP_TYPE_DEFAULT, 0x10000 }, // 64KB
