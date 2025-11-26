@@ -79,7 +79,7 @@ private:
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> sm_pageManagerMap;
 	static const std::unordered_map<D3D12_HEAP_TYPE, size_t> sm_kPageSizeMap;
 
-	LinearBlock AllocateLargePage(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size);
+	LinearBlock AllocateLargePage(size_t size);
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_HEAP_TYPE m_kHeapType;
