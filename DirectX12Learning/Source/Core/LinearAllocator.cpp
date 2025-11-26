@@ -237,7 +237,7 @@ LinearBlock LinearAllocator::Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevi
 
 	// 申请大小超过通常页，则申请大页
 	if (alignedSize > m_kPageSize) {
-		return AllocateLargePage(pDevice, alignedSize);
+		return AllocateLargePage(alignedSize);
 	}
 
 	// 偏移向上对齐
