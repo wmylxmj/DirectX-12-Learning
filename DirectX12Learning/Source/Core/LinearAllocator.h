@@ -86,8 +86,6 @@ private:
 	const size_t m_kPageSize;
 
 	LinearAllocatorPageManager* m_pPageManager;
-	ageManager;
-	4\ageManager;
 
 	std::vector<LinearAllocatorPage*> m_retiredPages;
 	std::vector<LinearAllocatorPage*> m_largePageList;
