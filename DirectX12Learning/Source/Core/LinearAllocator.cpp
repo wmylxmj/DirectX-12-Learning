@@ -201,38 +201,7 @@ LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType
 	m_pPageManager = sm_pageManagerMap.at(pageManagerKey).get();
 }
 
-void LinearAllocator::Deallocate() {
-	if (m_currentPage != nullptr) {
-		m_retiredPages.push_back(m_currentPage);
-		m_currentPage = nullptr;
-		m_currentOffset = 0;
-	}
-
-	sm_pageManagerMap[m_kHeapType]->DiscardGeneralPages(m_retiredPages);
-	m_retiredPages.clear();
-
-	sm_pageManagerMap[m_kHeapType]->DiscardLargePages(m_largePageList);
-	m_largePageList.clear();
-}
-
-LinearBlock LinearAllocator::AllocateLargePage(size_t size)
-{
-	LinearAllocatorPage* page = sm_pageManagerMap[m_kHeapType]->RequestLargePage(size);
-	m_largePageList.push_back(page);
-
-	LinearBlock block(
-		*page,
-		0,
-		size,
-		page->m_cpuMemoryAddress,
-		page->m_gpuVirtualAddress
-	);
-
-	return block;
-}
-
-LinearBlock LinearAllocator::Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t size, size_t alignment)
-{
+LinearBlock LinearAllocator::Allocate(size_t size, size_t alignment) {
 	const size_t alignedSize = AlignUp(size, alignment);
 
 	// 申请大小超过通常页，则申请大页
@@ -264,6 +233,36 @@ LinearBlock LinearAllocator::Allocate(Microsoft::WRL::ComPtr<ID3D12Device> pDevi
 		m_currentPage->m_gpuVirtualAddress + m_currentOffset);
 
 	m_currentOffset += alignedSize;
+
+	return block;
+}
+
+void LinearAllocator::Deallocate() {
+	if (m_currentPage != nullptr) {
+		m_retiredPages.push_back(m_currentPage);
+		m_currentPage = nullptr;
+		m_currentOffset = 0;
+	}
+
+	sm_pageManagerMap[m_kHeapType]->DiscardGeneralPages(m_retiredPages);
+	m_retiredPages.clear();
+
+	sm_pageManagerMap[m_kHeapType]->DiscardLargePages(m_largePageList);
+	m_largePageList.clear();
+}
+
+LinearBlock LinearAllocator::AllocateLargePage(size_t size)
+{
+	LinearAllocatorPage* page = sm_pageManagerMap[m_kHeapType]->RequestLargePage(size);
+	m_largePageList.push_back(page);
+
+	LinearBlock block(
+		*page,
+		0,
+		size,
+		page->m_cpuMemoryAddress,
+		page->m_gpuVirtualAddress
+	);
 
 	return block;
 }
