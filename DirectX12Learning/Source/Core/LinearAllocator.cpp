@@ -201,6 +201,43 @@ LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType
 	m_pPageManager = sm_pageManagerMap.at(pageManagerKey).get();
 }
 
+LinearBlock LinearAllocator::Allocate(size_t size, size_t alignment)
+{
+	const size_t alignedSize = AlignUp(size, alignment);
+
+	// 申请大小超过通常页，则申请大页
+	if (alignedSize > m_kPageSize) {
+		return AllocateLargePage(alignedSize);
+	}
+
+	// 偏移向上对齐
+	m_currentOffset = AlignUp(m_currentOffset, alignment);
+
+	// 剩余空间不够，创建新的页
+	if (m_currentOffset + alignedSize > m_kPageSize) {
+		assert(m_currentPage != nullptr);
+		m_retiredPages.push_back(m_currentPage);
+		m_currentPage = nullptr;
+	}
+
+	if (m_currentPage == nullptr)
+	{
+		m_currentPage = sm_pageManagerMap[m_kHeapType]->RequestGeneralPage(pDevice);
+		m_currentOffset = 0;
+	}
+
+	LinearBlock block(
+		*m_currentPage,
+		m_currentOffset,
+		alignedSize,
+		(uint8_t*)m_currentPage->m_cpuMemoryAddress + m_currentOffset,
+		m_currentPage->m_gpuVirtualAddress + m_currentOffset);
+
+	m_currentOffset += alignedSize;
+
+	return block;
+}
+
 void LinearAllocator::Deallocate() {
 	if (m_currentPage != nullptr) {
 		m_retiredPages.push_back(m_currentPage);
