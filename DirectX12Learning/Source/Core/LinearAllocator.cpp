@@ -179,6 +179,8 @@ LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType
 	m_currentPage(nullptr),
 	m_currentOffset(0)
 {
+	LUID deviceLuid = pDevice->GetAdapterLuid();
+
 	if (!sm_pageManagerMap.contains(heapType))
 	{
 		sm_pageManagerMap.emplace(heapType, std::make_unique<LinearAllocatorPageManager>(heapType, sm_kPageSizeMap.at(heapType)));
