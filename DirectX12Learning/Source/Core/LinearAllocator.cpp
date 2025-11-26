@@ -182,10 +182,20 @@ LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType
 	LUID deviceLuid = pDevice->GetAdapterLuid();
 
 	// 页管理器键
+	std::vector<uint8_t> pageManagerKey(
+		reinterpret_cast<const uint8_t*>(&deviceLuid),
+		reinterpret_cast<const uint8_t*>(&deviceLuid) + sizeof(LUID)
+	);
 
-	if (!sm_pageManagerMap.contains(heapType))
+	pageManagerKey.insert(
+		pageManagerKey.end(),
+		reinterpret_cast<const uint8_t*>(&heapType),
+		reinterpret_cast<const uint8_t*>(&heapType) + sizeof(D3D12_HEAP_TYPE)
+	);
+
+	if (!sm_pageManagerMap.contains(pageManagerKey))
 	{
-		sm_pageManagerMap.emplace(heapType, std::make_unique<LinearAllocatorPageManager>(heapType, sm_kPageSizeMap.at(heapType)));
+		sm_pageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice, heapType, sm_kPageSizeMap.at(heapType)));
 	}
 }
 
