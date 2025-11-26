@@ -73,7 +73,6 @@ public:
 
 	// ¶ÔÆëÄ¬ÈÏ256×Ö½Ú
 	LinearBlock Allocate(size_t size, size_t alignment = 256);
-	void Deallocate();
 
 private:
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> sm_pageManagerMap;
