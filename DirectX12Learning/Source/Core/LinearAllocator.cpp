@@ -254,7 +254,7 @@ void LinearAllocator::Deallocate() {
 
 LinearBlock LinearAllocator::AllocateLargePage(size_t size)
 {
-	LinearAllocatorPage* page = sm_pageManagerMap[m_kHeapType]->RequestLargePage(size);
+	LinearAllocatorPage* page = m_pPageManager->RequestLargePage(size);
 	m_largePageList.push_back(page);
 
 	LinearBlock block(
