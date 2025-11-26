@@ -222,7 +222,7 @@ LinearBlock LinearAllocator::Allocate(size_t size, size_t alignment)
 
 	if (m_currentPage == nullptr)
 	{
-		m_currentPage = sm_pageManagerMap[m_kHeapType]->RequestGeneralPage(pDevice);
+		m_currentPage = m_pPageManager->RequestGeneralPage();
 		m_currentOffset = 0;
 	}
 
