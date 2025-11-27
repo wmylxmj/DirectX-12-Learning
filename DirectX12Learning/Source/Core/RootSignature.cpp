@@ -115,3 +115,14 @@ void RootSignature::CreateRootSignature(ID3D12Device* pDevice, D3D12_ROOT_SIGNAT
 		}
 	}
 }
+
+uint64_t RootSignature::GetDescriptorTableBitMap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) const
+{
+	if (descriptorHeapType == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) {
+		return m_cbvSrvUavDescriptorTableBitMap;
+	}
+	if (descriptorHeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER) {
+		return m_samplerDescriptorTableBitMap;
+	}
+	assert(false);
+}
