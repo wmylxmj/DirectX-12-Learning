@@ -273,7 +273,7 @@ bool InitDirect3D() {
 	// 发送命令
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
-	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
+	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetCurrentFenceValue(), cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
 
 	return true;
@@ -560,7 +560,7 @@ bool AppInit() {
 
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
-	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
+	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetCurrentFenceValue(), cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
 
 	return true;
@@ -654,7 +654,7 @@ void Render() {
 	// 提交命令
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
-	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetFenceValue(), cmdAllocator.Get());
+	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetCurrentFenceValue(), cmdAllocator.Get());
 
 	// 呈现当前的后台缓冲区
 	CHECK_HRESULT(g_swapChain->Present(0, 0));

@@ -63,7 +63,7 @@ ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 	return m_pCommandQueue.Get();
 }
 
-uint64_t CommandQueue::GetFenceValue() const
+uint64_t CommandQueue::GetCurrentFenceValue() const
 {
 	return m_fenceValue;
 }
