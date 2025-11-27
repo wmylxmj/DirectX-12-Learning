@@ -1,6 +1,7 @@
 #include "DescriptorHeap.h"
 
-DescriptorHeap::DescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors) :
+DescriptorHeap::DescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors) :
+	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType),
 	m_kNumDescriptors(numDescriptors),
 	m_kDescriptorSize(pDevice->GetDescriptorHandleIncrementSize(descriptorHeapType))
