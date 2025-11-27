@@ -23,6 +23,7 @@ public:
 
 	ID3D12CommandQueue* GetCommandQueue() const;
 	uint64_t GetCurrentFenceValue() const;
+	D3D12_COMMAND_LIST_TYPE GetCommandListType() const;
 
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
