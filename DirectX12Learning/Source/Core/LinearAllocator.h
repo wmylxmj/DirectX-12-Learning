@@ -74,6 +74,8 @@ public:
 	// ¶ÔÆëÄ¬ÈÏ256×Ö½Ú
 	LinearBlock Allocate(size_t size, size_t alignment = 256);
 
+	void Deallocate(FenceTracker fenceTracker);
+
 private:
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> sm_pageManagerMap;
 	static const std::unordered_map<D3D12_HEAP_TYPE, size_t> sm_kPageSizeMap;
