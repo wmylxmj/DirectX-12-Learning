@@ -86,7 +86,7 @@ std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(s
 		nullptr,
 		IID_PPV_ARGS(&pResource)));
 
-	return std::make_unique<LinearAllocatorPage>(pResource, resourceState);
+	return std::make_unique<LinearAllocatorPage>(pResource.Get(), resourceState);
 }
 
 LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
