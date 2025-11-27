@@ -27,7 +27,7 @@ private:
 	std::mutex m_mutex;
 
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
-	std::queue<DescriptorHeap*> m_retiredDescriptorHeaps;
+	std::queue< std::pair<FenceTracker, DescriptorHeap*>> m_retiredDescriptorHeaps;
 	std::queue<DescriptorHeap*> m_availableDescriptorHeaps;
 };
 
