@@ -68,6 +68,11 @@ uint64_t CommandQueue::GetCurrentFenceValue() const
 	return m_fenceValue;
 }
 
+D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
+{
+	return m_kCommandListType;
+}
+
 uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList)
 {
 	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
