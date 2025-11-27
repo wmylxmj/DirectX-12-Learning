@@ -195,7 +195,7 @@ LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType
 
 	if (!sm_pageManagerMap.contains(pageManagerKey))
 	{
-		sm_pageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice, heapType, sm_kPageSizeMap.at(heapType)));
+		sm_pageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice.Get(), heapType, sm_kPageSizeMap.at(heapType)));
 	}
 
 	m_pPageManager = sm_pageManagerMap.at(pageManagerKey).get();
