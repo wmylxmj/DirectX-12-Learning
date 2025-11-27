@@ -93,17 +93,9 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
-	while (!m_retiredPages.empty()) {
-		std::pair<FenceTracker, LinearAllocatorPage*>& pair = m_retiredPages.front();
-
-		if (pair.first.ArePendingFencesCompleted())
-		{
-			m_availablePages.push(pair.second);
-			m_retiredPages.pop();
-		}
-		else {
-			break;
-		}
+	while (!m_retiredPages.empty() && m_retiredPages.front().first.ArePendingFencesCompleted()) {
+		m_availablePages.push(m_retiredPages.front().second);
+		m_retiredPages.pop();
 	}
 
 	LinearAllocatorPage* pagePtr = nullptr;
