@@ -2,8 +2,7 @@
 
 #include "PrecompiledHeader.h"
 #include "DescriptorHeap.h"
-#include "Fence.h"
-#include "CommandQueue.h"
+#include "CommandQueueManager.h"
 
 #include <mutex>
 #include <unordered_map>
@@ -21,13 +20,11 @@ public:
 	void RecordDescriptorHeapsFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<DescriptorHeap*>& descriptorHeaps);
 
 private:
+	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const uint32_t m_kNumDescriptorsPerHeap;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 
 	std::mutex m_mutex;
-
-	// 记录每个命令队列的Fence对象
-	std::unordered_map<uint64_t, std::unique_ptr<Fence>> m_fenceMap;
 
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
 	std::queue<DescriptorHeap*> m_retiredDescriptorHeaps;
