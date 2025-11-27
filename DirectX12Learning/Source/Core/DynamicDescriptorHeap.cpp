@@ -1,6 +1,9 @@
 #include "DynamicDescriptorHeap.h"
 
-DescriptorHeapManager::DescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap) : m_kDescriptorHeapType(descriptorHeapType), m_kNumDescriptorsPerHeap(numDescriptorsPerHeap)
+DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap) :
+	m_pDevice(pDevice),
+	m_kDescriptorHeapType(descriptorHeapType),
+	m_kNumDescriptorsPerHeap(numDescriptorsPerHeap)
 {
 }
 
