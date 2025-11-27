@@ -21,9 +21,8 @@ public:
 	void WaitForFenceValue(uint64_t fenceValue);
 	void WaitForIdle();
 
-	ID3D12CommandQueue* GetCommandQueue() const;
-	uint64_t GetCurrentFenceValue() const;
 	D3D12_COMMAND_LIST_TYPE GetCommandListType() const;
+	ID3D12CommandQueue* GetCommandQueue() const;
 
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
