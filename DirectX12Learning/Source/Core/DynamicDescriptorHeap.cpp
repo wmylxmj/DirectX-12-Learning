@@ -7,7 +7,7 @@ DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRI
 {
 }
 
-DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap(Microsoft::WRL::ComPtr<ID3D12Device> pDevice)
+DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
