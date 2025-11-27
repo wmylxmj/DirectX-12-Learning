@@ -11,25 +11,9 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
-	while (!m_retiredDescriptorHeaps.empty()) {
-		DescriptorHeap* pDescriptorHeap = m_retiredDescriptorHeaps.front();
-
-		// 检测围栏是否已完成
-		bool fencesCompleted = true;
-		for (auto& pendingFence : pDescriptorHeap->m_pendingFences) {
-			if (!m_fenceMap[pendingFence.first]->IsFenceValueCompleted(pendingFence.second)) {
-				fencesCompleted = false;
-				break;
-			}
-		}
-
-		if (fencesCompleted) {
-			m_availableDescriptorHeaps.push(m_retiredDescriptorHeaps.front());
-			m_retiredDescriptorHeaps.pop();
-		}
-		else {
-			break;
-		}
+	while (!m_retiredDescriptorHeaps.empty() && m_retiredDescriptorHeaps.front().first.ArePendingFencesCompleted()) {
+		m_availableDescriptorHeaps.push(m_retiredDescriptorHeaps.front().second);
+		m_retiredDescriptorHeaps.pop();
 	}
 
 	DescriptorHeap* descriptorHeapPtr = nullptr;
@@ -39,7 +23,7 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 		m_availableDescriptorHeaps.pop();
 	}
 	else {
-		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(pDevice, m_kDescriptorHeapType, m_kNumDescriptorsPerHeap);
+		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, m_kNumDescriptorsPerHeap);
 		m_descriptorHeapPool.push_back(std::move(descriptorHeap));
 		descriptorHeapPtr = m_descriptorHeapPool.back().get();
 	}
