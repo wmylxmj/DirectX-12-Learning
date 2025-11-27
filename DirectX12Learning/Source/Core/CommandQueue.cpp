@@ -58,6 +58,11 @@ void CommandQueue::WaitForIdle()
 	WaitForFenceValue(IncrementFenceValue());
 }
 
+D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
+{
+	return m_kCommandListType;
+}
+
 ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 {
 	return m_pCommandQueue.Get();
@@ -66,11 +71,6 @@ ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 uint64_t CommandQueue::GetCurrentFenceValue() const
 {
 	return m_fenceValue;
-}
-
-D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
-{
-	return m_kCommandListType;
 }
 
 uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList)
