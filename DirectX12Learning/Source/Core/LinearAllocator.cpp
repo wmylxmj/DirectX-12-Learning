@@ -137,17 +137,9 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
-	while (!m_deletionQueue.empty()) {
-		std::pair<FenceTracker, LinearAllocatorPage*>& pair = m_deletionQueue.front();
-
-		if (pair.first.ArePendingFencesCompleted())
-		{
-			m_largePagePtrMap.erase(pair.second);
-			m_deletionQueue.pop();
-		}
-		else {
-			break;
-		}
+	while (!m_deletionQueue.empty() && m_deletionQueue.front().first.ArePendingFencesCompleted()) {
+		m_largePagePtrMap.erase(m_deletionQueue.front().second);
+		m_deletionQueue.pop();
 	}
 
 	for (auto& page : pages) {
