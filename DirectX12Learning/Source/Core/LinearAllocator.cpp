@@ -246,10 +246,10 @@ void LinearAllocator::Deallocate(FenceTracker fenceTracker)
 		m_currentOffset = 0;
 	}
 
-	sm_pageManagerMap[m_kHeapType]->DiscardGeneralPages(m_retiredPages);
+	m_pPageManager->DiscardGeneralPages(fenceTracker, m_retiredPages);
 	m_retiredPages.clear();
 
-	sm_pageManagerMap[m_kHeapType]->DiscardLargePages(m_largePageList);
+	m_pPageManager->DiscardLargePages(fenceTracker, m_largePageList);
 	m_largePageList.clear();
 }
 
