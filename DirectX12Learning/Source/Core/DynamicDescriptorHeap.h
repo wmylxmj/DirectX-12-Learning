@@ -17,8 +17,6 @@ public:
 	DescriptorHeap* RequestDescriptorHeap();
 	void DiscardDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps);
 
-	void RecordDescriptorHeapsFence(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, const CommandQueue& commandQueue, const std::vector<DescriptorHeap*>& descriptorHeaps);
-
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const uint32_t m_kNumDescriptorsPerHeap;
