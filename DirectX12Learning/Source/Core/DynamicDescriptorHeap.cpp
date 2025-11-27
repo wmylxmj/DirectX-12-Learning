@@ -19,7 +19,6 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 	DescriptorHeap* descriptorHeapPtr = nullptr;
 	if (!m_availableDescriptorHeaps.empty()) {
 		descriptorHeapPtr = m_availableDescriptorHeaps.front();
-		descriptorHeapPtr->m_pendingFences.clear();
 		m_availableDescriptorHeaps.pop();
 	}
 	else {
