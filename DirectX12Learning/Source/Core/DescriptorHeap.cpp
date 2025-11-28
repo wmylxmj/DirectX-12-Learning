@@ -1,6 +1,6 @@
 #include "DescriptorHeap.h"
 
-DescriptorHeap::DescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors) :
+DescriptorHeap::DescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags) :
 	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType),
 	m_kNumDescriptors(numDescriptors),
