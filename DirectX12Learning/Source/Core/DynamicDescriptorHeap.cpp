@@ -22,7 +22,7 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 		m_availableDescriptorHeaps.pop();
 	}
 	else {
-		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, m_kNumDescriptorsPerHeap);
+		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, m_kNumDescriptorsPerHeap, m_kDescriptorHeapFlags);
 		m_descriptorHeapPool.push_back(std::move(descriptorHeap));
 		descriptorHeapPtr = m_descriptorHeapPool.back().get();
 	}
