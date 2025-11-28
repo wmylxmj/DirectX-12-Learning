@@ -3,6 +3,7 @@
 #include "PrecompiledHeader.h"
 #include "DescriptorHeap.h"
 #include "CommandQueueManager.h"
+#include "../Utilities/Hash.h"
 
 #include <mutex>
 #include <unordered_map>
@@ -31,4 +32,7 @@ private:
 
 class DynamicDescriptorHeap
 {
+public:
+
+private:
 };
