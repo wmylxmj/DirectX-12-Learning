@@ -35,6 +35,5 @@ class DynamicDescriptorHeap
 public:
 
 private:
-	// ÃèÊö·û¶ÑMap
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> s_descriptorHeapManagerMap;
 };
