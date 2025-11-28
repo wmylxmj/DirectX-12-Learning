@@ -9,6 +9,8 @@ class DescriptorHeap
 public:
 	DescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors);
 
+	DescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptors, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags);
+
 	DescriptorHandle operator[](uint32_t index) const;
 
 private:
