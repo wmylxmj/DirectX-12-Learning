@@ -22,6 +22,7 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const uint32_t m_kNumDescriptorsPerHeap;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
+	const D3D12_DESCRIPTOR_HEAP_FLAGS m_kDescriptorHeapFlags;
 
 	std::mutex m_mutex;
 
