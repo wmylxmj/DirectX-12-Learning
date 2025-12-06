@@ -48,4 +48,16 @@ DynamicDescriptorHeap::DynamicDescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRI
 	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType)
 {
+	LUID deviceLuid = pDevice->GetAdapterLuid();
+
+	std::vector<uint8_t> descriptorHeapManagerKey(
+		reinterpret_cast<uint8_t*>(&deviceLuid),
+		reinterpret_cast<uint8_t*>(&deviceLuid) + sizeof(LUID)
+	);
+
+	descriptorHeapManagerKey.insert(
+		descriptorHeapManagerKey.end(),
+		reinterpret_cast<uint8_t*>(&descriptorHeapType),
+		reinterpret_cast<uint8_t*>(&descriptorHeapType) + sizeof(D3D12_DESCRIPTOR_HEAP_TYPE)
+	);
 }
