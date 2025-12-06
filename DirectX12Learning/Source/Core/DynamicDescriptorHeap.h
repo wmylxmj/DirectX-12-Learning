@@ -38,5 +38,6 @@ public:
 private:
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> sm_descriptorHeapManagerMap;
 
+	DescriptorHeapManager* m_pDescriptorHeapManager;
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 };
