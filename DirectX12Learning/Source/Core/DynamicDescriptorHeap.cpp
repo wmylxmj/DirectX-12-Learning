@@ -60,4 +60,15 @@ DynamicDescriptorHeap::DynamicDescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRI
 		reinterpret_cast<uint8_t*>(&descriptorHeapType),
 		reinterpret_cast<uint8_t*>(&descriptorHeapType) + sizeof(D3D12_DESCRIPTOR_HEAP_TYPE)
 	);
+
+	if (!sm_descriptorHeapManagerMap.contains(descriptorHeapManagerKey)) {
+		sm_descriptorHeapManagerMap[descriptorHeapManagerKey] = std::make_unique<DescriptorHeapManager>(
+			pDevice,
+			descriptorHeapType,
+			sm_kNumDescriptorsPerHeap,
+			D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE
+		);
+	}
+
+	m_pDescriptorHeapManager = sm_descriptorHeapManagerMap[descriptorHeapManagerKey].get();
 }
