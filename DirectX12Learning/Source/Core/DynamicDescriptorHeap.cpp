@@ -41,6 +41,7 @@ void DescriptorHeapManager::DiscardDescriptorHeaps(FenceTracker fenceTracker, st
 	}
 }
 
+std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> DynamicDescriptorHeap::sm_descriptorHeapManagerMap;
 const uint32_t DynamicDescriptorHeap::sm_kNumDescriptorsPerHeap = 1024;
 
 DynamicDescriptorHeap::DynamicDescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
