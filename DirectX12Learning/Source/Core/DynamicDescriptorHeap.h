@@ -38,6 +38,7 @@ public:
 
 private:
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> sm_descriptorHeapManagerMap;
+	static const uint32_t sm_kNumDescriptorsPerHeap;
 
 	DescriptorHeapManager* m_pDescriptorHeapManager;
 
