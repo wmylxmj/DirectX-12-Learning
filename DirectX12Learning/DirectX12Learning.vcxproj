@@ -164,6 +164,7 @@
     <ClInclude Include="Source\Core\d3dx12.h">
       <DeploymentContent>false</DeploymentContent>
     </ClInclude>
+    <ClInclude Include="Source\Core\Device.h" />
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
     <ClInclude Include="Source\Core\LinearAllocator.h" />
     <ClInclude Include="Source\Core\Resource.h" />
