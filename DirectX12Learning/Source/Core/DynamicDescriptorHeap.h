@@ -34,6 +34,7 @@ private:
 class DynamicDescriptorHeap
 {
 public:
+	DynamicDescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType);
 
 private:
 	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> sm_descriptorHeapManagerMap;
