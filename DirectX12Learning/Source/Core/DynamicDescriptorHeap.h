@@ -36,7 +36,7 @@ class DynamicDescriptorHeap
 public:
 
 private:
-	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> s_descriptorHeapManagerMap;
+	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> sm_descriptorHeapManagerMap;
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 };
