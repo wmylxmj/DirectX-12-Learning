@@ -40,3 +40,7 @@ void DescriptorHeapManager::DiscardDescriptorHeaps(FenceTracker fenceTracker, st
 		m_retiredDescriptorHeaps.push(std::make_pair(fenceTracker, descriptorHeap));
 	}
 }
+
+DynamicDescriptorHeap::DynamicDescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType)
+{
+}
