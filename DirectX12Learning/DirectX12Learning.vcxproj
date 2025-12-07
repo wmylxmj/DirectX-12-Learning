@@ -139,6 +139,7 @@
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
     <ClCompile Include="Source\Core\CommandListPool.cpp" />
     <ClCompile Include="Source\Core\CommandQueue.cpp" />
+    <ClCompile Include="Source\Core\Device.cpp" />
     <ClCompile Include="Source\Core\DynamicDescriptorHeap.cpp" />
     <ClCompile Include="Source\Core\LinearAllocator.cpp" />
     <ClCompile Include="Source\Core\PipelineState.cpp" />
