@@ -1,6 +1,9 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
+#include "CommandAllocatorPool.h"
+
+#include <unordered_map>
 
 class Device
 {
@@ -9,4 +12,6 @@ public:
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
+
+	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandAllocatorPool>> m_commandAllocatorPoolMap;
 };
