@@ -15,7 +15,6 @@ private:
 
 	const uint64_t m_commandQueueId;
 
-private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
@@ -25,10 +24,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Fence> m_pFence;
 	uint64_t m_fenceValue;
 	uint64_t m_completedFenceValueCache;
-
-	CommandAllocatorPool m_commandAllocatorPool;
-	CommandListPool m_commandListPool;
-};
 };
 
 class CommandQueueManager
