@@ -15,6 +15,8 @@ public:
 
 	ID3D12CommandAllocator* RequestCommandAllocator();
 
+	void DiscardCommandAllocator(FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator);
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
