@@ -11,6 +11,8 @@ class CommandAllocatorPool
 {
 public:
 
+	CommandAllocatorPool(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
+
 	ID3D12CommandAllocator* RequestCommandAllocator(uint64_t completedFenceValue);
 
 private:
