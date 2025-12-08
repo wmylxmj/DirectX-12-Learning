@@ -48,7 +48,7 @@ ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t c
 	return pAllocator;
 }
 
-void CommandAllocatorPool::DiscardCommandAllocator(uint64_t fenceValueForReset, ID3D12CommandAllocator* pCommandAllocator)
+void CommandAllocatorPool::DiscardCommandAllocator(FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator)
 {
 	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_poolMutex);
