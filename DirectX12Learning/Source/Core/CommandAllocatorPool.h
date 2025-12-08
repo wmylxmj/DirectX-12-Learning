@@ -10,6 +10,7 @@
 class CommandAllocatorPool
 {
 public:
+	CommandAllocatorPool(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
