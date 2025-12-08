@@ -6,6 +6,11 @@
 #include <shared_mutex>
 #include <atomic>
 
+class CommandQueue
+{
+public:
+};
+
 class CommandQueueManager
 {
 	friend class FenceTracker;
