@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
+#include "CommandQueueManager.h"
 
 #include <vector>
 #include <queue>
