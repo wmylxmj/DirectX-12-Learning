@@ -53,5 +53,5 @@ void CommandAllocatorPool::DiscardCommandAllocator(FenceTracker fenceTracker, ID
 	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_poolMutex);
 	// 归还分配器
-	m_retiredCommandAllocators.push(std::make_pair(fenceValueForReset, pCommandAllocator));
+	m_retiredCommandAllocators.push(std::make_pair(fenceTracker, pCommandAllocator));
 }
