@@ -11,9 +11,6 @@ public:
 	Device(IUnknown* pAdapter);
 
 	ID3D12CommandAllocator* RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType);
-	{
-		return m_commandAllocatorPoolMap[commandListType]->RequestCommandAllocator();
-	}
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
