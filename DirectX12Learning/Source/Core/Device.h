@@ -10,6 +10,8 @@ class Device
 public:
 	Device(IUnknown* pAdapter);
 
+	ID3D12Device* GetDevice();
+
 	ID3D12CommandAllocator* RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType);
 
 private:
