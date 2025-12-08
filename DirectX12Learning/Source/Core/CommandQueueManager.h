@@ -9,6 +9,9 @@
 class CommandQueue
 {
 public:
+
+private:
+	const uint64_t m_commandQueueId;
 };
 
 class CommandQueueManager
