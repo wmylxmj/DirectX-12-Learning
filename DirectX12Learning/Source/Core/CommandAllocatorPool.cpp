@@ -6,7 +6,7 @@ CommandAllocatorPool::CommandAllocatorPool(ID3D12Device* pDevice, D3D12_COMMAND_
 {
 }
 
-ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator(uint64_t completedFenceValue)
+ID3D12CommandAllocator* CommandAllocatorPool::RequestCommandAllocator()
 {
 	// 互斥锁，确保线程安全
 	std::lock_guard<std::mutex> lockGuard(m_poolMutex);
