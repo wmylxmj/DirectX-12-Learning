@@ -23,7 +23,7 @@ private:
 	static std::unordered_map<uint64_t, std::unique_ptr<CommandQueue>> sm_commandQueueMap;
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
-	std::unordered_map<uint64_t, CommandQueue*> m_commandQueues;
+	std::unordered_map<uint64_t, CommandQueue*> m_owningCommandQueueMap;
 };
 
 // Î§À¸×·×ÙÆ÷
