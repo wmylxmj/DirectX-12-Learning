@@ -17,3 +17,8 @@ ID3D12CommandAllocator* Device::RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE 
 {
 	return m_commandAllocatorPoolMap[commandListType]->RequestCommandAllocator();
 }
+
+void Device::DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator)
+{
+	m_commandAllocatorPoolMap[commandListType]->DiscardCommandAllocator(fenceTracker, pCommandAllocator);
+}
