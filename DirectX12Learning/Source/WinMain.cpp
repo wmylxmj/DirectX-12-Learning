@@ -1,5 +1,6 @@
 #include "Core/PrecompiledHeader.h"
-#include "Core/CommandQueue.h"
+#include "Core/Device.h"
+#include "Core/CommandQueueManager.h"
 #include "Core/RootSignature.h"
 #include "Core/Camera.h"
 
@@ -22,13 +23,13 @@ struct Vertex
 };
 
 // ----------------全局变量------------------
+std::unique_ptr<Device> g_device;
 Camera g_camera;
 
 uint32_t g_viewportWidth = 640;
 uint32_t g_viewportHeight = 480;
 
 HWND g_hMainWnd;
-Microsoft::WRL::ComPtr<ID3D12Device2> g_device;
 
 // 命令队列系统
 std::unique_ptr<CommandQueue> g_pDirectCommandQueue;
@@ -137,11 +138,7 @@ bool InitDirect3D() {
 	CHECK_HRESULT(CreateDXGIFactory2(createFactoryFlags, IID_PPV_ARGS(&dxgiFactory)));
 
 	// 创建D3D设备 To do: 不满足条件时使用WARP设备
-	CHECK_HRESULT(D3D12CreateDevice(
-		nullptr, // 默认适配器
-		D3D_FEATURE_LEVEL_11_0,
-		IID_PPV_ARGS(&g_device)
-	));
+	g_device = std::make_unique<Device>(nullptr);
 
 	// 创建命令队列系统
 	g_pDirectCommandQueue = std::make_unique<CommandQueue>(g_device.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT);
