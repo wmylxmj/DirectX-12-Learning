@@ -8,6 +8,7 @@
 
 class CommandQueue
 {
+	friend class CommandQueueManager;
 public:
 	uint64_t IncrementFenceValue();
 
