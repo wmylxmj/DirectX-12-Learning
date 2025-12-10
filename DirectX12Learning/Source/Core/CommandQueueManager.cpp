@@ -74,7 +74,7 @@ uint64_t CommandQueueManager::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE command
 	std::unique_lock<std::shared_mutex> uniqueLock(sm_commandQueueMapMutex);
 
 	uint64_t commandQueueId = sm_nextCommandQueueId++;
-	sm_commandQueueMap.emplace(commandQueueId, std::make_unique<CommandQueue>(commandQueueId, m_pDevice.Get(), commandListType));
+	sm_commandQueueMap.emplace(commandQueueId, std::unique_ptr<CommandQueue>(new CommandQueue(commandQueueId, m_pDevice.Get(), commandListType)));
 	m_owningCommandQueueMap.emplace(commandQueueId, sm_commandQueueMap.at(commandQueueId).get());
 
 	return commandQueueId;
