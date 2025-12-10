@@ -9,6 +9,7 @@
 class CommandQueue
 {
 public:
+	uint64_t IncrementFenceValue();
 
 private:
 	CommandQueue(uint64_t commandQueueId, ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
