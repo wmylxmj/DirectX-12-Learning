@@ -21,9 +21,6 @@
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\CommandQueue.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\CommandListPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\PrecompiledHeader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\CommandQueue.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Resource.h">
