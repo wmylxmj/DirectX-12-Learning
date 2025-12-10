@@ -11,6 +11,20 @@ class CommandQueue
 public:
 	uint64_t IncrementFenceValue();
 
+	bool IsFenceValueCompleted(uint64_t fenceValue);
+
+	void StallForAnotherQueueFence(const CommandQueue& queue, uint64_t fenceValue);
+	void StallForAnotherQueueCompletion(const CommandQueue& queue);
+
+	void WaitForFenceValue(uint64_t fenceValue);
+	void WaitForIdle();
+
+	D3D12_COMMAND_LIST_TYPE GetCommandListType() const;
+	ID3D12CommandQueue* GetCommandQueue() const;
+	uint64_t GetCurrentFenceValue() const;
+
+	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
+
 private:
 	CommandQueue(uint64_t commandQueueId, ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
 
