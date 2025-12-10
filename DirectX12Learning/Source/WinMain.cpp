@@ -368,11 +368,11 @@ bool AppInit() {
 	cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	cbvHeapDesc.NodeMask = 0;
-	CHECK_HRESULT(g_device->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&g_cbvDescriptorHeap)));
+	CHECK_HRESULT(g_device->GetDevice()->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&g_cbvDescriptorHeap)));
 
 	// 建立常量缓冲区
 	UINT cbByteSize = (sizeof(ObjectConstants) + 255) & ~255;
-	CHECK_HRESULT(g_device->CreateCommittedResource(
+	CHECK_HRESULT(g_device->GetDevice()->CreateCommittedResource(
 		&RvalueToLvalue(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD)),
 		D3D12_HEAP_FLAG_NONE,
 		&RvalueToLvalue(CD3DX12_RESOURCE_DESC::Buffer(cbByteSize)),
@@ -484,7 +484,7 @@ bool AppInit() {
 	CopyMemory(IndexBufferCPU->GetBufferPointer(), indices.data(), ibByteSize);
 
 	g_vertexBufferGPU = CreateDefaultBuffer(
-		g_device.Get(),
+		g_device->GetDevice(),
 		cmdList.Get(),
 		vertices.data(),
 		vbByteSize,
@@ -492,7 +492,7 @@ bool AppInit() {
 	);
 
 	g_indexBufferGPU = CreateDefaultBuffer(
-		g_device.Get(),
+		g_device->GetDevice(),
 		cmdList.Get(),
 		indices.data(),
 		ibByteSize,
@@ -534,7 +534,7 @@ bool AppInit() {
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleDesc.Quality = 0;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // 深度/模板缓冲区的格式
-	CHECK_HRESULT(g_device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
+	CHECK_HRESULT(g_device->GetDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
 
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
