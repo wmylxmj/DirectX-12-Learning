@@ -173,7 +173,7 @@ bool InitDirect3D() {
 	rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	rtvHeapDesc.NodeMask = 0;
-	CHECK_HRESULT(g_device->CreateDescriptorHeap(
+	CHECK_HRESULT(g_device->GetDevice()->CreateDescriptorHeap(
 		&rtvHeapDesc,
 		IID_PPV_ARGS(g_rtvDescriptorHeap.GetAddressOf())
 	));
@@ -183,18 +183,18 @@ bool InitDirect3D() {
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 	dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	dsvHeapDesc.NodeMask = 0;
-	CHECK_HRESULT(g_device->CreateDescriptorHeap(
+	CHECK_HRESULT(g_device->GetDevice()->CreateDescriptorHeap(
 		&dsvHeapDesc,
 		IID_PPV_ARGS(g_dsvDescriptorHeap.GetAddressOf())
 	));
 
 	// 创建 RTV
-	g_rtvDescriptorSize = g_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	g_rtvDescriptorSize = g_device->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(g_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 	for (int i = 0; i < k_swapChainBufferCount; ++i) {
 		// 获得交换链中的后台缓冲区
 		CHECK_HRESULT(g_swapChain->GetBuffer(i, IID_PPV_ARGS(&g_swapChainBuffers[i])));
-		g_device->CreateRenderTargetView(g_swapChainBuffers[i].Get(), nullptr, rtvHeapHandle);
+		g_device->GetDevice()->CreateRenderTargetView(g_swapChainBuffers[i].Get(), nullptr, rtvHeapHandle);
 		rtvHeapHandle.Offset(1, g_rtvDescriptorSize);
 	}
 
@@ -218,7 +218,7 @@ bool InitDirect3D() {
 	clearValue.DepthStencil.Stencil = 0;
 	// 创建深度/模板缓冲区
 	CD3DX12_HEAP_PROPERTIES heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-	CHECK_HRESULT(g_device->CreateCommittedResource(
+	CHECK_HRESULT(g_device->GetDevice()->CreateCommittedResource(
 		&heapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&dsvBufferDesc,
@@ -232,9 +232,9 @@ bool InitDirect3D() {
 	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	dsvDesc.Texture2D.MipSlice = 0;
-	g_device->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	g_device->GetDevice()->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator();
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_device->RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT);
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 	// 将深度/模板缓冲区状态转为深度缓冲区
@@ -249,7 +249,9 @@ bool InitDirect3D() {
 	// 发送命令
 	g_pDirectCommandQueue->ExecuteCommandList(cmdList.Get());
 	g_pDirectCommandQueue->DiscardCommandList(cmdList.Get());
-	g_pDirectCommandQueue->DiscardCommandAllocator(g_pDirectCommandQueue->GetCurrentFenceValue(), cmdAllocator.Get());
+	FenceTracker fenceTracker;
+	fenceTracker.SetPendingFenceValue(g_pDirectCommandQueue, g_pDirectCommandQueue->IncrementFenceValue());
+	g_device->DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, fenceTracker, cmdAllocator.Get());
 	g_pDirectCommandQueue->WaitForIdle();
 
 	return true;
@@ -356,7 +358,7 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 }
 
 bool AppInit() {
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator();
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_device->RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT);
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 
@@ -384,7 +386,7 @@ bool AppInit() {
 	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
 	cbvDesc.BufferLocation = g_constantBuffer->GetGPUVirtualAddress();
 	cbvDesc.SizeInBytes = CalcConstantBufferByteSize(sizeof(ObjectConstants));
-	g_device->CreateConstantBufferView(
+	g_device->GetDevice()->CreateConstantBufferView(
 		&cbvDesc,
 		g_cbvDescriptorHeap->GetCPUDescriptorHandleForHeapStart()
 	);
@@ -408,7 +410,7 @@ bool AppInit() {
 
 	g_pRootSignature->operator[](0) = rootParameter;
 
-	g_pRootSignature->CreateRootSignature(g_device.Get(), D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	g_pRootSignature->CreateRootSignature(g_device->GetDevice(), D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	// 编译着色器
 	Microsoft::WRL::ComPtr<ID3DBlob> vsByteCode = CompileShader(L"Source\\Shaders\\color.hlsl", nullptr, "VS", "vs_5_1");
@@ -558,7 +560,7 @@ void Update() {
 }
 
 void Render() {
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_pDirectCommandQueue->RequestCommandAllocator();
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_device->RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT);
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_pDirectCommandQueue->RequestCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), g_pso.Get()));
 
