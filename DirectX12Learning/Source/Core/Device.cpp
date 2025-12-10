@@ -8,6 +8,8 @@ Device::Device(IUnknown* pAdapter)
 		IID_PPV_ARGS(&m_pDevice)
 	));
 
+	m_pCommandQueueManager = std::make_unique<CommandQueueManager>(m_pDevice.Get());
+
 	m_commandAllocatorPoolMap.emplace(D3D12_COMMAND_LIST_TYPE_DIRECT, std::make_unique<CommandAllocatorPool>(m_pDevice.Get(), D3D12_COMMAND_LIST_TYPE_DIRECT));
 	m_commandAllocatorPoolMap.emplace(D3D12_COMMAND_LIST_TYPE_COMPUTE, std::make_unique<CommandAllocatorPool>(m_pDevice.Get(), D3D12_COMMAND_LIST_TYPE_COMPUTE));
 	m_commandAllocatorPoolMap.emplace(D3D12_COMMAND_LIST_TYPE_COPY, std::make_unique<CommandAllocatorPool>(m_pDevice.Get(), D3D12_COMMAND_LIST_TYPE_COPY));
