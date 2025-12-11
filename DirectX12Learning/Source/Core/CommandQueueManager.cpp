@@ -1,7 +1,7 @@
 #include "CommandQueueManager.h"
 
 CommandQueue::CommandQueue(uint64_t commandQueueId, ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType) :
-
+	m_kCommandQueueId(commandQueueId),
 	// static 变量定义
 	std::atomic_uint64_t CommandQueueManager::sm_nextCommandQueueId = 1;
 std::shared_mutex CommandQueueManager::sm_commandQueueMapMutex;
