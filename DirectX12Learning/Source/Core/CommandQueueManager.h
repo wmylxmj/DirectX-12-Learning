@@ -10,6 +10,8 @@ class CommandQueue
 {
 	friend class CommandQueueManager;
 public:
+	// 增加围栏值并返回新值
+	uint64_t IncrementFenceValue();
 
 	bool IsFenceValueCompleted(uint64_t fenceValue);
 
