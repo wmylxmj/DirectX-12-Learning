@@ -29,8 +29,7 @@ public:
 private:
 	CommandQueue(uint64_t commandQueueId, ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE commandListType);
 
-	const uint64_t m_commandQueueId;
-
+	const uint64_t m_kCommandQueueId;
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_COMMAND_LIST_TYPE m_kCommandListType;
 
