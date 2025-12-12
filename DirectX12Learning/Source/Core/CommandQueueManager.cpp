@@ -69,6 +69,11 @@ uint64_t CommandQueue::GetCurrentFenceValue() const
 
 Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandQueue::CreateCommandList(ID3D12CommandAllocator* pCommandAllocator)
 {
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> pNewCommandList;
+	CHECK_HRESULT(m_pDevice->CreateCommandList(1, m_kCommandListType, pCommandAllocator, nullptr, IID_PPV_ARGS(&pNewCommandList)));
+	CHECK_HRESULT(pNewCommandList->Close());
+
+	return pNewCommandList;
 	return Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>();
 }
 
