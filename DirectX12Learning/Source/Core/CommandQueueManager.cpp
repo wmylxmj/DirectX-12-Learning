@@ -57,11 +57,6 @@ void CommandQueue::WaitForIdle()
 	WaitForFenceValue(IncrementFenceValue());
 }
 
-D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
-{
-	return m_kCommandListType;
-}
-
 ID3D12CommandQueue* CommandQueue::GetCommandQueue() const
 {
 	return m_pCommandQueue.Get();
