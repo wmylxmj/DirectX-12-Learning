@@ -25,6 +25,7 @@ public:
 	uint64_t GetCurrentFenceValue() const;
 
 	// 根据命令分配器创建命令列表
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CreateCommandList(ID3D12CommandAllocator* pCommandAllocator);
 
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
