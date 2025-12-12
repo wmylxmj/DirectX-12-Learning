@@ -74,7 +74,6 @@ Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> CommandQueue::CreateCommandLis
 	CHECK_HRESULT(pNewCommandList->Close());
 
 	return pNewCommandList;
-	return Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>();
 }
 
 uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList)
