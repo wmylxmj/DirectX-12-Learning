@@ -88,6 +88,16 @@ uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandLis
 	return m_fenceValue;
 }
 
+uint64_t CommandQueue::GetCommandQueueId() const
+{
+	return m_kCommandQueueId;
+}
+
+D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
+{
+	return m_kCommandListType;
+}
+
 // static 变量定义
 std::atomic_uint64_t CommandQueueManager::sm_nextCommandQueueId = 1;
 std::shared_mutex CommandQueueManager::sm_commandQueueMapMutex;
