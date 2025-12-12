@@ -24,6 +24,8 @@ public:
 	ID3D12CommandQueue* GetCommandQueue() const;
 	uint64_t GetCurrentFenceValue() const;
 
+	// 根据命令分配器创建命令列表
+
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
 private:
