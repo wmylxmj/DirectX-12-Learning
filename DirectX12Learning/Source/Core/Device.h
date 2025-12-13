@@ -6,6 +6,7 @@
 
 #include <unordered_map>
 #include <mutex>
+#include "LinearAllocator.h"
 
 class Device
 {
