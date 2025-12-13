@@ -4,6 +4,7 @@
 #include "CommandAllocatorPool.h"
 
 #include <unordered_map>
+#include <mutex>
 
 class Device
 {
