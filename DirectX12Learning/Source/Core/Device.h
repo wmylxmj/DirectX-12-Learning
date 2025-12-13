@@ -17,8 +17,6 @@ public:
 	uint64_t CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 	CommandQueue& GetCommandQueue(uint64_t commandQueueId);
 
-private:
-
 	ID3D12CommandAllocator* RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType);
 	void DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator);
 
