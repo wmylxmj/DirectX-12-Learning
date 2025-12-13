@@ -14,9 +14,6 @@ public:
 
 	ID3D12Device* GetDevice() const;
 
-public:
-	CommandQueueManager(ID3D12Device* pDevice);
-
 	uint64_t CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType);
 	CommandQueue& GetCommandQueue(uint64_t commandQueueId);
 
