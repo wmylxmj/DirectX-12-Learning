@@ -2,6 +2,7 @@
 
 #include "PrecompiledHeader.h"
 #include "CommandAllocatorPool.h"
+#include "../Utilities/Hash.h"
 
 #include <unordered_map>
 #include <mutex>
