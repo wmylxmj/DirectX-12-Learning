@@ -17,6 +17,8 @@ public:
 	ID3D12CommandAllocator* RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType);
 	void DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator);
 
+	// 创建根签名
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 
