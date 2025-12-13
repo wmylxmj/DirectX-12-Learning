@@ -30,4 +30,6 @@ private:
 	std::unique_ptr<CommandQueueManager> m_pCommandQueueManager;
 
 	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandAllocatorPool>> m_commandAllocatorPoolMap;
+
+	std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> m_rootSignatureAllocatorMap;
 };
