@@ -28,7 +28,7 @@ uint64_t Device::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
 
 CommandQueue& Device::GetCommandQueue(uint64_t commandQueueId)
 {
-	// TODO: 在此处插入 return 语句
+	return m_pCommandQueueManager->GetCommandQueue(commandQueueId);
 }
 
 ID3D12CommandAllocator* Device::RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType)
