@@ -30,6 +30,4 @@ private:
 	std::unique_ptr<CommandQueueManager> m_pCommandQueueManager;
 
 	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandAllocatorPool>> m_commandAllocatorPoolMap;
-
-	std::mutex m_rootSignatureCacheMutex;
 };
