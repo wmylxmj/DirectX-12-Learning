@@ -19,6 +19,8 @@ public:
 
 	// 创建根签名
 
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc, D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 
