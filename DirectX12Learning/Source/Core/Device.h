@@ -30,6 +30,8 @@ private:
 
 	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandAllocatorPool>> m_commandAllocatorPoolMap;
 
+	std::mutex m_rootSignatureCacheMutex;
+
 	// 用于线性分配器
 	std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> m_linearAllocatorPageManagerMap;
 };
