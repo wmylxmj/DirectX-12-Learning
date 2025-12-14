@@ -30,7 +30,6 @@ private:
 
 	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandAllocatorPool>> m_commandAllocatorPoolMap;
 
-	std::mutex m_rootSignatureCacheMutex;
 	std::unordered_map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>, Hash<std::vector<uint8_t>>>
 
 		// 用于线性分配器
