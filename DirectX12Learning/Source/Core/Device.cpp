@@ -40,3 +40,8 @@ void Device::DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, Fe
 {
 	m_commandAllocatorPoolMap[commandListType]->DiscardCommandAllocator(fenceTracker, pCommandAllocator);
 }
+
+Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
+{
+	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
+}
