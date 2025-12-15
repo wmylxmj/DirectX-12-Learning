@@ -59,5 +59,7 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3
 		}
 	}
 
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> pRootSignature;
+
 	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
 }
