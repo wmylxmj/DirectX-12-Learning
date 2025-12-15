@@ -53,5 +53,13 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3
 		static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()) + pRootSignatureBlob->GetBufferSize()
 	);
 
+	{
+		std::lock_guard<std::mutex> lock(m_rootSignatureCacheMutex);
+		auto it = m_rootSignatureCache.find(rootSignatureCacheKey);
+		if (it != m_rootSignatureCache.end()) {
+			return it->second;
+		}
+	}
+
 	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
 }
