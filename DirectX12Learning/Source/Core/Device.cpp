@@ -48,8 +48,8 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3
 	CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
 
 	std::vector<uint8_t> rootSignatureCacheKey(
-		reinterpret_cast<const uint8_t*>(&deviceLuid),
-		reinterpret_cast<const uint8_t*>(&deviceLuid) + sizeof(LUID)
+		static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()),
+		static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()) + pRootSignatureBlob->GetBufferSize()
 	);
 
 	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
