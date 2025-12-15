@@ -68,7 +68,10 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3
 		IID_PPV_ARGS(&pRootSignature)
 	));
 
-	m_rootSignatureCache.emplace(rootSignatureCacheKey, pRootSignature);
+	{
+		std::lock_guard<std::mutex> lock(m_rootSignatureCacheMutex);
+		m_rootSignatureCache.emplace(rootSignatureCacheKey, pRootSignature);
+	}
 
 	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
 }
