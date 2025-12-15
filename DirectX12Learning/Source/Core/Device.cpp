@@ -73,5 +73,5 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3
 		m_rootSignatureCache.emplace(rootSignatureCacheKey, pRootSignature);
 	}
 
-	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
+	return pRootSignature;
 }
