@@ -43,8 +43,6 @@ void Device::DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, Fe
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
 {
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> pRootSignature;
-
 	Microsoft::WRL::ComPtr<ID3DBlob> pRootSignatureBlob, pErrorBlob;
 	CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
 
