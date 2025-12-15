@@ -60,6 +60,14 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3
 	}
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> pRootSignature;
+
+	CHECK_HRESULT(m_pDevice->CreateRootSignature(
+		0,
+		pRootSignatureBlob->GetBufferPointer(),
+		pRootSignatureBlob->GetBufferSize(),
+		IID_PPV_ARGS(&pRootSignature)
+	));
+
 	m_rootSignatureCache.emplace(rootSignatureCacheKey, pRootSignature);
 
 	return Microsoft::WRL::ComPtr<ID3D12RootSignature>();
