@@ -1,7 +1,6 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
-#include "../Utilities/Hash.h"
 
 #include <unordered_map>
 #include <mutex>
