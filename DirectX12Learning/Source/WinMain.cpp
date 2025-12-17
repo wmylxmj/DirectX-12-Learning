@@ -390,7 +390,7 @@ bool AppInit() {
 	);
 
 	// 创建根签名
-	g_pRootSignature = std::make_unique<RootSignature>(1);
+	g_pRootSignature = std::make_unique<RootSignature>(*g_device, 1);
 	// 创建根参数
 	RootParameter rootParameter;
 
@@ -408,7 +408,7 @@ bool AppInit() {
 
 	g_pRootSignature->operator[](0) = rootParameter;
 
-	g_pRootSignature->CreateRootSignature(g_device->GetDevice(), D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+	g_pRootSignature->CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
 	// 编译着色器
 	Microsoft::WRL::ComPtr<ID3DBlob> vsByteCode = CompileShader(L"Source\\Shaders\\color.hlsl", nullptr, "VS", "vs_5_1");
