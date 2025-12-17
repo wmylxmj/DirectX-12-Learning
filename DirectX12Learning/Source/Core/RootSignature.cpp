@@ -45,7 +45,7 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> RootSignature::GetRootSignature() co
 	return m_rootSignature;
 }
 
-void RootSignature::CreateRootSignature(ID3D12Device* pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags)
+void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
 {
 	LUID deviceLuid = pDevice->GetAdapterLuid();
 	// ¸ùÇ©Ãû»º´æ¼ü
