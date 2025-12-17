@@ -6,6 +6,8 @@
 #include <unordered_map>
 #include <mutex>
 
+class Device;
+
 class DescriptorRange : public CD3DX12_DESCRIPTOR_RANGE
 {
 public:
@@ -21,7 +23,7 @@ public:
 class RootSignature
 {
 public:
-	RootSignature(UINT numParameters, UINT numStaticSamplers = 0);
+	RootSignature(Device& device, UINT numParameters, UINT numStaticSamplers = 0);
 
 	void Reset(UINT numParameters, UINT numStaticSamplers = 0);
 
@@ -38,6 +40,8 @@ public:
 protected:
 	static std::mutex sm_rootSignatureCacheMutex;
 	static std::unordered_map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>, Hash<std::vector<uint8_t>>> sm_rootSignatureCache;
+
+	Device& m_device;
 
 	UINT m_numParameters;
 	UINT m_numStaticSamplers;
