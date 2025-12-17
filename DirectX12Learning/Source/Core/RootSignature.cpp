@@ -1,5 +1,7 @@
 #include "RootSignature.h"
 
+#include "Device.h"
+
 std::mutex RootSignature::sm_rootSignatureCacheMutex;
 std::unordered_map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>, Hash<std::vector<uint8_t>>> RootSignature::sm_rootSignatureCache;
 
@@ -47,13 +49,6 @@ Microsoft::WRL::ComPtr<ID3D12RootSignature> RootSignature::GetRootSignature() co
 
 void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
 {
-	LUID deviceLuid = pDevice->GetAdapterLuid();
-	// ¸ùÇ©Ãû»º´æ¼ü
-	std::vector<uint8_t> rootSignatureCacheKey(
-		reinterpret_cast<const uint8_t*>(&deviceLuid),
-		reinterpret_cast<const uint8_t*>(&deviceLuid) + sizeof(LUID)
-	);
-
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc;
 	rootSignatureDesc.NumParameters = m_numParameters;
 	rootSignatureDesc.pParameters = (const D3D12_ROOT_PARAMETER*)m_parameters.get();
@@ -84,37 +79,9 @@ void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
 				m_descriptorTableSize[i] += parameter.DescriptorTable.pDescriptorRanges[j].NumDescriptors;
 			}
 		}
-
-		Microsoft::WRL::ComPtr<ID3DBlob> pRootSignatureBlob, pErrorBlob;
-
-		CHECK_HRESULT(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &pRootSignatureBlob, &pErrorBlob));
-
-		rootSignatureCacheKey.insert(
-			rootSignatureCacheKey.end(),
-			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()),
-			static_cast<uint8_t*>(pRootSignatureBlob->GetBufferPointer()) + pRootSignatureBlob->GetBufferSize()
-		);
-
-		{
-			std::lock_guard<std::mutex> lock(sm_rootSignatureCacheMutex);
-			auto it = sm_rootSignatureCache.find(rootSignatureCacheKey);
-			if (it != sm_rootSignatureCache.end()) {
-				m_rootSignature = it->second;
-				return;
-			}
-		}
-
-		CHECK_HRESULT(pDevice->CreateRootSignature(
-			0,
-			pRootSignatureBlob->GetBufferPointer(),
-			pRootSignatureBlob->GetBufferSize(),
-			IID_PPV_ARGS(&m_rootSignature)
-		));
-		{
-			std::lock_guard<std::mutex> lock(sm_rootSignatureCacheMutex);
-			sm_rootSignatureCache[rootSignatureCacheKey] = m_rootSignature;
-		}
 	}
+
+	m_rootSignature = m_device.CreateRootSignature(rootSignatureDesc);
 }
 
 uint64_t RootSignature::GetDescriptorTableBitMap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) const
