@@ -1,6 +1,6 @@
 #include "UploadBuffer.h"
 
-UploadBuffer::UploadBuffer(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t bufferSize)
+UploadBuffer::UploadBuffer(ID3D12Device* pDevice, size_t bufferSize)
 {
 	m_bufferSize = bufferSize;
 
