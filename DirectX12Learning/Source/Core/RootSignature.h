@@ -32,7 +32,7 @@ public:
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> GetRootSignature() const;
 
-	void CreateRootSignature(ID3D12Device* pDevice, D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
+	void CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
 	uint64_t GetDescriptorTableBitMap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) const;
 	uint32_t GetDescriptorTableSize(size_t rootParameterIndex) const;
