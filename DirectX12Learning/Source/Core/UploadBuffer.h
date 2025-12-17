@@ -8,7 +8,7 @@ class UploadBuffer : public Resource
 protected:
 	size_t m_bufferSize;
 public:
-	UploadBuffer(Microsoft::WRL::ComPtr<ID3D12Device> pDevice, size_t bufferSize);
+	UploadBuffer(ID3D12Device* pDevice, size_t bufferSize);
 
 	void* Map();
 };
