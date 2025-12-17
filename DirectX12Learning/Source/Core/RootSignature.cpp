@@ -2,9 +2,6 @@
 
 #include "Device.h"
 
-std::mutex RootSignature::sm_rootSignatureCacheMutex;
-std::unordered_map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>, Hash<std::vector<uint8_t>>> RootSignature::sm_rootSignatureCache;
-
 RootSignature::RootSignature(Device& device, UINT numParameters, UINT numStaticSamplers) :
 	m_device(device)
 {

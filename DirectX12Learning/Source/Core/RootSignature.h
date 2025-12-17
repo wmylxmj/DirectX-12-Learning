@@ -38,9 +38,6 @@ public:
 	uint32_t GetDescriptorTableSize(size_t rootParameterIndex) const;
 
 protected:
-	static std::mutex sm_rootSignatureCacheMutex;
-	static std::unordered_map<std::vector<uint8_t>, Microsoft::WRL::ComPtr<ID3D12RootSignature>, Hash<std::vector<uint8_t>>> sm_rootSignatureCache;
-
 	Device& m_device;
 
 	UINT m_numParameters;
