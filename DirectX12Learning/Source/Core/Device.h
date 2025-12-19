@@ -34,6 +34,7 @@ private:
 
 	std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> m_linearAllocatorPageManagerMap;
 
+	std::mutex m_descriptorHeapManagerMutex;
 	std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> m_descriptorHeapManagerMap;
 
 	std::mutex m_rootSignatureCacheMutex;
