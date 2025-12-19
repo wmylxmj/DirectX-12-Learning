@@ -86,10 +86,8 @@ uint64_t RootSignature::GetDescriptorTableBitMap(D3D12_DESCRIPTOR_HEAP_TYPE desc
 	if (descriptorHeapType == D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV) {
 		return m_cbvSrvUavDescriptorTableBitMap;
 	}
-	if (descriptorHeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER) {
-		return m_samplerDescriptorTableBitMap;
-	}
-	assert(false);
+	assert(descriptorHeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
+	return m_samplerDescriptorTableBitMap;
 }
 
 uint32_t RootSignature::GetDescriptorTableSize(size_t rootParameterIndex) const
