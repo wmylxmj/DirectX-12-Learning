@@ -149,11 +149,16 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 	}
 }
 
+size_t LinearAllocatorPageManager::GetPageSize() const
+{
+	return m_kPageSize;
+}
+
 LinearAllocator::LinearAllocator(Device& device, D3D12_HEAP_TYPE heapType) :
 	m_device(device),
 	m_kHeapType(heapType),
-	m_kPageSize(sm_kPageSizeMap.at(heapType)),
 	m_pPageManager(&device.GetLinearAllocatorPageManager(heapType)),
+	m_kPageSize(m_pPageManager->GetPageSize()),
 	m_currentPage(nullptr),
 	m_currentOffset(0)
 {
