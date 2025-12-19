@@ -41,7 +41,7 @@ const RootParameter& RootSignature::operator[](size_t index) const
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> RootSignature::GetRootSignature() const
 {
-	return m_rootSignature;
+	return m_pRootSignature;
 }
 
 void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
@@ -78,7 +78,7 @@ void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
 		}
 	}
 
-	m_rootSignature = m_device.CreateRootSignature(rootSignatureDesc);
+	m_pRootSignature = m_device.CreateRootSignature(rootSignatureDesc);
 }
 
 uint64_t RootSignature::GetDescriptorTableBitMap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) const
