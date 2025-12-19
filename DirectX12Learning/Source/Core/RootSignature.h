@@ -50,5 +50,5 @@ protected:
 
 	uint32_t m_descriptorTableSize[64];
 
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_rootSignature;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
 };
