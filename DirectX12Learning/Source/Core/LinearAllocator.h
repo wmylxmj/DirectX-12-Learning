@@ -10,6 +10,8 @@
 #include <mutex>
 #include <unordered_map>
 
+class Device;
+
 class LinearAllocatorPage : public Resource
 {
 public:
@@ -35,6 +37,8 @@ public:
 
 	LinearAllocatorPage* RequestLargePage(size_t pageSize);
 	void DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
+
+	size_t GetPageSize() const;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
@@ -73,16 +77,13 @@ public:
 
 	// ¶ÔÆëÄ¬ÈÏ256×Ö½Ú
 	LinearBlock Allocate(size_t size, size_t alignment = 256);
-
 	void Deallocate(FenceTracker fenceTracker);
 
 private:
-	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> sm_pageManagerMap;
-	static const std::unordered_map<D3D12_HEAP_TYPE, size_t> sm_kPageSizeMap;
-
 	LinearBlock AllocateLargePage(size_t size);
 
-	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
+	Device& m_device;
+
 	const D3D12_HEAP_TYPE m_kHeapType;
 	const size_t m_kPageSize;
 

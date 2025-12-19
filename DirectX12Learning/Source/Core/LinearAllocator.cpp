@@ -1,4 +1,5 @@
 ﻿#include "LinearAllocator.h"
+#include "Device.h"
 #include "../Math/Align.h"
 
 LinearAllocatorPage::LinearAllocatorPage(ID3D12Resource* pResource, D3D12_RESOURCE_STATES resourceState)
@@ -148,41 +149,14 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 	}
 }
 
-std::unordered_map<std::vector<uint8_t>, std::unique_ptr<LinearAllocatorPageManager>, Hash<std::vector<uint8_t>>> LinearAllocator::sm_pageManagerMap;
-
-const std::unordered_map<D3D12_HEAP_TYPE, size_t> LinearAllocator::sm_kPageSizeMap = {
-{ D3D12_HEAP_TYPE_DEFAULT, 0x10000 }, // 64KB
-{ D3D12_HEAP_TYPE_UPLOAD, 0x200000 }, // 2MB
-{ D3D12_HEAP_TYPE_READBACK, 0x10000 }, // 64KB
-};
-
-LinearAllocator::LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType) :
-	m_pDevice(pDevice),
+LinearAllocator::LinearAllocator(Device& device, D3D12_HEAP_TYPE heapType) :
+	m_device(device),
 	m_kHeapType(heapType),
 	m_kPageSize(sm_kPageSizeMap.at(heapType)),
+	m_pPageManager(&device.GetLinearAllocatorPageManager(heapType)),
 	m_currentPage(nullptr),
 	m_currentOffset(0)
 {
-	LUID deviceLuid = pDevice->GetAdapterLuid();
-
-	// 页管理器键
-	std::vector<uint8_t> pageManagerKey(
-		reinterpret_cast<const uint8_t*>(&deviceLuid),
-		reinterpret_cast<const uint8_t*>(&deviceLuid) + sizeof(LUID)
-	);
-
-	pageManagerKey.insert(
-		pageManagerKey.end(),
-		reinterpret_cast<const uint8_t*>(&heapType),
-		reinterpret_cast<const uint8_t*>(&heapType) + sizeof(D3D12_HEAP_TYPE)
-	);
-
-	if (!sm_pageManagerMap.contains(pageManagerKey))
-	{
-		sm_pageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice.Get(), heapType, sm_kPageSizeMap.at(heapType)));
-	}
-
-	m_pPageManager = sm_pageManagerMap.at(pageManagerKey).get();
 }
 
 LinearBlock LinearAllocator::Allocate(size_t size, size_t alignment)
