@@ -60,6 +60,9 @@
     <ClCompile Include="Source\Core\Device.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Core\DescriptorAllocator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -123,6 +126,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Device.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Core\DescriptorAllocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

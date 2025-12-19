@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Core\DescriptorAllocator.cpp" />
     <ClCompile Include="Source\Core\Camera.cpp" />
     <ClCompile Include="Source\Core\CommandQueueManager.cpp" />
     <ClCompile Include="Source\Core\DescriptorHandle.cpp" />
@@ -152,6 +153,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Core\DescriptorAllocator.h" />
     <ClInclude Include="Source\Core\Camera.h" />
     <ClInclude Include="Source\Core\ColorBuffer.h" />
     <ClInclude Include="Source\Core\CommandQueueManager.h" />
