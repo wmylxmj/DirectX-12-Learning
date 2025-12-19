@@ -22,7 +22,7 @@ public:
 	ID3D12CommandAllocator* RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType);
 	void DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator);
 
-	LinearAllocatorPageManager& GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType);
+	LinearAllocatorPageManager& GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize);
 
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc);
 
