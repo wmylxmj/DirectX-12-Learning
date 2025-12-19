@@ -41,6 +41,11 @@ void Device::DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, Fe
 	m_commandAllocatorPoolMap[commandListType]->DiscardCommandAllocator(fenceTracker, pCommandAllocator);
 }
 
+LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType)
+{
+	// TODO: 在此处插入 return 语句
+}
+
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
 {
 	Microsoft::WRL::ComPtr<ID3DBlob> pRootSignatureBlob, pErrorBlob;
