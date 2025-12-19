@@ -21,9 +21,6 @@
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\CommandListPool.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\PipelineState.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -75,9 +72,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\CommandListPool.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\d3dx12.h">
