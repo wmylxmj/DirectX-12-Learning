@@ -156,9 +156,9 @@ size_t LinearAllocatorPageManager::GetPageSize() const
 
 LinearAllocator::LinearAllocator(Device& device, D3D12_HEAP_TYPE heapType) :
 	m_device(device),
-	m_pPageManager(&device.GetLinearAllocatorPageManager(heapType)),
 	m_kHeapType(heapType),
-	m_kPageSize(m_pPageManager->GetPageSize()),
+	m_kPageSize(heapType == D3D12_HEAP_TYPE_UPLOAD ? 0x200000 : 0x10000),
+	m_pPageManager(&device.GetLinearAllocatorPageManager(heapType, m_kPageSize)),
 	m_currentPage(nullptr),
 	m_currentOffset(0)
 {

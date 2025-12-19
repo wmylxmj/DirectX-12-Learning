@@ -3,7 +3,6 @@
 #include "PrecompiledHeader.h"
 #include "CommandQueueManager.h"
 #include "Resource.h"
-#include "../Utilities/Hash.h"
 
 #include <vector>
 #include <queue>
