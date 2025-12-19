@@ -84,7 +84,7 @@ private:
 	const D3D12_HEAP_TYPE m_kHeapType;
 	const size_t m_kPageSize;
 
-	LinearAllocatorPageManager m_pPageManager;
+	LinearAllocatorPageManager* m_pPageManager;
 
 	std::vector<LinearAllocatorPage*> m_retiredPages;
 	std::vector<LinearAllocatorPage*> m_largePageList;
