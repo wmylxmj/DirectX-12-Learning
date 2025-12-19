@@ -48,8 +48,12 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 		reinterpret_cast<const uint8_t*>(&heapType) + sizeof(D3D12_HEAP_TYPE)
 	);
 
+	pageManagerKey.insert(pageManagerKey.end(),
+		reinterpret_cast<const uint8_t*>(&pageSize),
+		reinterpret_cast<const uint8_t*>(&pageSize) + sizeof(size_t)
+	);
+
 	if (!m_linearAllocatorPageManagerMap.contains(pageManagerKey)) {
-		size_t pageSize = heapType == D3D12_HEAP_TYPE_UPLOAD ? 0x200000 : 0x10000;
 		m_linearAllocatorPageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice.Get(), heapType, pageSize));
 	}
 
