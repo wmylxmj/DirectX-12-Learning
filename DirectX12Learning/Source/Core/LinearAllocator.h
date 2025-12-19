@@ -69,7 +69,7 @@ public:
 class LinearAllocator
 {
 public:
-	LinearAllocator(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType);
+	LinearAllocator(Device& device, D3D12_HEAP_TYPE heapType);
 
 	// ¶ÔÆëÄ¬ÈÏ256×Ö½Ú
 	LinearBlock Allocate(size_t size, size_t alignment = 256);
