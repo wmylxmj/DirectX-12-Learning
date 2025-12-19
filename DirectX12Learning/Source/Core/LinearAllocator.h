@@ -37,8 +37,6 @@ public:
 	LinearAllocatorPage* RequestLargePage(size_t pageSize);
 	void DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
 
-	size_t GetPageSize() const;
-
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_HEAP_TYPE m_kHeapType;
