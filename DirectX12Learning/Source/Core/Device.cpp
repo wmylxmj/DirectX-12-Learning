@@ -43,6 +43,11 @@ void Device::DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, Fe
 
 LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType)
 {
+	std::vector<uint8_t> pageManagerKey(
+		reinterpret_cast<const uint8_t*>(&deviceLuid),
+		reinterpret_cast<const uint8_t*>(&deviceLuid) + sizeof(LUID)
+	);
+
 	// TODO: 在此处插入 return 语句
 }
 
