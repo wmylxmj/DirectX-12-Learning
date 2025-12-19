@@ -56,9 +56,9 @@ private:
 	std::queue<std::pair<FenceTracker, LinearAllocatorPage*>> m_deletionQueue;
 };
 
-class LinearBlock {
+class LinearBlock
+{
 public:
-
 	Resource& resource;
 	size_t offset;
 	size_t size;
