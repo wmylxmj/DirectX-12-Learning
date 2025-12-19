@@ -48,7 +48,12 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 		reinterpret_cast<const uint8_t*>(&heapType) + sizeof(D3D12_HEAP_TYPE)
 	);
 
-	// TODO: 在此处插入 return 语句
+	if (!m_linearAllocatorPageManagerMap.contains(pageManagerKey)) {
+		size_t pageSize = heapType == D3D12_HEAP_TYPE_UPLOAD ? 0x200000 : 0x10000;
+		m_linearAllocatorPageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice.Get(), heapType, pageSize));
+	}
+
+	return *m_linearAllocatorPageManagerMap.at(pageManagerKey);
 }
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
