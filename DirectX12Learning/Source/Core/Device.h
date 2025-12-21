@@ -24,6 +24,8 @@ public:
 
 	LinearAllocatorPageManager& GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize);
 
+	DescriptorHeapManager& GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags);
+
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc);
 
 private:
