@@ -80,8 +80,10 @@ DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TY
 		reinterpret_cast<const uint8_t*>(&descriptorHeapFlags),
 		reinterpret_cast<const uint8_t*>(&descriptorHeapFlags) + sizeof(D3D12_DESCRIPTOR_HEAP_FLAGS)
 	);
+
 	{
 		std::lock_guard<std::mutex> lock(m_descriptorHeapManagerMutex);
+
 		if (!m_descriptorHeapManagerMap.contains(descriptorHeapManagerKey)) {
 			m_descriptorHeapManagerMap.emplace(
 				descriptorHeapManagerKey,
@@ -94,6 +96,8 @@ DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TY
 			);
 		}
 	}
+
+	return *m_descriptorHeapManagerMap.at(descriptorHeapManagerKey);
 }
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
