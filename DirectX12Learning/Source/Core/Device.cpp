@@ -66,6 +66,10 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 
 DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags)
 {
+	std::vector<uint8_t> descriptorHeapManagerKey(
+		reinterpret_cast<const uint8_t*>(&descriptorHeapType),
+		reinterpret_cast<const uint8_t*>(&descriptorHeapType) + sizeof(D3D12_DESCRIPTOR_HEAP_TYPE)
+	);
 	// TODO: 在此处插入 return 语句
 }
 
