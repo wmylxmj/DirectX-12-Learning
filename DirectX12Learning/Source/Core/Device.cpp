@@ -64,6 +64,11 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 	return *m_linearAllocatorPageManagerMap.at(pageManagerKey);
 }
 
+DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags)
+{
+	// TODO: 在此处插入 return 语句
+}
+
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
 {
 	Microsoft::WRL::ComPtr<ID3DBlob> pRootSignatureBlob, pErrorBlob;
