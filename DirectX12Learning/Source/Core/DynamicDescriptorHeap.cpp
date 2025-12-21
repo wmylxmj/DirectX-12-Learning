@@ -1,5 +1,7 @@
 #include "DynamicDescriptorHeap.h"
 
+#include "Device.h"
+
 DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags) :
 	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType),
@@ -44,31 +46,9 @@ void DescriptorHeapManager::DiscardDescriptorHeaps(FenceTracker fenceTracker, st
 std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> DynamicDescriptorHeap::sm_descriptorHeapManagerMap;
 const uint32_t DynamicDescriptorHeap::sm_kNumDescriptorsPerHeap = 1024;
 
-DynamicDescriptorHeap::DynamicDescriptorHeap(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
-	m_pDevice(pDevice),
-	m_kDescriptorHeapType(descriptorHeapType)
+DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
+	m_device(device),
+	m_kDescriptorHeapType(descriptorHeapType),
+	m_pDescriptorHeapManager(&device.GetDescriptorHeapManager(descriptorHeapType, 1024, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE))
 {
-	LUID deviceLuid = pDevice->GetAdapterLuid();
-
-	std::vector<uint8_t> descriptorHeapManagerKey(
-		reinterpret_cast<uint8_t*>(&deviceLuid),
-		reinterpret_cast<uint8_t*>(&deviceLuid) + sizeof(LUID)
-	);
-
-	descriptorHeapManagerKey.insert(
-		descriptorHeapManagerKey.end(),
-		reinterpret_cast<uint8_t*>(&descriptorHeapType),
-		reinterpret_cast<uint8_t*>(&descriptorHeapType) + sizeof(D3D12_DESCRIPTOR_HEAP_TYPE)
-	);
-
-	if (!sm_descriptorHeapManagerMap.contains(descriptorHeapManagerKey)) {
-		sm_descriptorHeapManagerMap[descriptorHeapManagerKey] = std::make_unique<DescriptorHeapManager>(
-			pDevice,
-			descriptorHeapType,
-			sm_kNumDescriptorsPerHeap,
-			D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE
-		);
-	}
-
-	m_pDescriptorHeapManager = sm_descriptorHeapManagerMap[descriptorHeapManagerKey].get();
 }
