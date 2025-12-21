@@ -42,8 +42,7 @@ private:
 	static const uint32_t sm_kNumDescriptorsPerHeap;
 
 	Device& m_device;
+	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 
 	DescriptorHeapManager* m_pDescriptorHeapManager;
-
-	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 };
