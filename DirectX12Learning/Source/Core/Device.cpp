@@ -70,7 +70,30 @@ DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TY
 		reinterpret_cast<const uint8_t*>(&descriptorHeapType),
 		reinterpret_cast<const uint8_t*>(&descriptorHeapType) + sizeof(D3D12_DESCRIPTOR_HEAP_TYPE)
 	);
-	// TODO: 在此处插入 return 语句
+
+	descriptorHeapManagerKey.insert(descriptorHeapManagerKey.end(),
+		reinterpret_cast<const uint8_t*>(&numDescriptorsPerHeap),
+		reinterpret_cast<const uint8_t*>(&numDescriptorsPerHeap) + sizeof(uint32_t)
+	);
+
+	descriptorHeapManagerKey.insert(descriptorHeapManagerKey.end(),
+		reinterpret_cast<const uint8_t*>(&descriptorHeapFlags),
+		reinterpret_cast<const uint8_t*>(&descriptorHeapFlags) + sizeof(D3D12_DESCRIPTOR_HEAP_FLAGS)
+	);
+	{
+		std::lock_guard<std::mutex> lock(m_descriptorHeapManagerMutex);
+		if (!m_descriptorHeapManagerMap.contains(descriptorHeapManagerKey)) {
+			m_descriptorHeapManagerMap.emplace(
+				descriptorHeapManagerKey,
+				std::make_unique<DescriptorHeapManager>(
+					m_pDevice.Get(),
+					descriptorHeapType,
+					numDescriptorsPerHeap,
+					descriptorHeapFlags
+				)
+			);
+		}
+	}
 }
 
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Device::CreateRootSignature(const D3D12_ROOT_SIGNATURE_DESC& rootSignatureDesc)
