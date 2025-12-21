@@ -38,9 +38,6 @@ public:
 	DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType);
 
 private:
-	static std::unordered_map<std::vector<uint8_t>, std::unique_ptr<DescriptorHeapManager>, Hash<std::vector<uint8_t>>> sm_descriptorHeapManagerMap;
-	static const uint32_t sm_kNumDescriptorsPerHeap;
-
 	Device& m_device;
 
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
