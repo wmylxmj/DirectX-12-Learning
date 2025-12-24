@@ -47,6 +47,8 @@ private:
 	// 描述符表入口
 	struct DescriptorTableEntry
 	{
+		// 已分配的描述符句柄位图
+		uint64_t assignedDescriptorHandlesBitMap;
 		uint32_t rootParameterIndex;
 		uint32_t offset;
 		uint32_t numDescriptors;
