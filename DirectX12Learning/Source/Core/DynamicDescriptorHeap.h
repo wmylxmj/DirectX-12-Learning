@@ -43,4 +43,6 @@ private:
 	DescriptorHeapManager* m_pDescriptorHeapManager;
 
 	DescriptorHeap* m_pCurrentDescriptorHeap;
+
+	// ÃèÊö·û±íÈë¿Ú
 };
