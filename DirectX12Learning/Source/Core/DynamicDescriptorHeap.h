@@ -49,6 +49,8 @@ private:
 	{
 		// ÒÑ·ÖÅäµÄÃèÊö·û¾ä±úÎ»Í¼
 		uint64_t assignedDescriptorHandlesBitMap;
+
+		// »ùÃèÊö·û¾ä±ú
 		uint32_t rootParameterIndex;
 		uint32_t offset;
 		uint32_t numDescriptors;
