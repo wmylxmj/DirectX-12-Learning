@@ -45,4 +45,10 @@ private:
 	DescriptorHeap* m_pCurrentDescriptorHeap;
 
 	// ÃèÊö·û±íÈë¿Ú
+	struct DescriptorTableEntry
+	{
+		uint32_t rootParameterIndex;
+		uint32_t offset;
+		uint32_t numDescriptors;
+	};
 };
