@@ -51,6 +51,7 @@ private:
 		uint64_t assignedDescriptorHandlesBitMap;
 
 		// »ùÃèÊö·û¾ä±ú
+		D3D12_CPU_DESCRIPTOR_HANDLE* pBaseDescriptorHandle;
 		uint32_t rootParameterIndex;
 		uint32_t offset;
 		uint32_t numDescriptors;
