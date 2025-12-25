@@ -59,21 +59,5 @@ private:
 
 	struct DescriptorHandleCache
 	{
-		static const uint32_t kMaxDescriptorTables = 16;
-		DescriptorTableEntry descriptorTableEntries[kMaxDescriptorTables];
-		uint32_t numDescriptorTables;
-		// 已分配的描述符总数
-		uint32_t numAssignedDescriptors;
-		void Reset()
-		{
-			numDescriptorTables = 0;
-			numAssignedDescriptors = 0;
-			for (uint32_t i = 0; i < kMaxDescriptorTables; ++i)
-			{
-				descriptorTableEntries[i].assignedDescriptorHandlesBitMap = 0;
-				descriptorTableEntries[i].pBaseDescriptorHandle = nullptr;
-				descriptorTableEntries[i].numDescriptors = 0;
-			}
-		}
 	};
 };
