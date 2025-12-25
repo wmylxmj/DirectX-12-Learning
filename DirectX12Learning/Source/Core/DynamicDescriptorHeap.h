@@ -47,7 +47,12 @@ private:
 	// 描述符表入口
 	struct DescriptorTableEntry
 	{
-		DescriptorTableEntry() : assignedDescriptorHandlesBitMap(0) {}
+		DescriptorTableEntry() :
+			assignedDescriptorHandlesBitMap(0),
+			pBaseDescriptorHandle(nullptr),
+			numDescriptors(0)
+		{
+		}
 
 		// 已分配的描述符句柄位图
 		uint64_t assignedDescriptorHandlesBitMap;
