@@ -101,6 +101,11 @@ size_t LinearAllocatorPageManager::GetGeneralPageSize() const
 	return m_kGeneralPageSize;
 }
 
+std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(size_t pageSize)
+{
+	return std::unique_ptr<LinearAllocatorPage>();
+}
+
 LinearAllocator::LinearAllocator(Device& device, D3D12_HEAP_TYPE heapType) :
 	m_device(device),
 	m_kHeapType(heapType),
