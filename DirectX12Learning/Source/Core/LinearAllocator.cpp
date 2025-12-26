@@ -30,10 +30,10 @@ void LinearAllocatorPage::Unmap()
 	}
 }
 
-LinearAllocatorPageManager::LinearAllocatorPageManager(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType, size_t pageSize) :
+LinearAllocatorPageManager::LinearAllocatorPageManager(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType, size_t generalPageSize) :
 	m_pDevice(pDevice),
 	m_kHeapType(heapType),
-	m_kPageSize(pageSize)
+	m_kPageSize(generalPageSize)
 {
 }
 
