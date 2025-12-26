@@ -33,7 +33,7 @@ void LinearAllocatorPage::Unmap()
 LinearAllocatorPageManager::LinearAllocatorPageManager(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType, size_t generalPageSize) :
 	m_pDevice(pDevice),
 	m_kHeapType(heapType),
-	m_kPageSize(generalPageSize)
+	m_kGeneralPageSize(generalPageSize)
 {
 }
 
@@ -52,7 +52,7 @@ LinearAllocatorPage* LinearAllocatorPageManager::RequestGeneralPage()
 		m_availablePages.pop();
 	}
 	else {
-		auto newPage = CreateNewPage(m_kPageSize);
+		auto newPage = CreateNewPage(m_kGeneralPageSize);
 		m_pagePool.push_back(std::move(newPage));
 		pagePtr = m_pagePool.back().get();
 	}
