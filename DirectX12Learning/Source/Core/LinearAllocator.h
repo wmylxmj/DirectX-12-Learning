@@ -40,8 +40,7 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_HEAP_TYPE m_kHeapType;
-	const size_t m_kPageSize;
-
+	const size_t m_kGeneralPageSize;
 	std::mutex m_mutex;
 
 	// 生命周期可能为程序的整个生命周期，在堆上分配内存
