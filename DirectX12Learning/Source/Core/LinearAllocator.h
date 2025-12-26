@@ -38,6 +38,8 @@ public:
 	void DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
 
 private:
+	std::unique_ptr<LinearAllocatorPage> CreateNewPage(size_t pageSize);
+
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_HEAP_TYPE m_kHeapType;
 	const size_t m_kPageSize;
