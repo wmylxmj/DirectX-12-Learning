@@ -20,4 +20,3 @@ private:
 	uint64_t m_fenceValue;
 	uint64_t m_completedFenceValueCache;
 };
-};
