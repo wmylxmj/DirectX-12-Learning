@@ -29,8 +29,6 @@ class LinearAllocatorPageManager
 public:
 	LinearAllocatorPageManager(ID3D12Device* pDevice, D3D12_HEAP_TYPE heapType, size_t pageSize);
 
-	std::unique_ptr<LinearAllocatorPage> CreateNewPage(size_t pageSize);
-
 	LinearAllocatorPage* RequestGeneralPage();
 	void DiscardGeneralPages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
 
