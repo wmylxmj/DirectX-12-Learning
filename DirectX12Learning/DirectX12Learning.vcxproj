@@ -166,6 +166,7 @@
     </ClInclude>
     <ClInclude Include="Source\Core\Device.h" />
     <ClInclude Include="Source\Core\DynamicDescriptorHeap.h" />
+    <ClInclude Include="Source\Core\FenceTracker.h" />
     <ClInclude Include="Source\Core\LinearAllocator.h" />
     <ClInclude Include="Source\Core\Resource.h" />
     <ClInclude Include="Source\Core\PipelineState.h" />
