@@ -39,9 +39,6 @@
     <ClCompile Include="Source\Core\Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\CommandQueueManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\DescriptorHandle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\ColorBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\CommandQueueManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Utilities\Hash.h">
