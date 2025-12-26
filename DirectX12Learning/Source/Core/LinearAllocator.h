@@ -35,6 +35,8 @@ public:
 	LinearAllocatorPage* RequestLargePage(size_t pageSize);
 	void DiscardLargePages(FenceTracker fenceTracker, std::vector<LinearAllocatorPage*>& pages);
 
+	size_t GetGeneralPageSize() const;
+
 private:
 	std::unique_ptr<LinearAllocatorPage> CreateNewPage(size_t pageSize);
 
