@@ -2,6 +2,8 @@
 
 #include "PrecompiledHeader.h"
 
+#include <mutex>
+
 class CommandQueue
 {
 public:
