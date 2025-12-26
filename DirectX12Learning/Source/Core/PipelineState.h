@@ -5,7 +5,7 @@
 class PipelineState
 {
 protected:
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pipelineState = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> m_pPipelineState;
 };
 
 class GraphicsPipelineState : public PipelineState
