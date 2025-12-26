@@ -96,11 +96,6 @@ void LinearAllocatorPageManager::DiscardLargePages(FenceTracker fenceTracker, st
 	}
 }
 
-size_t LinearAllocatorPageManager::GetGeneralPageSize() const
-{
-	return m_kGeneralPageSize;
-}
-
 std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(size_t pageSize)
 {
 	D3D12_HEAP_PROPERTIES heapProperties = {};
