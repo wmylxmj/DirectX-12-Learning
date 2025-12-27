@@ -2,7 +2,7 @@
 
 #include "PrecompiledHeader.h"
 #include "DescriptorHeap.h"
-#include "CommandQueueManager.h"
+#include "FenceTracker.h"
 #include "../Utilities/Hash.h"
 
 #include <mutex>
