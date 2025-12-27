@@ -2,6 +2,7 @@
 
 #include "PrecompiledHeader.h"
 #include "CommandAllocatorPool.h"
+#include "CommandQueue.h"
 #include "LinearAllocator.h"
 #include "DynamicDescriptorHeap.h"
 #include "../Utilities/Hash.h"
