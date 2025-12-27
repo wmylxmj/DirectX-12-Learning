@@ -72,11 +72,6 @@ DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TY
 	);
 
 	descriptorHeapManagerKey.insert(descriptorHeapManagerKey.end(),
-		reinterpret_cast<const uint8_t*>(&numDescriptorsPerHeap),
-		reinterpret_cast<const uint8_t*>(&numDescriptorsPerHeap) + sizeof(uint32_t)
-	);
-
-	descriptorHeapManagerKey.insert(descriptorHeapManagerKey.end(),
 		reinterpret_cast<const uint8_t*>(&descriptorHeapFlags),
 		reinterpret_cast<const uint8_t*>(&descriptorHeapFlags) + sizeof(D3D12_DESCRIPTOR_HEAP_FLAGS)
 	);
@@ -90,7 +85,7 @@ DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TY
 				std::make_unique<DescriptorHeapManager>(
 					m_pDevice.Get(),
 					descriptorHeapType,
-					numDescriptorsPerHeap,
+					1024,
 					descriptorHeapFlags
 				)
 			);
