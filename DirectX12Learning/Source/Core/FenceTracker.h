@@ -2,6 +2,8 @@
 
 #include "PrecompiledHeader.h"
 
+#include <unordered_map>
+
 class Device;
 
 class FenceTracker
