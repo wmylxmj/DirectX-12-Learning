@@ -7,4 +7,7 @@ class Device;
 class FenceTracker
 {
 public:
+
+private:
+	Device& m_device;
 };
