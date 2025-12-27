@@ -1,8 +1,6 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
-#include "DescriptorHandle.h"
-#include <unordered_map>
 
 #include <unordered_map>
 
