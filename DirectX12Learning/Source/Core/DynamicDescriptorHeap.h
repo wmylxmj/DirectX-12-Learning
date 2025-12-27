@@ -15,7 +15,6 @@ class Device;
 class DescriptorHeapManager
 {
 public:
-	DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, uint32_t numDescriptorsPerHeap, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags);
 
 	DescriptorHeap* RequestDescriptorHeap();
 	void DiscardDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps);
