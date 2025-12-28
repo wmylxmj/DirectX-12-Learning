@@ -60,7 +60,7 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 			m_linearAllocatorPageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(
 				m_pDevice.Get(),
 				heapType,
-				pageSize
+				heapType == D3D12_HEAP_TYPE_UPLOAD ? 0x200000 : 0x10000
 			));
 		}
 	}
