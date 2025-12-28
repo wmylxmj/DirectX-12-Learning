@@ -41,7 +41,7 @@ void Device::DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, Fe
 	m_commandAllocatorPoolMap[commandListType]->DiscardCommandAllocator(fenceTracker, pCommandAllocator);
 }
 
-LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize)
+LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType)
 {
 	std::vector<uint8_t> pageManagerKey(
 		reinterpret_cast<const uint8_t*>(&heapType),
@@ -57,7 +57,11 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 		std::lock_guard<std::mutex> lock(m_linearAllocatorPageManagerMutex);
 
 		if (!m_linearAllocatorPageManagerMap.contains(pageManagerKey)) {
-			m_linearAllocatorPageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(m_pDevice.Get(), heapType, pageSize));
+			m_linearAllocatorPageManagerMap.emplace(pageManagerKey, std::make_unique<LinearAllocatorPageManager>(
+				m_pDevice.Get(),
+				heapType,
+				pageSize
+			));
 		}
 	}
 
