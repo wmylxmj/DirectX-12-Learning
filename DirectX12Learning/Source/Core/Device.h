@@ -23,6 +23,8 @@ public:
 	ID3D12CommandAllocator* RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType);
 	void DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE commandListType, FenceTracker fenceTracker, ID3D12CommandAllocator* pCommandAllocator);
 
+	LinearAllocatorPageManager& GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType);
+
 	LinearAllocatorPageManager& GetLinearAllocatorPageManager(D3D12_HEAP_TYPE heapType, size_t pageSize);
 
 	DescriptorHeapManager& GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags);
