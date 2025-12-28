@@ -48,11 +48,6 @@ LinearAllocatorPageManager& Device::GetLinearAllocatorPageManager(D3D12_HEAP_TYP
 		reinterpret_cast<const uint8_t*>(&heapType) + sizeof(D3D12_HEAP_TYPE)
 	);
 
-	pageManagerKey.insert(pageManagerKey.end(),
-		reinterpret_cast<const uint8_t*>(&pageSize),
-		reinterpret_cast<const uint8_t*>(&pageSize) + sizeof(size_t)
-	);
-
 	{
 		std::lock_guard<std::mutex> lock(m_linearAllocatorPageManagerMutex);
 
