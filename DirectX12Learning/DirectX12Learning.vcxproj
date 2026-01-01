@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Core\CommandQueue.cpp" />
     <ClCompile Include="Source\Core\DescriptorAllocator.cpp" />
     <ClCompile Include="Source\Core\Camera.cpp" />
     <ClCompile Include="Source\Core\DescriptorHeap.cpp" />
