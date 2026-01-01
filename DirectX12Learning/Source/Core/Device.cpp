@@ -21,6 +21,11 @@ ID3D12Device* Device::GetDevice() const
 	return m_pDevice.Get();
 }
 
+CommandQueue& Device::GetCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
+{
+	return *m_commandQueueMap.at(commandListType);
+}
+
 uint64_t Device::CreateCommandQueue(D3D12_COMMAND_LIST_TYPE commandListType)
 {
 	return m_pCommandQueueManager->CreateCommandQueue(commandListType);
