@@ -139,7 +139,6 @@
     <ClCompile Include="Source\Core\CommandAllocatorPool.cpp" />
     <ClCompile Include="Source\Core\Device.cpp" />
     <ClCompile Include="Source\Core\DynamicDescriptorHeap.cpp" />
-    <ClCompile Include="Source\Core\FenceTracker.cpp" />
     <ClCompile Include="Source\Core\LinearAllocator.cpp" />
     <ClCompile Include="Source\Core\PipelineState.cpp" />
     <ClCompile Include="Source\Core\Resource.cpp" />
