@@ -1,4 +1,5 @@
 ﻿#include "LinearAllocator.h"
+
 #include "Device.h"
 #include "../Math/Align.h"
 
@@ -152,8 +153,7 @@ std::unique_ptr<LinearAllocatorPage> LinearAllocatorPageManager::CreateNewPage(s
 LinearAllocator::LinearAllocator(Device& device, D3D12_HEAP_TYPE heapType) :
 	m_device(device),
 	m_kHeapType(heapType),
-	m_kPageSize(heapType == D3D12_HEAP_TYPE_UPLOAD ? 0x200000 : 0x10000),
-	m_pPageManager(&device.GetLinearAllocatorPageManager(heapType, m_kPageSize)),
+	m_pPageManager(&device.GetLinearAllocatorPageManager(heapType)),
 	m_currentPage(nullptr),
 	m_currentOffset(0)
 {
@@ -164,7 +164,7 @@ LinearBlock LinearAllocator::Allocate(size_t size, size_t alignment)
 	const size_t alignedSize = AlignUp(size, alignment);
 
 	// 申请大小超过通常页，则申请大页
-	if (alignedSize > m_kPageSize) {
+	if (alignedSize > m_pPageManager->GetGeneralPageSize()) {
 		return AllocateLargePage(alignedSize);
 	}
 
@@ -172,7 +172,7 @@ LinearBlock LinearAllocator::Allocate(size_t size, size_t alignment)
 	m_currentOffset = AlignUp(m_currentOffset, alignment);
 
 	// 剩余空间不够，创建新的页
-	if (m_currentOffset + alignedSize > m_kPageSize) {
+	if (m_currentOffset + alignedSize > m_pPageManager->GetGeneralPageSize()) {
 		assert(m_currentPage != nullptr);
 		m_retiredPages.push_back(m_currentPage);
 		m_currentPage = nullptr;
