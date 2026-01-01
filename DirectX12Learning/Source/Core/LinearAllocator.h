@@ -1,8 +1,8 @@
 #pragma once
 
 #include "PrecompiledHeader.h"
-#include "CommandQueueManager.h"
 #include "Resource.h"
+#include "FenceTracker.h"
 
 #include <vector>
 #include <queue>
