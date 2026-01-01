@@ -16,9 +16,6 @@ CommandQueue::CommandQueue(ID3D12Device* pDevice, D3D12_COMMAND_LIST_TYPE comman
 	CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
 }
 
-CHECK_HRESULT(pDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_pFence)));
-}
-
 uint64_t CommandQueue::IncrementFenceValue()
 {
 	std::lock_guard<std::mutex> lockGuard(m_fenceMutex);
