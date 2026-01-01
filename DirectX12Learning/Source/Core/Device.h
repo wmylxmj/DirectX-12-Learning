@@ -32,6 +32,7 @@ public:
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 
+	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandQueue>> m_commandQueueMap;
 	std::unique_ptr<CommandQueueManager> m_pCommandQueueManager;
 	std::unordered_map<D3D12_COMMAND_LIST_TYPE, std::unique_ptr<CommandAllocatorPool>> m_commandAllocatorPoolMap;
 
