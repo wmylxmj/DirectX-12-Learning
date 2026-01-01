@@ -96,13 +96,3 @@ D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
 {
 	return m_kCommandListType;
 }
-
-// static 긴좆땍屢
-std::atomic_uint64_t CommandQueueManager::sm_nextCommandQueueId = 1;
-std::shared_mutex CommandQueueManager::sm_commandQueueMapMutex;
-std::unordered_map<uint64_t, std::unique_ptr<CommandQueue>> CommandQueueManager::sm_commandQueueMap;
-
-CommandQueueManager::CommandQueueManager(ID3D12Device* pDevice)
-	: m_pDevice(pDevice)
-{
-}
