@@ -27,7 +27,6 @@ public:
 
 	uint64_t ExecuteCommandList(ID3D12GraphicsCommandList* pCommandList);
 
-	uint64_t GetCommandQueueId() const;
 	D3D12_COMMAND_LIST_TYPE GetCommandListType() const;
 
 private:
