@@ -87,11 +87,6 @@ uint64_t CommandQueue::ExecuteCommandList(ID3D12GraphicsCommandList* pCommandLis
 	return m_fenceValue;
 }
 
-uint64_t CommandQueue::GetCommandQueueId() const
-{
-	return m_kCommandQueueId;
-}
-
 D3D12_COMMAND_LIST_TYPE CommandQueue::GetCommandListType() const
 {
 	return m_kCommandListType;
