@@ -39,9 +39,6 @@
     <ClCompile Include="Source\Core\Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Core\DescriptorHandle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Core\DescriptorHeap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -55,6 +52,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\DescriptorAllocator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\FenceTracker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,9 +102,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Math\Align.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Core\DescriptorHandle.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Source\Core\LinearAllocator.h">
