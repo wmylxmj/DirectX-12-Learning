@@ -80,8 +80,8 @@ DescriptorHeapManager& Device::GetDescriptorHeapManager(D3D12_DESCRIPTOR_HEAP_TY
 				std::make_unique<DescriptorHeapManager>(
 					m_pDevice.Get(),
 					descriptorHeapType,
-					1024,
-					descriptorHeapFlags
+					descriptorHeapFlags,
+					1024
 				)
 			);
 		}
