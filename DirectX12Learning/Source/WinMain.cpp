@@ -1,6 +1,5 @@
 #include "Core/PrecompiledHeader.h"
 #include "Core/Device.h"
-#include "Core/CommandQueueManager.h"
 #include "Core/RootSignature.h"
 #include "Core/Camera.h"
 
@@ -24,7 +23,6 @@ struct Vertex
 
 // ----------------全局变量------------------
 std::unique_ptr<Device> g_device;
-uint64_t g_directCommandQueueId = 0;
 
 Camera g_camera;
 
@@ -136,11 +134,8 @@ bool InitDirect3D() {
 #endif
 	CHECK_HRESULT(CreateDXGIFactory2(createFactoryFlags, IID_PPV_ARGS(&dxgiFactory)));
 
-	// 创建D3D设备 To do: 不满足条件时使用WARP设备
+	// 创建D3D设备 To do: 不满足条件时使用WARP设备 创建命令队列等组件
 	g_device = std::make_unique<Device>(nullptr);
-
-	// 创建命令队列系统
-	g_directCommandQueueId = g_device->CreateCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT);
 
 	// 创建交换链
 	g_swapChain.Reset();
@@ -161,7 +156,7 @@ bool InitDirect3D() {
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	CHECK_HRESULT(dxgiFactory->CreateSwapChain(
-		g_device->GetCommandQueue(g_directCommandQueueId).GetCommandQueue(),
+		g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).GetCommandQueue(),
 		&swapChainDesc,
 		g_swapChain.GetAddressOf()
 	));
@@ -234,7 +229,7 @@ bool InitDirect3D() {
 	g_device->GetDevice()->CreateDepthStencilView(g_depthStencilBuffer.Get(), &dsvDesc, g_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
 
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_device->RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT);
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_device->GetCommandQueue(g_directCommandQueueId).CreateCommandList(cmdAllocator.Get());
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).CreateCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 	// 将深度/模板缓冲区状态转为深度缓冲区
 	cmdList->ResourceBarrier(1,
@@ -246,11 +241,11 @@ bool InitDirect3D() {
 	);
 
 	// 发送命令
-	g_device->GetCommandQueue(g_directCommandQueueId).ExecuteCommandList(cmdList.Get());
-	FenceTracker fenceTracker;
-	fenceTracker.SetPendingFenceValue(g_device->GetCommandQueue(g_directCommandQueueId).GetCommandQueueId(), g_device->GetCommandQueue(g_directCommandQueueId).IncrementFenceValue());
+	g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).ExecuteCommandList(cmdList.Get());
+	FenceTracker fenceTracker(*g_device);
+	fenceTracker.SetPendingFenceValue(D3D12_COMMAND_LIST_TYPE_DIRECT, g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).IncrementFenceValue());
 	g_device->DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, fenceTracker, cmdAllocator.Get());
-	g_device->GetCommandQueue(g_directCommandQueueId).WaitForIdle();
+	g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).WaitForIdle();
 
 	return true;
 }
@@ -357,7 +352,7 @@ Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 
 bool AppInit() {
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_device->RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT);
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_device->GetCommandQueue(g_directCommandQueueId).CreateCommandList(cmdAllocator.Get());
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).CreateCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), nullptr));
 
 	// 建立常量缓冲区描述符堆
@@ -534,11 +529,11 @@ bool AppInit() {
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT; // 深度/模板缓冲区的格式
 	CHECK_HRESULT(g_device->GetDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&g_pso)));
 
-	g_device->GetCommandQueue(g_directCommandQueueId).ExecuteCommandList(cmdList.Get());
-	FenceTracker fenceTracker;
-	fenceTracker.SetPendingFenceValue(g_device->GetCommandQueue(g_directCommandQueueId).GetCommandQueueId(), g_device->GetCommandQueue(g_directCommandQueueId).IncrementFenceValue());
+	g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).ExecuteCommandList(cmdList.Get());
+	FenceTracker fenceTracker(*g_device);
+	fenceTracker.SetPendingFenceValue(D3D12_COMMAND_LIST_TYPE_DIRECT, g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).IncrementFenceValue());
 	g_device->DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, fenceTracker, cmdAllocator.Get());
-	g_device->GetCommandQueue(g_directCommandQueueId).WaitForIdle();
+	g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).WaitForIdle();
 
 	return true;
 }
@@ -560,7 +555,7 @@ void Update() {
 
 void Render() {
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator = g_device->RequestCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT);
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_device->GetCommandQueue(g_directCommandQueueId).CreateCommandList(cmdAllocator.Get());
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> cmdList = g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).CreateCommandList(cmdAllocator.Get());
 	CHECK_HRESULT(cmdList->Reset(cmdAllocator.Get(), g_pso.Get()));
 
 	CD3DX12_RESOURCE_BARRIER barrier;
@@ -629,9 +624,9 @@ void Render() {
 	cmdList->ResourceBarrier(1, &barrier);
 
 	// 提交命令
-	g_device->GetCommandQueue(g_directCommandQueueId).ExecuteCommandList(cmdList.Get());
-	FenceTracker fenceTracker;
-	fenceTracker.SetPendingFenceValue(g_device->GetCommandQueue(g_directCommandQueueId).GetCommandQueueId(), g_device->GetCommandQueue(g_directCommandQueueId).IncrementFenceValue());
+	g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).ExecuteCommandList(cmdList.Get());
+	FenceTracker fenceTracker(*g_device);
+	fenceTracker.SetPendingFenceValue(D3D12_COMMAND_LIST_TYPE_DIRECT, g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).IncrementFenceValue());
 	g_device->DiscardCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, fenceTracker, cmdAllocator.Get());
 
 	// 呈现当前的后台缓冲区
@@ -641,7 +636,7 @@ void Render() {
 	g_currBackBufferIndex = (g_currBackBufferIndex + 1) % k_swapChainBufferCount;
 
 	// 等待命令完成
-	g_device->GetCommandQueue(g_directCommandQueueId).WaitForIdle();
+	g_device->GetCommandQueue(D3D12_COMMAND_LIST_TYPE_DIRECT).WaitForIdle();
 }
 
 int WINAPI WinMain(
