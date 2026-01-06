@@ -72,6 +72,8 @@ private:
 		{
 		}
 
+		AssignedDescriptorHandlesMarker assignedDescriptorHandlesMarker;
+
 		// 已分配的描述符句柄位图
 		uint64_t assignedDescriptorHandlesBitMap;
 
