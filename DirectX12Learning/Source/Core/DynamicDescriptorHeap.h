@@ -48,6 +48,11 @@ private:
 
 	struct MarkerRange
 	{
+		bool operator<(const MarkerRange& other) const
+		{
+			return beginOffset < other.beginOffset;
+		}
+
 		uint32_t beginOffset;
 		uint32_t endOffset;
 	};
