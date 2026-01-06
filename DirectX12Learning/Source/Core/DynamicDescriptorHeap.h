@@ -76,9 +76,6 @@ private:
 
 		AssignedDescriptorHandlesMarker assignedDescriptorHandlesMarker;
 
-		// ÒÑ·ÖÅäµÄÃèÊö·û¾ä±úÎ»Í¼
-		uint64_t assignedDescriptorHandlesBitMap;
-
 		// »ùÃèÊö·û¾ä±ú
 		D3D12_CPU_DESCRIPTOR_HANDLE* pBaseDescriptorHandle;
 		uint32_t numDescriptors;
