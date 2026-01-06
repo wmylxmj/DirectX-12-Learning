@@ -60,6 +60,8 @@ private:
 
 	class AssignedDescriptorHandlesMarker
 	{
+	private:
+		std::set<MarkerRange> m_markerRangeSet;
 	};
 
 	// ÃèÊö·û±íÈë¿Ú
