@@ -57,6 +57,10 @@ private:
 		uint32_t endOffset;
 	};
 
+	class AssignedDescriptorHandlesMarker
+	{
+	};
+
 	// ÃèÊö·û±íÈë¿Ú
 	struct DescriptorTableEntry
 	{
