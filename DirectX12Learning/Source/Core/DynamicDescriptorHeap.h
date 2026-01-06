@@ -48,13 +48,8 @@ private:
 
 	struct MarkerRange
 	{
-		MarkerRange() :
-			fenceValue(0),
-			numDescriptors(0)
-		{
-		}
-		FenceTracker fenceValue;
-		uint32_t numDescriptors;
+		uint32_t beginOffset;
+		uint32_t endOffset;
 	};
 
 	// ÃèÊö·û±íÈë¿Ú
