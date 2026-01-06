@@ -68,7 +68,6 @@ private:
 	struct DescriptorTableEntry
 	{
 		DescriptorTableEntry() :
-			assignedDescriptorHandlesBitMap(0),
 			pBaseDescriptorHandle(nullptr),
 			numDescriptors(0)
 		{
