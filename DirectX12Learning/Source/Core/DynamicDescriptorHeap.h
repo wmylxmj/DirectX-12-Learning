@@ -46,6 +46,17 @@ private:
 
 	DescriptorHeap* m_pCurrentDescriptorHeap;
 
+	struct MarkerRange
+	{
+		MarkerRange() :
+			fenceValue(0),
+			numDescriptors(0)
+		{
+		}
+		FenceTracker fenceValue;
+		uint32_t numDescriptors;
+	};
+
 	// ÃèÊö·û±íÈë¿Ú
 	struct DescriptorTableEntry
 	{
