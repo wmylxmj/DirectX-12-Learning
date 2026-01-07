@@ -62,9 +62,6 @@ private:
 	{
 	public:
 		void MarkRange(uint32_t beginOffset, uint32_t endOffset);
-		{
-			m_markerRangeSet.insert(MarkerRange{ beginOffset, endOffset });
-		}
 
 	private:
 		std::set<MarkerRange> m_markerRangeSet;
