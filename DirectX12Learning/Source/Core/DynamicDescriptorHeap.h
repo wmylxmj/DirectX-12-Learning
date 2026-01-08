@@ -90,5 +90,6 @@ private:
 
 	struct DescriptorHandleCache
 	{
+		uint64_t m_rootDescriptorTablesBitMap;
 	};
 };
