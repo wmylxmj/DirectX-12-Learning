@@ -49,3 +49,10 @@ DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HE
 	m_pDescriptorHeapManager(&device.GetDescriptorHeapManager(descriptorHeapType, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE))
 {
 }
+
+void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t beginOffset, uint32_t endOffset)
+{
+	MarkerRange newMarkerRange;
+	newMarkerRange.beginOffset = beginOffset;
+	newMarkerRange.endOffset = endOffset;
+}
