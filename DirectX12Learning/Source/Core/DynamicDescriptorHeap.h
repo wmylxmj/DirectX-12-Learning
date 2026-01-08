@@ -68,11 +68,6 @@ private:
 			return m_markerRangeSet;
 		}
 
-		size_t GetNumMarkerRanges() const
-		{
-			return m_markerRangeSet.size();
-		}
-
 	private:
 		std::set<MarkerRange> m_markerRangeSet;
 	};
