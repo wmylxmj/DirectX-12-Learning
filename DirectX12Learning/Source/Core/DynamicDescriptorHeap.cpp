@@ -57,6 +57,7 @@ void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t 
 	newMarkerRange.endOffset = endOffset;
 
 	for (auto it = m_markerRangeSet.begin(); it != m_markerRangeSet.end();) {
+		// 如果新的区间和当前区间有重叠，则将两个区间合并
 		if (!(newMarkerRange.endOffset < it->beginOffset || newMarkerRange.beginOffset > it->endOffset))
 		{
 			newMarkerRange.beginOffset = std::min(newMarkerRange.beginOffset, it->beginOffset);
