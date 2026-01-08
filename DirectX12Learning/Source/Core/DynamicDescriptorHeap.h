@@ -63,6 +63,11 @@ private:
 	public:
 		void MarkRange(uint32_t beginOffset, uint32_t endOffset);
 
+		size_t GetNumMarkerRanges() const
+		{
+			return m_markerRangeSet.size();
+		}
+
 	private:
 		std::set<MarkerRange> m_markerRangeSet;
 	};
