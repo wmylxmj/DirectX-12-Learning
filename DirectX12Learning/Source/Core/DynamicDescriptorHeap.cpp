@@ -55,4 +55,19 @@ void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t 
 	MarkerRange newMarkerRange;
 	newMarkerRange.beginOffset = beginOffset;
 	newMarkerRange.endOffset = endOffset;
+
+	for (auto it = m_markerRangeSet.begin(); it != m_markerRangeSet.end();) {
+		if (!(newMarkerRange.endOffset < it->beginOffset || newMarkerRange.beginOffset > it->endOffset))
+		{
+			newMarkerRange.beginOffset = std::min(newMarkerRange.beginOffset, it->beginOffset);
+			newMarkerRange.endOffset = std::max(newMarkerRange.endOffset, it->endOffset);
+			it = m_markerRangeSet.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	m_markerRangeSet.insert(newMarkerRange);
 }
