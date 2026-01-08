@@ -92,5 +92,7 @@ private:
 	{
 		uint64_t m_rootDescriptorTablesBitMap;
 		uint64_t m_staleRootDescriptorTablesBitMap;
+
+		std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]> m_pDescriptorHandles;
 	};
 };
