@@ -10,7 +10,7 @@ DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRI
 {
 }
 
-DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
+DescriptorHeap* DescriptorHeapManager::RequestGeneralSizeDescriptorHeap()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
