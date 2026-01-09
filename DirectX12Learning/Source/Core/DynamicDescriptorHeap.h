@@ -29,7 +29,6 @@ public:
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const uint32_t m_kGeneralDescriptorHeapSize;
-
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 	const D3D12_DESCRIPTOR_HEAP_FLAGS m_kDescriptorHeapFlags;
 
