@@ -33,7 +33,7 @@ DescriptorHeap* DescriptorHeapManager::RequestGeneralSizeDescriptorHeap()
 	return descriptorHeapPtr;
 }
 
-void DescriptorHeapManager::DiscardDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
+void DescriptorHeapManager::DiscardGeneralSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
 {
 	// 在记录围栏后调用
 	std::lock_guard<std::mutex> lock(m_mutex);
