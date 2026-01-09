@@ -6,7 +6,6 @@ DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRI
 	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType),
 	m_kDescriptorHeapFlags(descriptorHeapFlags),
-
 	m_kGeneralDescriptorHeapSize(generalDescriptorHeapSize)
 {
 }
