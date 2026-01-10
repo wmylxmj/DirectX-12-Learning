@@ -48,7 +48,10 @@ DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t n
 	std::lock_guard<std::mutex> lock(m_mutex);
 
 	auto descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice, m_kDescriptorHeapType, numDescriptors, m_kDescriptorHeapFlags);
-	return nullptr;
+	DescriptorHeap* rawPtr = descriptorHeap.get();
+	m_largeSizeDescriptorHeapPtrMap.emplace(rawPtr, std::move(descriptorHeap));
+
+	return rawPtr;
 }
 
 DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
