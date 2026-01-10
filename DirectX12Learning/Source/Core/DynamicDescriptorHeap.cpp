@@ -45,6 +45,9 @@ void DescriptorHeapManager::DiscardGeneralSizeDescriptorHeaps(FenceTracker fence
 
 DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t numDescriptors)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	auto descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice, m_kDescriptorHeapType, numDescriptors, m_kDescriptorHeapFlags);
 	return nullptr;
 }
 
