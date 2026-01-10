@@ -56,6 +56,8 @@ DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t n
 
 void DescriptorHeapManager::DiscardLargeSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
 {
+	std::lock_guard<std::mutex> lock(m_mutex);
+
 	while (!m_deletionQueue.empty() && m_deletionQueue.front().first.ArePendingFencesCompleted())
 	{
 		m_largeSizeDescriptorHeapPtrMap.erase(m_deletionQueue.front().second);
