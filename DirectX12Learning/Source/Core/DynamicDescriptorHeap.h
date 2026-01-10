@@ -40,7 +40,6 @@ private:
 	std::unordered_map<DescriptorHeap*, std::unique_ptr<DescriptorHeap>> m_largeSizeDescriptorHeapPtrMap;
 	std::queue<std::pair<FenceTracker, LinearAllocatorPage*>> m_deletionQueue;
 };
-};
 
 class DynamicDescriptorHeap
 {
