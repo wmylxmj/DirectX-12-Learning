@@ -33,6 +33,8 @@ private:
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
 	std::queue< std::pair<FenceTracker, DescriptorHeap*>> m_retiredDescriptorHeaps;
 	std::queue<DescriptorHeap*> m_availableDescriptorHeaps;
+
+	std::unordered_map<DescriptorHeap*, std::unique_ptr<DescriptorHeap>> m_largeSizeDescriptorHeapPtrMap;
 };
 
 class DynamicDescriptorHeap
