@@ -54,10 +54,6 @@ DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t n
 	return rawPtr;
 }
 
-void DescriptorHeapManager::DiscardLargeSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
-{
-}
-
 DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
 	m_device(device),
 	m_kDescriptorHeapType(descriptorHeapType),
