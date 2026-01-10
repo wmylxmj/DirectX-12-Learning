@@ -2,15 +2,15 @@
 
 #include "Device.h"
 
-DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags, uint32_t numDescriptorsPerHeap) :
+DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags, uint32_t generalDescriptorHeapSize) :
 	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType),
-	m_kNumDescriptorsPerHeap(numDescriptorsPerHeap),
-	m_kDescriptorHeapFlags(descriptorHeapFlags)
+	m_kDescriptorHeapFlags(descriptorHeapFlags),
+	m_kGeneralDescriptorHeapSize(generalDescriptorHeapSize)
 {
 }
 
-DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
+DescriptorHeap* DescriptorHeapManager::RequestGeneralSizeDescriptorHeap()
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
@@ -25,7 +25,7 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 		m_availableDescriptorHeaps.pop();
 	}
 	else {
-		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, m_kNumDescriptorsPerHeap, m_kDescriptorHeapFlags);
+		std::unique_ptr<DescriptorHeap> descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, m_kGeneralDescriptorHeapSize, m_kDescriptorHeapFlags);
 		m_descriptorHeapPool.push_back(std::move(descriptorHeap));
 		descriptorHeapPtr = m_descriptorHeapPool.back().get();
 	}
@@ -33,7 +33,7 @@ DescriptorHeap* DescriptorHeapManager::RequestDescriptorHeap()
 	return descriptorHeapPtr;
 }
 
-void DescriptorHeapManager::DiscardDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
+void DescriptorHeapManager::DiscardGeneralSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
 {
 	// 在记录围栏后调用
 	std::lock_guard<std::mutex> lock(m_mutex);
