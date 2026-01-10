@@ -22,6 +22,7 @@ public:
 	void DiscardGeneralSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps);
 
 	DescriptorHeap* RequestLargeSizeDescriptorHeap(uint32_t numDescriptors);
+	void DiscardLargeSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps);
 
 	uint32_t GetGeneralDescriptorHeapSize() const
 	{
