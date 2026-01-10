@@ -56,6 +56,16 @@ DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t n
 
 void DescriptorHeapManager::DiscardLargeSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
 {
+	while (!m_deletionQueue.empty() && m_deletionQueue.front().first.ArePendingFencesCompleted())
+	{
+		m_largeSizeDescriptorHeapPtrMap.erase(m_deletionQueue.front().second);
+		m_deletionQueue.pop();
+	}
+
+	for (auto& descriptorHeap : descriptorHeaps)
+	{
+		m_deletionQueue.push(std::make_pair(fenceTracker, descriptorHeap));
+	}
 }
 
 DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
