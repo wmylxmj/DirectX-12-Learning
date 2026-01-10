@@ -33,6 +33,7 @@ private:
 	const D3D12_DESCRIPTOR_HEAP_FLAGS m_kDescriptorHeapFlags;
 
 	std::mutex m_mutex;
+
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
 	std::queue< std::pair<FenceTracker, DescriptorHeap*>> m_retiredDescriptorHeaps;
 	std::queue<DescriptorHeap*> m_availableDescriptorHeaps;
