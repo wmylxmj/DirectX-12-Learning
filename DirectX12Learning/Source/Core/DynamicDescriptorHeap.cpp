@@ -47,7 +47,7 @@ DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t n
 {
 	std::lock_guard<std::mutex> lock(m_mutex);
 
-	auto descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice, m_kDescriptorHeapType, numDescriptors, m_kDescriptorHeapFlags);
+	auto descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, numDescriptors, m_kDescriptorHeapFlags);
 	DescriptorHeap* rawPtr = descriptorHeap.get();
 	m_largeSizeDescriptorHeapPtrMap.emplace(rawPtr, std::move(descriptorHeap));
 
