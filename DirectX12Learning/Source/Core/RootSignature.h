@@ -47,7 +47,5 @@ protected:
 	uint64_t m_cbvSrvUavDescriptorTableBitMap;
 	uint64_t m_samplerDescriptorTableBitMap;
 
-	uint32_t m_descriptorTableSize[64];
-
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> m_pRootSignature;
 };
