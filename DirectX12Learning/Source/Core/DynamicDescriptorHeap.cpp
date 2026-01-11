@@ -122,6 +122,8 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 		UINT tableOffset = 0;
 		for (UINT i = 0; i < rootParameter.DescriptorTable.NumDescriptorRanges; ++i)
 		{
+			const D3D12_DESCRIPTOR_RANGE& descriptorRange = rootParameter.DescriptorTable.pDescriptorRanges[i];
+			tableOffset += descriptorRange.NumDescriptors;
 		}
 
 		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootIndex];
