@@ -119,6 +119,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 		const RootParameter& rootParameter = rootSignature[rootIndex];
 
+		// 计算描述符表的大小
 		UINT tableSize = 0;
 		UINT tableOffset = 0;
 		for (UINT i = 0; i < rootParameter.DescriptorTable.NumDescriptorRanges; ++i)
