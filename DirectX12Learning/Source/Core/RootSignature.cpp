@@ -58,7 +58,6 @@ void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
 
 	for (UINT i = 0; i < m_numParameters; ++i) {
 		const D3D12_ROOT_PARAMETER& parameter = rootSignatureDesc.pParameters[i];
-		m_descriptorTableSize[i] = 0;
 
 		if (parameter.ParameterType == D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE) {
 			assert(parameter.DescriptorTable.pDescriptorRanges != nullptr);
@@ -70,10 +69,6 @@ void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
 			else
 			{
 				m_cbvSrvUavDescriptorTableBitMap |= ((uint64_t)1 << i);
-			}
-
-			for (UINT j = 0; j < parameter.DescriptorTable.NumDescriptorRanges; ++j) {
-				m_descriptorTableSize[i] += parameter.DescriptorTable.pDescriptorRanges[j].NumDescriptors;
 			}
 		}
 	}
