@@ -99,3 +99,7 @@ void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t 
 
 	m_markerRangeSet.insert(newMarkerRange);
 }
+
+void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, const RootSignature& rootSignature)
+{
+}
