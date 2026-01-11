@@ -129,6 +129,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 				tableOffset = descriptorRange.OffsetInDescriptorsFromTableStart;
 			}
 			tableOffset += descriptorRange.NumDescriptors;
+			tableSize = std::max(tableSize, tableOffset);
 		}
 
 		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootIndex];
