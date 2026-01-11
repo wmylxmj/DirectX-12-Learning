@@ -105,4 +105,6 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 {
 	m_staleRootDescriptorTablesBitMap = 0;
 	m_rootDescriptorTablesBitMap = rootSignature.GetDescriptorTableBitMap(descriptorHeapType);
+
+	UINT currentOffset = 0;
 }
