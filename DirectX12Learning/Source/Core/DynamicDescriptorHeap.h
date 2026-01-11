@@ -79,6 +79,11 @@ private:
 			return m_markerRangeSet;
 		}
 
+		void Clear()
+		{
+			m_markerRangeSet.clear();
+		}
+
 	private:
 		std::set<MarkerRange> m_markerRangeSet;
 	};
