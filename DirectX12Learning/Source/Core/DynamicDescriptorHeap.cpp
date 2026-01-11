@@ -123,6 +123,10 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 		for (UINT i = 0; i < rootParameter.DescriptorTable.NumDescriptorRanges; ++i)
 		{
 			const D3D12_DESCRIPTOR_RANGE& descriptorRange = rootParameter.DescriptorTable.pDescriptorRanges[i];
+			if (descriptorRange.OffsetInDescriptorsFromTableStart != D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND)
+			{
+				tableOffset = descriptorRange.OffsetInDescriptorsFromTableStart;
+			}
 			tableOffset += descriptorRange.NumDescriptors;
 		}
 
