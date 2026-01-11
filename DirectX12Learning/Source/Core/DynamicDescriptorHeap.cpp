@@ -110,8 +110,8 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 	UINT currentOffset = 0;
 
-	unsigned long tableParameters = m_rootDescriptorTablesBitMap;
-	unsigned long rootIndex;
+	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
+	uint64_t rootIndex;
 
 	while (_BitScanForward64(&rootIndex, tableParameters))
 	{
