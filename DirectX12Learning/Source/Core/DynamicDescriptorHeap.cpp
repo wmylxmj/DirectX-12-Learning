@@ -3,6 +3,8 @@
 #include "Device.h"
 #include "RootSignature.h"
 
+#include <intrin.h>
+
 DescriptorHeapManager::DescriptorHeapManager(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, D3D12_DESCRIPTOR_HEAP_FLAGS descriptorHeapFlags, uint32_t generalDescriptorHeapSize) :
 	m_pDevice(pDevice),
 	m_kDescriptorHeapType(descriptorHeapType),
