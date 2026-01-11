@@ -89,8 +89,3 @@ uint64_t RootSignature::GetDescriptorTableBitMap(D3D12_DESCRIPTOR_HEAP_TYPE desc
 	assert(descriptorHeapType == D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 	return m_samplerDescriptorTableBitMap;
 }
-
-uint32_t RootSignature::GetDescriptorTableSize(size_t rootParameterIndex) const
-{
-	return m_descriptorTableSize[rootParameterIndex];
-}
