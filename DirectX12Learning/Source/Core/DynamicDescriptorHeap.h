@@ -12,6 +12,7 @@
 #include <set>
 
 class Device;
+class RootSignature;
 
 class DescriptorHeapManager
 {
@@ -98,6 +99,8 @@ private:
 
 	struct DescriptorHandleCache
 	{
+		void ParseRootSignature(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, const RootSignature& rootSignature);
+
 		uint64_t m_rootDescriptorTablesBitMap;
 		uint64_t m_staleRootDescriptorTablesBitMap;
 
