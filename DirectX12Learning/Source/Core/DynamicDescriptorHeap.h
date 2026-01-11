@@ -21,6 +21,9 @@ public:
 	DescriptorHeap* RequestGeneralSizeDescriptorHeap();
 	void DiscardGeneralSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps);
 
+	DescriptorHeap* RequestLargeSizeDescriptorHeap(uint32_t numDescriptors);
+	void DiscardLargeSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps);
+
 	uint32_t GetGeneralDescriptorHeapSize() const
 	{
 		return m_kGeneralDescriptorHeapSize;
@@ -33,9 +36,13 @@ private:
 	const D3D12_DESCRIPTOR_HEAP_FLAGS m_kDescriptorHeapFlags;
 
 	std::mutex m_mutex;
+
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
 	std::queue< std::pair<FenceTracker, DescriptorHeap*>> m_retiredDescriptorHeaps;
 	std::queue<DescriptorHeap*> m_availableDescriptorHeaps;
+
+	std::unordered_map<DescriptorHeap*, std::unique_ptr<DescriptorHeap>> m_largeSizeDescriptorHeapPtrMap;
+	std::queue<std::pair<FenceTracker, DescriptorHeap*>> m_deletionQueue;
 };
 
 class DynamicDescriptorHeap

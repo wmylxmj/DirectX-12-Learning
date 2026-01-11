@@ -43,6 +43,33 @@ void DescriptorHeapManager::DiscardGeneralSizeDescriptorHeaps(FenceTracker fence
 	}
 }
 
+DescriptorHeap* DescriptorHeapManager::RequestLargeSizeDescriptorHeap(uint32_t numDescriptors)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	auto descriptorHeap = std::make_unique<DescriptorHeap>(m_pDevice.Get(), m_kDescriptorHeapType, numDescriptors, m_kDescriptorHeapFlags);
+	DescriptorHeap* rawPtr = descriptorHeap.get();
+	m_largeSizeDescriptorHeapPtrMap.emplace(rawPtr, std::move(descriptorHeap));
+
+	return rawPtr;
+}
+
+void DescriptorHeapManager::DiscardLargeSizeDescriptorHeaps(FenceTracker fenceTracker, std::vector<DescriptorHeap*>& descriptorHeaps)
+{
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	while (!m_deletionQueue.empty() && m_deletionQueue.front().first.ArePendingFencesCompleted())
+	{
+		m_largeSizeDescriptorHeapPtrMap.erase(m_deletionQueue.front().second);
+		m_deletionQueue.pop();
+	}
+
+	for (auto& descriptorHeap : descriptorHeaps)
+	{
+		m_deletionQueue.push(std::make_pair(fenceTracker, descriptorHeap));
+	}
+}
+
 DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType) :
 	m_device(device),
 	m_kDescriptorHeapType(descriptorHeapType),
