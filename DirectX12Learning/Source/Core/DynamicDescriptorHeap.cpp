@@ -140,5 +140,6 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 		descriptorTableEntry.numDescriptors = tableSize;
 
 		m_descriptorHandles.push_back(std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(tableSize));
+		descriptorTableEntry.pBaseDescriptorHandle = m_descriptorHandles.back().get();
 	}
 }
