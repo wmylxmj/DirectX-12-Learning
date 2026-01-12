@@ -135,5 +135,6 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootIndex];
 		descriptorTableEntry.assignedDescriptorHandlesMarker.Clear();
+		descriptorTableEntry.numDescriptors = tableSize;
 	}
 }
