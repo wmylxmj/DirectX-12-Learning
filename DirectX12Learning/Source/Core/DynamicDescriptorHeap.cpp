@@ -151,4 +151,5 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 	assert(offset + numDescriptors <= m_rootDescriptorTables[rootParameterIndex].numDescriptors);
 
 	DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootParameterIndex];
+	D3D12_CPU_DESCRIPTOR_HANDLE* copyDest = descriptorTableEntry.pBaseDescriptorHandle + offset;
 }
