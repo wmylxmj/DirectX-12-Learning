@@ -114,66 +114,72 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 	UINT currentOffset = 0;
 
 	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
-	unsigned long rootIndex;
-
-	while (_BitScanForward64(&rootIndex, tableParameters))
-	{
-		tableParameters ^= (static_cast<uint64_t>(1) << rootIndex);
-
-		const RootParameter& rootParameter = rootSignature[rootIndex];
-
-		// 计算描述符表的大小
-		UINT tableSize = 0;
-		UINT tableOffset = 0;
-		for (UINT i = 0; i < rootParameter.DescriptorTable.NumDescriptorRanges; ++i)
-		{
-			const D3D12_DESCRIPTOR_RANGE& descriptorRange = rootParameter.DescriptorTable.pDescriptorRanges[i];
-			if (descriptorRange.OffsetInDescriptorsFromTableStart != D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND)
-			{
-				tableOffset = descriptorRange.OffsetInDescriptorsFromTableStart;
-			}
-			tableOffset += descriptorRange.NumDescriptors;
-			tableSize = std::max(tableSize, tableOffset);
-		}
-
-		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootIndex];
-		descriptorTableEntry.assignedDescriptorHandlesMarker.Clear();
-		descriptorTableEntry.numDescriptors = tableSize;
-
-		m_descriptorHandles.push_back(std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(tableSize));
-		descriptorTableEntry.pBaseDescriptorHandle = m_descriptorHandles.back().get();
-	}
-}
-
-void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles)
-{
-	assert(((static_cast<uint64_t>(1) << rootParameterIndex) & m_rootDescriptorTablesBitMap) != 0);
-	assert(offset + numDescriptors <= m_rootDescriptorTables[rootParameterIndex].numDescriptors);
-
-	DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootParameterIndex];
-	D3D12_CPU_DESCRIPTOR_HANDLE* copyDest = descriptorTableEntry.pBaseDescriptorHandle + offset;
-	for (uint32_t i = 0; i < numDescriptors; ++i)
-	{
-		copyDest[i] = descriptorHandles[i];
-	}
-
-	descriptorTableEntry.assignedDescriptorHandlesMarker.MarkRange(offset, offset + numDescriptors);
-	m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
-}
-
-void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
-{
-	m_staleRootDescriptorTablesBitMap = 0;
-
-	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
 	unsigned long rootParameterIndex;
 
 	while (_BitScanForward64(&rootParameterIndex, tableParameters))
 	{
 		tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
-		if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
+
+		unsigned long rootIndex;
+
+		while (_BitScanForward64(&rootIndex, tableParameters))
 		{
-			m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
+			tableParameters ^= (static_cast<uint64_t>(1) << rootIndex);
+
+			const RootParameter& rootParameter = rootSignature[rootIndex];
+
+			// 计算描述符表的大小
+			UINT tableSize = 0;
+			UINT tableOffset = 0;
+			for (UINT i = 0; i < rootParameter.DescriptorTable.NumDescriptorRanges; ++i)
+			{
+				const D3D12_DESCRIPTOR_RANGE& descriptorRange = rootParameter.DescriptorTable.pDescriptorRanges[i];
+				if (descriptorRange.OffsetInDescriptorsFromTableStart != D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND)
+				{
+					tableOffset = descriptorRange.OffsetInDescriptorsFromTableStart;
+				}
+				tableOffset += descriptorRange.NumDescriptors;
+				tableSize = std::max(tableSize, tableOffset);
+			}
+
+			DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootIndex];
+			descriptorTableEntry.assignedDescriptorHandlesMarker.Clear();
+			descriptorTableEntry.numDescriptors = tableSize;
+
+			m_descriptorHandles.push_back(std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(tableSize));
+			descriptorTableEntry.pBaseDescriptorHandle = m_descriptorHandles.back().get();
 		}
 	}
-}
+
+	void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE * descriptorHandles)
+	{
+		assert(((static_cast<uint64_t>(1) << rootParameterIndex) & m_rootDescriptorTablesBitMap) != 0);
+		assert(offset + numDescriptors <= m_rootDescriptorTables[rootParameterIndex].numDescriptors);
+
+		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootParameterIndex];
+		D3D12_CPU_DESCRIPTOR_HANDLE* copyDest = descriptorTableEntry.pBaseDescriptorHandle + offset;
+		for (uint32_t i = 0; i < numDescriptors; ++i)
+		{
+			copyDest[i] = descriptorHandles[i];
+		}
+
+		descriptorTableEntry.assignedDescriptorHandlesMarker.MarkRange(offset, offset + numDescriptors);
+		m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
+	}
+
+	void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
+	{
+		m_staleRootDescriptorTablesBitMap = 0;
+
+		uint64_t tableParameters = m_rootDescriptorTablesBitMap;
+		unsigned long rootParameterIndex;
+
+		while (_BitScanForward64(&rootParameterIndex, tableParameters))
+		{
+			tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+			if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
+			{
+				m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
+			}
+		}
+	}
