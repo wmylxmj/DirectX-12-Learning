@@ -118,7 +118,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 	while (_BitScanForward64(&rootIndex, tableParameters))
 	{
-		tableParameters &= ~(1 << rootIndex);
+		tableParameters ^= (static_cast<uint64_t>(1) << rootIndex);
 
 		const RootParameter& rootParameter = rootSignature[rootIndex];
 
