@@ -165,6 +165,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 {
 	uint32_t neededSize = 0;
+	uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
 }
 
 void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
