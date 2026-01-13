@@ -167,6 +167,10 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 	uint32_t neededSize = 0;
 	uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
 	unsigned long rootParameterIndex;
+
+	while (_BitScanForward64(&rootParameterIndex, staleTableParameters))
+	{
+	}
 }
 
 void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
