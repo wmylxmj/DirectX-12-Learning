@@ -163,4 +163,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 
 void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 {
+	m_staleRootDescriptorTablesBitMap = 0;
+
+	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
 }
