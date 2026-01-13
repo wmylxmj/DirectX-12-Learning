@@ -167,4 +167,13 @@ void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 
 	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
 	unsigned long rootParameterIndex;
+
+	while (_BitScanForward64(&rootParameterIndex, tableParameters))
+	{
+		tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+		if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
+		{
+			m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
+		}
+	}
 }
