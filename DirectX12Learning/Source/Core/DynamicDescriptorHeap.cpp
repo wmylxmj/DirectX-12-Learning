@@ -156,4 +156,6 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 	{
 		copyDest[i] = descriptorHandles[i];
 	}
+
+	descriptorTableEntry.assignedDescriptorHandlesMarker.MarkRange(offset, offset + numDescriptors);
 }
