@@ -146,4 +146,6 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles)
 {
+	assert(((1 << rootParameterIndex) & m_rootDescriptorTablesBitMap) != 0);
+	assert(offset + numDescriptors <= m_rootDescriptorTables[rootParameterIndex].numDescriptors);
 }
