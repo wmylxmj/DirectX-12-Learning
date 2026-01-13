@@ -158,4 +158,5 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 	}
 
 	descriptorTableEntry.assignedDescriptorHandlesMarker.MarkRange(offset, offset + numDescriptors);
+	m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
 }
