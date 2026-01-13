@@ -174,6 +174,8 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 
 		neededSize += m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
 	}
+
+	return neededSize;
 }
 
 void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
