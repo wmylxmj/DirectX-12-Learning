@@ -115,13 +115,13 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
 
-	unsigned long rootIndex;
+	unsigned long rootParameterIndex;
 
-	while (_BitScanForward64(&rootIndex, tableParameters))
+	while (_BitScanForward64(&rootParameterIndex, tableParameters))
 	{
-		tableParameters ^= (static_cast<uint64_t>(1) << rootIndex);
+		tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
 
-		const RootParameter& rootParameter = rootSignature[rootIndex];
+		const RootParameter& rootParameter = rootSignature[rootParameterIndex];
 
 		// 计算描述符表的大小
 		UINT tableSize = 0;
@@ -137,7 +137,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 			tableSize = std::max(tableSize, tableOffset);
 		}
 
-		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootIndex];
+		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootParameterIndex];
 		descriptorTableEntry.assignedDescriptorHandlesMarker.Clear();
 		descriptorTableEntry.numDescriptors = tableSize;
 
