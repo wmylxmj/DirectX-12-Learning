@@ -148,4 +148,6 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 {
 	assert(((static_cast<uint64_t>(1) << rootParameterIndex) & m_rootDescriptorTablesBitMap) != 0);
 	assert(offset + numDescriptors <= m_rootDescriptorTables[rootParameterIndex].numDescriptors);
+
+	DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootParameterIndex];
 }
