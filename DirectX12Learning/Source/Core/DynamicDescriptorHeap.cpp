@@ -166,4 +166,5 @@ void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 	m_staleRootDescriptorTablesBitMap = 0;
 
 	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
+	unsigned long rootParameterIndex;
 }
