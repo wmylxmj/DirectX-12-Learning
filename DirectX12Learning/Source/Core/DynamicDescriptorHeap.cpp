@@ -143,3 +143,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 		descriptorTableEntry.pBaseDescriptorHandle = m_descriptorHandles.back().get();
 	}
 }
+
+void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles)
+{
+}
