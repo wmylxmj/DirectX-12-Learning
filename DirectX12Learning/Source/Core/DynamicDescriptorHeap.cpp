@@ -173,36 +173,37 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 	{
 		staleTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
 	}
+}
 
-	uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
+uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
+{
+	uint32_t neededSize = 0;
+	uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
+	unsigned long rootParameterIndex;
+
+	while (_BitScanForward64(&rootParameterIndex, staleTableParameters))
 	{
-		uint32_t neededSize = 0;
-		uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
-		unsigned long rootParameterIndex;
+		staleTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
 
-		while (_BitScanForward64(&rootParameterIndex, staleTableParameters))
-		{
-			staleTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
-
-			neededSize += m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
-		}
-
-		return neededSize;
+		neededSize += m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
 	}
 
-	void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
+	return neededSize;
+}
+
+void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
+{
+	m_staleRootDescriptorTablesBitMap = 0;
+
+	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
+	unsigned long rootParameterIndex;
+
+	while (_BitScanForward64(&rootParameterIndex, tableParameters))
 	{
-		m_staleRootDescriptorTablesBitMap = 0;
-
-		uint64_t tableParameters = m_rootDescriptorTablesBitMap;
-		unsigned long rootParameterIndex;
-
-		while (_BitScanForward64(&rootParameterIndex, tableParameters))
+		tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+		if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
 		{
-			tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
-			if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
-			{
-				m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
-			}
+			m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
 		}
 	}
+}
