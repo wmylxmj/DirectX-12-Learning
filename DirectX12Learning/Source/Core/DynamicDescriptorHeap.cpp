@@ -165,37 +165,44 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTables(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDestinationDescriptorHandle, uint32_t descriptorSize, ID3D12GraphicsCommandList* pCommandList, void(__stdcall ID3D12GraphicsCommandList::* pSetDescriptorHeap)(UINT, D3D12_GPU_DESCRIPTOR_HANDLE))
 {
 	UINT numDestDescriptorRanges = 0;
-}
 
-uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
-{
-	uint32_t neededSize = 0;
 	uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
 	unsigned long rootParameterIndex;
 
 	while (_BitScanForward64(&rootParameterIndex, staleTableParameters))
 	{
 		staleTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
-
-		neededSize += m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
 	}
 
-	return neededSize;
-}
-
-void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
-{
-	m_staleRootDescriptorTablesBitMap = 0;
-
-	uint64_t tableParameters = m_rootDescriptorTablesBitMap;
-	unsigned long rootParameterIndex;
-
-	while (_BitScanForward64(&rootParameterIndex, tableParameters))
+	uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 	{
-		tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
-		if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
+		uint32_t neededSize = 0;
+		uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
+		unsigned long rootParameterIndex;
+
+		while (_BitScanForward64(&rootParameterIndex, staleTableParameters))
 		{
-			m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
+			staleTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+
+			neededSize += m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
+		}
+
+		return neededSize;
+	}
+
+	void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
+	{
+		m_staleRootDescriptorTablesBitMap = 0;
+
+		uint64_t tableParameters = m_rootDescriptorTablesBitMap;
+		unsigned long rootParameterIndex;
+
+		while (_BitScanForward64(&rootParameterIndex, tableParameters))
+		{
+			tableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+			if (!m_rootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().empty())
+			{
+				m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
+			}
 		}
 	}
-}
