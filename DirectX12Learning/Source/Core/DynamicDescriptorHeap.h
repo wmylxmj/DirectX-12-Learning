@@ -106,7 +106,7 @@ private:
 	{
 		void ParseRootSignature(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, const RootSignature& rootSignature);
 		void StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles);
-		void CopyAndBindStaleDescriptorTables(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDescriptorHandle, uint32_t descriptorSize,
+		void CopyAndBindStaleDescriptorTables(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDestinationDescriptorHandle, uint32_t descriptorSize,
 			ID3D12GraphicsCommandList* pCommandList, void (STDMETHODCALLTYPE ID3D12GraphicsCommandList::* pSetDescriptorHeap)(UINT, D3D12_GPU_DESCRIPTOR_HANDLE));
 
 		uint32_t ComputeStagedSize();
