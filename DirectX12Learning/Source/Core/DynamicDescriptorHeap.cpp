@@ -187,6 +187,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 		{
 			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle;
 			pDestDescriptorRangeSizes[numDestDescriptorRanges] = markerRange.endOffset - markerRange.beginOffset;
+			baseDestinationDescriptorHandle += tableSize * descriptorSize;
 			++numDestDescriptorRanges;
 			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
 			{
