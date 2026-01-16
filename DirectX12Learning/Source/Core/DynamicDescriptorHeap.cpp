@@ -182,6 +182,19 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 		UINT numSrcDescriptorRanges = 0;
 		std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]> pSrcDescriptorRangeStarts = std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(tableSize);
 		std::unique_ptr<UINT[]> pSrcDescriptorRangeSizes = std::make_unique<UINT[]>(tableSize);
+
+		for (const auto& markerRange : markerRanges)
+		{
+			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle.GetCpuHandleAtOffset(numDestDescriptorRanges == 0 ? 0 : pDestDescriptorRangeSizes[numDestDescriptorRanges - 1], descriptorSize);
+			pDestDescriptorRangeSizes[numDestDescriptorRanges] = markerRange.endOffset - markerRange.beginOffset;
+			++numDestDescriptorRanges;
+			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
+			{
+				pSrcDescriptorRangeStarts[numSrcDescriptorRanges] = descriptorTableEntry.pBaseDescriptorHandle[i];
+				pSrcDescriptorRangeSizes[numSrcDescriptorRanges] = 1;
+				++numSrcDescriptorRanges;
+			}
+		}
 	}
 }
 
