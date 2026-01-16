@@ -185,7 +185,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 
 		for (const auto& markerRange : markerRanges)
 		{
-			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle.GetCpuHandleAtOffset(numDestDescriptorRanges == 0 ? 0 : pDestDescriptorRangeSizes[numDestDescriptorRanges - 1], descriptorSize);
+			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle;
 			pDestDescriptorRangeSizes[numDestDescriptorRanges] = markerRange.endOffset - markerRange.beginOffset;
 			++numDestDescriptorRanges;
 			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
