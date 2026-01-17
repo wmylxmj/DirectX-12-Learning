@@ -162,7 +162,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::StageDescriptorHandles(uint32
 	m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
 }
 
-void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTables(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDestinationDescriptorHandle, uint32_t descriptorSize, ID3D12GraphicsCommandList* pCommandList, void(__stdcall ID3D12GraphicsCommandList::* pSetDescriptorHeap)(UINT, D3D12_GPU_DESCRIPTOR_HANDLE))
+void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTables(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDestinationDescriptorHandle, uint32_t descriptorSize, ID3D12GraphicsCommandList* pCommandList, void(__stdcall ID3D12GraphicsCommandList::* pSetDescriptorHeap)(UINT, D3D12_GPU_DESCRIPTOR_HANDLE))
 {
 	uint64_t staleTableParameters = m_staleRootDescriptorTablesBitMap;
 	unsigned long rootParameterIndex;
