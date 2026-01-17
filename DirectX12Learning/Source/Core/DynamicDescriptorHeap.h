@@ -108,7 +108,6 @@ private:
 		void StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles);
 
 		uint32_t ComputeStagedSize();
-
 		void UnbindAllValid();
 
 		uint64_t m_rootDescriptorTablesBitMap;
