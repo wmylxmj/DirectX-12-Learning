@@ -197,6 +197,16 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 				++numSrcDescriptorRanges;
 			}
 		}
+
+		pDevice->CopyDescriptors(
+			numDestDescriptorRanges,
+			pDestDescriptorRangeStarts.get(),
+			pDestDescriptorRangeSizes.get(),
+			numSrcDescriptorRanges,
+			pSrcDescriptorRangeStarts.get(),
+			pSrcDescriptorRangeSizes.get(),
+			descriptorHeapType
+		);
 	}
 }
 
