@@ -57,7 +57,7 @@ private:
 	DescriptorHeapManager* m_pDescriptorHeapManager;
 
 	DescriptorHeap* m_pCurrentDescriptorHeap;
-    uint32_t m_currentDescriptorHeapOffset;
+	uint32_t m_currentDescriptorHeapOffset;
 
 	struct MarkerRange
 	{
@@ -117,8 +117,10 @@ private:
 
 		DescriptorTableEntry m_rootDescriptorTables[64];
 		std::vector<std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]>> m_descriptorHandles;
+
+		uint64_t m_committedRootDescriptorTablesBitMap;
 	};
 
 	DescriptorHandleCache m_graphicsDescriptorHandleCache;
-    DescriptorHandleCache m_computeDescriptorHandleCache;
+	DescriptorHandleCache m_computeDescriptorHandleCache;
 };
