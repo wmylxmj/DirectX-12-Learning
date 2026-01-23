@@ -57,6 +57,7 @@ private:
 	DescriptorHeapManager* m_pDescriptorHeapManager;
 
 	DescriptorHeap* m_pCurrentDescriptorHeap;
+    uint32_t m_currentDescriptorHeapOffset;
 
 	struct MarkerRange
 	{
