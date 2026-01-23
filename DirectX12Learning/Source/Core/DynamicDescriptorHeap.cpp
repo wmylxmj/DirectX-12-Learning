@@ -112,6 +112,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 	m_rootDescriptorTablesBitMap = rootSignature.GetDescriptorTableBitMap(descriptorHeapType);
 
 	m_descriptorHandles.clear();
+	m_committedDescriptorHandles.clear();
 
 	UINT currentOffset = 0;
 
