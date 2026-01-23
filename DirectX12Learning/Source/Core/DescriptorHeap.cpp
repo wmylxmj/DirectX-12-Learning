@@ -83,3 +83,8 @@ DescriptorHandle DescriptorHeap::operator[](uint32_t index) const
 {
 	return m_startDescriptorHandle + index * m_kDescriptorSize;
 }
+
+uint32_t DescriptorHeap::GetNumDescriptors() const
+{
+	return m_kNumDescriptors;
+}
