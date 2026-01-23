@@ -147,6 +147,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 		descriptorTableEntry.pBaseDescriptorHandle = m_descriptorHandles.back().get();
 
 		DescriptorTableEntry& committedDescriptorTableEntry = m_committedRootDescriptorTables[rootParameterIndex];
+		committedDescriptorTableEntry.assignedDescriptorHandlesMarker.Clear();
 	}
 }
 
