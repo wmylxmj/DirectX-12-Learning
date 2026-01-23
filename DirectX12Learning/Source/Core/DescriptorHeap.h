@@ -32,6 +32,8 @@ public:
 
 	DescriptorHandle operator[](uint32_t index) const;
 
+	uint32_t GetNumDescriptors() const;
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
