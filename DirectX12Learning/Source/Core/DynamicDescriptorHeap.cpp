@@ -107,6 +107,8 @@ void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t 
 void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, const RootSignature& rootSignature)
 {
 	m_staleRootDescriptorTablesBitMap = 0;
+	m_committedRootDescriptorTablesBitMap = 0;
+
 	m_rootDescriptorTablesBitMap = rootSignature.GetDescriptorTableBitMap(descriptorHeapType);
 
 	m_descriptorHandles.clear();
@@ -143,6 +145,8 @@ void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESC
 
 		m_descriptorHandles.push_back(std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(tableSize));
 		descriptorTableEntry.pBaseDescriptorHandle = m_descriptorHandles.back().get();
+
+		DescriptorTableEntry& committedDescriptorTableEntry = m_committedRootDescriptorTables[rootParameterIndex];
 	}
 }
 
