@@ -118,4 +118,6 @@ private:
 		DescriptorTableEntry m_rootDescriptorTables[64];
 		std::vector<std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]>> m_descriptorHandles;
 	};
+
+	DescriptorHandleCache m_graphicsDescriptorHandleCache;
 };
