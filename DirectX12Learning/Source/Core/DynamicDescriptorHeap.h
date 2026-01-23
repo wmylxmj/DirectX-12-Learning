@@ -120,6 +120,7 @@ private:
 
 		uint64_t m_committedRootDescriptorTablesBitMap;
 		DescriptorTableEntry m_committedRootDescriptorTables[64];
+		std::vector<std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]>> m_committedDescriptorHandles;
 	};
 
 	DescriptorHandleCache m_graphicsDescriptorHandleCache;
