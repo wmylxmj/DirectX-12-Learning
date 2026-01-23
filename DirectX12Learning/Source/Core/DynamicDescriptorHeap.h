@@ -120,4 +120,5 @@ private:
 	};
 
 	DescriptorHandleCache m_graphicsDescriptorHandleCache;
+    DescriptorHandleCache m_computeDescriptorHandleCache;
 };
