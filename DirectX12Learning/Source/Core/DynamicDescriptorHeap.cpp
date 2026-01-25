@@ -270,4 +270,6 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 		committedTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
 		neededSize += m_committedRootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
 	}
+
+	return neededSize;
 }
