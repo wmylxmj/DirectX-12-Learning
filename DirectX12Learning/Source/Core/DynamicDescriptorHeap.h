@@ -110,6 +110,7 @@ private:
 		void CopyAndBindStaleDescriptorTables(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDestinationDescriptorHandle, uint32_t descriptorSize, ID3D12GraphicsCommandList* pCommandList, void(__stdcall ID3D12GraphicsCommandList::* pSetDescriptorHeap)(UINT, D3D12_GPU_DESCRIPTOR_HANDLE));
 
 		uint32_t ComputeStagedSize();
+		uint32_t ComputeCommittedSize();
 		void UnbindAllValid();
 
 		uint64_t m_rootDescriptorTablesBitMap;
