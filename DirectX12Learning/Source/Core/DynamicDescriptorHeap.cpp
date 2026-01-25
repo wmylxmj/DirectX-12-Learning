@@ -242,13 +242,6 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 	return neededSize;
 }
 
-uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
-{
-	uint32_t neededSize = 0;
-	uint64_t committedTableParameters = m_committedRootDescriptorTablesBitMap;
-	return 0;
-}
-
 void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 {
 	m_staleRootDescriptorTablesBitMap = 0;
@@ -264,4 +257,11 @@ void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 			m_staleRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
 		}
 	}
+}
+
+uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
+{
+	uint32_t neededSize = 0;
+	uint64_t committedTableParameters = m_committedRootDescriptorTablesBitMap;
+	return 0;
 }
