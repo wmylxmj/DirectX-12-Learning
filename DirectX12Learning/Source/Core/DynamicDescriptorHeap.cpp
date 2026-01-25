@@ -268,6 +268,7 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 	while (_BitScanForward64(&rootParameterIndex, committedTableParameters))
 	{
 		committedTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+
 		neededSize += m_committedRootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker.GetMarkerRanges().rbegin()->endOffset;
 	}
 
