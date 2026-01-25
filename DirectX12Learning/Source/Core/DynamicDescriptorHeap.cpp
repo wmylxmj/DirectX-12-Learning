@@ -242,6 +242,11 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 	return neededSize;
 }
 
+uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
+{
+	return 0;
+}
+
 void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 {
 	m_staleRootDescriptorTablesBitMap = 0;
