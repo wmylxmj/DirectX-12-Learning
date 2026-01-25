@@ -182,6 +182,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 		m_committedRootDescriptorTablesBitMap |= (static_cast<uint64_t>(1) << rootParameterIndex);
 
 		DescriptorTableEntry& descriptorTableEntry = m_rootDescriptorTables[rootParameterIndex];
+		m_committedRootDescriptorTables[rootParameterIndex].assignedDescriptorHandlesMarker = descriptorTableEntry.assignedDescriptorHandlesMarker;
 		const auto& markerRanges = descriptorTableEntry.assignedDescriptorHandlesMarker.GetMarkerRanges();
 		UINT tableSize = markerRanges.rbegin()->endOffset;
 
