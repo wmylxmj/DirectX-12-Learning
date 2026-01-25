@@ -244,6 +244,7 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
 
 uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 {
+	uint32_t neededSize = 0;
 	return 0;
 }
 
