@@ -263,6 +263,4 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 {
 	uint32_t neededSize = 0;
 	uint64_t committedTableParameters = m_committedRootDescriptorTablesBitMap;
-	unsigned long rootParameterIndex;
-	return 0;
 }
