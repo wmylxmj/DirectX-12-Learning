@@ -204,6 +204,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 
 			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
 			{
+				committedDescriptorTableEntry.pBaseDescriptorHandle[i] = descriptorTableEntry.pBaseDescriptorHandle[i];
 				pSrcDescriptorRangeStarts[numSrcDescriptorRanges] = descriptorTableEntry.pBaseDescriptorHandle[i];
 				pSrcDescriptorRangeSizes[numSrcDescriptorRanges] = 1;
 				++numSrcDescriptorRanges;
