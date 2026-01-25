@@ -194,9 +194,8 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 
 		for (const auto& markerRange : markerRanges)
 		{
-			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle;
+			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle + markerRange.beginOffset * descriptorSize;
 			pDestDescriptorRangeSizes[numDestDescriptorRanges] = markerRange.endOffset - markerRange.beginOffset;
-			baseDestinationDescriptorHandle += tableSize * descriptorSize;
 			++numDestDescriptorRanges;
 
 			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
@@ -216,6 +215,9 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 			pSrcDescriptorRangeSizes.get(),
 			descriptorHeapType
 		);
+
+		(pCommandList->*pSetDescriptorHeap)(rootParameterIndex, baseDestinationDescriptorHandle);
+		baseDestinationDescriptorHandle += tableSize * descriptorSize;
 	}
 }
 
