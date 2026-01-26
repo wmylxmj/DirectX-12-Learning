@@ -259,6 +259,10 @@ void DynamicDescriptorHeap::DescriptorHandleCache::UnbindAllValid()
 	}
 }
 
+void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescriptorTables(ID3D12Device* pDevice, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, DescriptorHandle baseDestinationDescriptorHandle, uint32_t descriptorSize, ID3D12GraphicsCommandList* pCommandList, void(__stdcall ID3D12GraphicsCommandList::* pSetDescriptorHeap)(UINT, D3D12_GPU_DESCRIPTOR_HANDLE))
+{
+}
+
 uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 {
 	uint32_t neededSize = 0;
