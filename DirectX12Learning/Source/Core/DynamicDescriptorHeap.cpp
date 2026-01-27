@@ -292,6 +292,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescripto
 				++numSrcDescriptorRanges;
 			}
 		}
+
 		pDevice->CopyDescriptors(
 			numDestDescriptorRanges,
 			pDestDescriptorRangeStarts.get(),
