@@ -302,6 +302,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescripto
 			pSrcDescriptorRangeSizes.get(),
 			descriptorHeapType
 		);
+
 		(pCommandList->*pSetDescriptorHeap)(rootParameterIndex, baseDestinationDescriptorHandle);
 		baseDestinationDescriptorHandle += tableSize * descriptorSize;
 	}
