@@ -224,6 +224,8 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindStaleDescriptorTab
 		(pCommandList->*pSetDescriptorHeap)(rootParameterIndex, baseDestinationDescriptorHandle);
 		baseDestinationDescriptorHandle += tableSize * descriptorSize;
 	}
+
+	m_staleRootDescriptorTablesBitMap = 0;
 }
 
 uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeStagedSize()
