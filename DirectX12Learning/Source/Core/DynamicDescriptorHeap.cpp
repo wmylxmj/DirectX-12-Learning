@@ -285,6 +285,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescripto
 			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle + markerRange.beginOffset * descriptorSize;
 			pDestDescriptorRangeSizes[numDestDescriptorRanges] = markerRange.endOffset - markerRange.beginOffset;
 			++numDestDescriptorRanges;
+
 			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
 			{
 				pSrcDescriptorRangeStarts[numSrcDescriptorRanges] = committedDescriptorTableEntry.pBaseDescriptorHandle[i];
