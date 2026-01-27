@@ -267,6 +267,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescripto
 	while (_BitScanForward64(&rootParameterIndex, committedTableParameters))
 	{
 		committedTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+
 		DescriptorTableEntry& committedDescriptorTableEntry = m_committedRootDescriptorTables[rootParameterIndex];
 		const auto& markerRanges = committedDescriptorTableEntry.assignedDescriptorHandlesMarker.GetMarkerRanges();
 		UINT tableSize = markerRanges.rbegin()->endOffset;
