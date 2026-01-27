@@ -263,6 +263,43 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescripto
 {
 	uint64_t committedTableParameters = m_committedRootDescriptorTablesBitMap;
 	unsigned long rootParameterIndex;
+
+	while (_BitScanForward64(&rootParameterIndex, committedTableParameters))
+	{
+		committedTableParameters ^= (static_cast<uint64_t>(1) << rootParameterIndex);
+		DescriptorTableEntry& committedDescriptorTableEntry = m_committedRootDescriptorTables[rootParameterIndex];
+		const auto& markerRanges = committedDescriptorTableEntry.assignedDescriptorHandlesMarker.GetMarkerRanges();
+		UINT tableSize = markerRanges.rbegin()->endOffset;
+		UINT numDestDescriptorRanges = 0;
+		std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]> pDestDescriptorRangeStarts = std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(markerRanges.size());
+		std::unique_ptr<UINT[]> pDestDescriptorRangeSizes = std::make_unique<UINT[]>(markerRanges.size());
+		UINT numSrcDescriptorRanges = 0;
+		std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]> pSrcDescriptorRangeStarts = std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(tableSize);
+		std::unique_ptr<UINT[]> pSrcDescriptorRangeSizes = std::make_unique<UINT[]>(tableSize);
+		for (const auto& markerRange : markerRanges)
+		{
+			pDestDescriptorRangeStarts[numDestDescriptorRanges] = baseDestinationDescriptorHandle + markerRange.beginOffset * descriptorSize;
+			pDestDescriptorRangeSizes[numDestDescriptorRanges] = markerRange.endOffset - markerRange.beginOffset;
+			++numDestDescriptorRanges;
+			for (UINT i = markerRange.beginOffset; i < markerRange.endOffset; ++i)
+			{
+				pSrcDescriptorRangeStarts[numSrcDescriptorRanges] = committedDescriptorTableEntry.pBaseDescriptorHandle[i];
+				pSrcDescriptorRangeSizes[numSrcDescriptorRanges] = 1;
+				++numSrcDescriptorRanges;
+			}
+		}
+		pDevice->CopyDescriptors(
+			numDestDescriptorRanges,
+			pDestDescriptorRangeStarts.get(),
+			pDestDescriptorRangeSizes.get(),
+			numSrcDescriptorRanges,
+			pSrcDescriptorRangeStarts.get(),
+			pSrcDescriptorRangeSizes.get(),
+			descriptorHeapType
+		);
+		(pCommandList->*pSetDescriptorHeap)(rootParameterIndex, baseDestinationDescriptorHandle);
+		baseDestinationDescriptorHandle += tableSize * descriptorSize;
+	}
 }
 
 uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
