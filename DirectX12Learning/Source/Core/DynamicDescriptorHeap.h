@@ -51,6 +51,8 @@ class DynamicDescriptorHeap
 public:
 	DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType);
 
+	void ParseGraphicsRootS
+
 private:
 	Device& m_device;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
