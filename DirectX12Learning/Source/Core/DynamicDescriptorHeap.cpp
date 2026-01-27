@@ -271,6 +271,7 @@ void DynamicDescriptorHeap::DescriptorHandleCache::CopyAndBindCommittedDescripto
 		DescriptorTableEntry& committedDescriptorTableEntry = m_committedRootDescriptorTables[rootParameterIndex];
 		const auto& markerRanges = committedDescriptorTableEntry.assignedDescriptorHandlesMarker.GetMarkerRanges();
 		UINT tableSize = markerRanges.rbegin()->endOffset;
+
 		UINT numDestDescriptorRanges = 0;
 		std::unique_ptr<D3D12_CPU_DESCRIPTOR_HANDLE[]> pDestDescriptorRangeStarts = std::make_unique<D3D12_CPU_DESCRIPTOR_HANDLE[]>(markerRanges.size());
 		std::unique_ptr<UINT[]> pDestDescriptorRangeSizes = std::make_unique<UINT[]>(markerRanges.size());
