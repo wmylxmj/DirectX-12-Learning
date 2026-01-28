@@ -52,8 +52,6 @@ public:
 	DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType);
 
 	void ParseGraphicsRootSignature(const RootSignature& rootSignature);
-	{
-	}
 
 private:
 	Device& m_device;
