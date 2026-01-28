@@ -81,11 +81,6 @@ DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HE
 {
 }
 
-void DynamicDescriptorHeap::ParseGraphicsRootSignature(const RootSignature& rootSignature)
-{
-	m_graphicsDescriptorHandleCache.ParseRootSignature(m_kDescriptorHeapType, rootSignature);
-}
-
 void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t beginOffset, uint32_t endOffset)
 {
 	MarkerRange newMarkerRange;
