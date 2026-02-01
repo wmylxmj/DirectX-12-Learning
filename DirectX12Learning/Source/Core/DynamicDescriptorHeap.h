@@ -54,6 +54,8 @@ public:
 	void ParseGraphicsRootSignature(const RootSignature& rootSignature);
 	void ParseComputeRootSignature(const RootSignature& rootSignature);
 
+	void Set
+
 private:
 	Device& m_device;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
