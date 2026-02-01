@@ -54,7 +54,7 @@ public:
 	void ParseGraphicsRootSignature(const RootSignature& rootSignature);
 	void ParseComputeRootSignature(const RootSignature& rootSignature);
 
-	void Set
+	void SetGraphicsDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles);
 
 private:
 	Device& m_device;
