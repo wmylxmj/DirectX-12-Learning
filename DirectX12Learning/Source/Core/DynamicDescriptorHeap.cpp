@@ -77,7 +77,8 @@ DynamicDescriptorHeap::DynamicDescriptorHeap(Device& device, D3D12_DESCRIPTOR_HE
 	m_device(device),
 	m_kDescriptorHeapType(descriptorHeapType),
 	m_pDescriptorHeapManager(&device.GetDescriptorHeapManager(descriptorHeapType, D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE)),
-	m_pCurrentDescriptorHeap(nullptr)
+	m_pCurrentDescriptorHeap(nullptr),
+	m_currentDescriptorHeapOffset(0)
 {
 }
 
