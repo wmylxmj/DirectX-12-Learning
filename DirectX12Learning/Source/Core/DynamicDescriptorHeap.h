@@ -62,6 +62,8 @@ private:
 	DescriptorHeap* m_pCurrentDescriptorHeap;
 	uint32_t m_currentDescriptorHeapOffset;
 
+	std::vector<DescriptorHeap*> m_retiredGeneralSizeDescriptorHeaps;
+
 	struct MarkerRange
 	{
 		bool operator<(const MarkerRange& other) const
