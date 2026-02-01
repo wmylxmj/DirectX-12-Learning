@@ -88,6 +88,7 @@ void DynamicDescriptorHeap::ParseGraphicsRootSignature(const RootSignature& root
 
 void DynamicDescriptorHeap::ParseComputeRootSignature(const RootSignature& rootSignature)
 {
+	m_computeDescriptorHandleCache.ParseRootSignature(m_kDescriptorHeapType, rootSignature);
 }
 
 void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t beginOffset, uint32_t endOffset)
