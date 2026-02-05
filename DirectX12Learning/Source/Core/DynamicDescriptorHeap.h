@@ -65,6 +65,7 @@ private:
 	uint32_t m_currentDescriptorHeapOffset;
 
 	std::vector<DescriptorHeap*> m_retiredGeneralSizeDescriptorHeaps;
+	std::vector<DescriptorHeap*> m_retiredLargeSizeDescriptorHeaps;
 
 	struct MarkerRange
 	{
