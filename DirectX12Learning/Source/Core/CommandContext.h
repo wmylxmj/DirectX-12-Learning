@@ -2,6 +2,9 @@
 
 #include "PrecompiledHeader.h"
 #include "Device.h"
+#include "DynamicDescriptorHeap.h"
+#include "LinearAllocator.h"
+#include "RootSignature.h"
 
 class CommandContext
 {
