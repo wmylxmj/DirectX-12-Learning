@@ -5,5 +5,5 @@
 class CommandContext
 {
 private:
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList>
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
 };
