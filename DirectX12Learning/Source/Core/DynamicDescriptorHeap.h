@@ -13,6 +13,7 @@
 
 class Device;
 class RootSignature;
+class CommandContext;
 
 class DescriptorHeapManager
 {
