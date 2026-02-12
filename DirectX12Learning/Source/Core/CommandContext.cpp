@@ -6,4 +6,6 @@ CommandContext::CommandContext(Device& device, D3D12_COMMAND_LIST_TYPE commandLi
 	m_uploadHeapLinearAllocator(device, D3D12_HEAP_TYPE_UPLOAD)
 
 {
+	m_pCommandAllocator = device.RequestCommandAllocator(commandListType);
+	CHECK_HRESULT(device.GetDevice()->CreateCommandList(1, commandListType, m_pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_pCommandList)));
 }
