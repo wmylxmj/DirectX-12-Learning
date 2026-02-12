@@ -58,6 +58,8 @@ public:
 	void SetGraphicsDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles);
 	void SetComputeDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles);
 
+	void CommitGraphicsRootDescriptorTables(CommandContext& commandContext);
+
 private:
 	Device& m_device;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
