@@ -23,6 +23,5 @@ private:
 
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_currentDescriptorHeaps[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
 
-	// 上传堆的线性分配器
 	LinearAllocator m_uploadHeapLinearAllocator;
 };
