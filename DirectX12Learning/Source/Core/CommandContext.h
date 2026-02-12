@@ -22,4 +22,6 @@ private:
 	DynamicDescriptorHeap m_dynamicSamplerDescriptorHeap;
 
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_currentDescriptorHeaps[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
+
+	// 上传堆线性分配器
 };
