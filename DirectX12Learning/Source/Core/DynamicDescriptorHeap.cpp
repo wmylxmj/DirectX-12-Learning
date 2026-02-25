@@ -97,6 +97,10 @@ void DynamicDescriptorHeap::SetGraphicsDescriptorHandles(uint32_t rootParameterI
 	m_graphicsDescriptorHandleCache.StageDescriptorHandles(rootParameterIndex, offset, numDescriptors, descriptorHandles);
 }
 
+void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& commandContext)
+{
+}
+
 void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t beginOffset, uint32_t endOffset)
 {
 	MarkerRange newMarkerRange;
