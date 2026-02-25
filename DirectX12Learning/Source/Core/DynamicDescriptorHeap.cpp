@@ -104,6 +104,17 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 void DynamicDescriptorHeap::RetireCurrentHeap()
 {
 	assert(m_pCurrentDescriptorHeap != nullptr);
+
+	if (m_pCurrentDescriptorHeap->GetNumDescriptors() == m_pDescriptorHeapManager->GetGeneralDescriptorHeapSize())
+	{
+		m_retiredGeneralSizeDescriptorHeaps.push_back(m_pCurrentDescriptorHeap);
+	}
+	else
+	{
+		m_retiredLargeSizeDescriptorHeaps.push_back(m_pCurrentDescriptorHeap);
+	}
+	m_pCurrentDescriptorHeap = nullptr;
+	m_currentDescriptorHeapOffset = 0;
 }
 
 void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t beginOffset, uint32_t endOffset)
