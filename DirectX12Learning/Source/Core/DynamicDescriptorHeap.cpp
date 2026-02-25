@@ -103,6 +103,7 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 
 void DynamicDescriptorHeap::RetireCurrentHeap()
 {
+	assert(m_pCurrentDescriptorHeap != nullptr);
 }
 
 void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t beginOffset, uint32_t endOffset)
