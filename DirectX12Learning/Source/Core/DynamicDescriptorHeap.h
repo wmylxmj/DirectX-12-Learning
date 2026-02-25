@@ -60,6 +60,9 @@ public:
 	void CommitGraphicsRootDescriptorTables(CommandContext& commandContext);
 
 private:
+
+	void RetireCurrentHeap();
+
 	Device& m_device;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 	DescriptorHeapManager* m_pDescriptorHeapManager;
