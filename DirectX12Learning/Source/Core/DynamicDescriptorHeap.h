@@ -60,7 +60,7 @@ public:
 	void CommitGraphicsRootDescriptorTables(CommandContext& commandContext);
 
 private:
-
+	bool HasSpace(uint32_t numDescriptors) const;
 	void RetireCurrentHeap();
 
 	Device& m_device;
