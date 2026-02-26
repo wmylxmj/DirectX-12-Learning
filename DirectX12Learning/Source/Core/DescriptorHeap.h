@@ -33,6 +33,7 @@ public:
 	DescriptorHandle operator[](uint32_t index) const;
 
 	uint32_t GetNumDescriptors() const;
+	uint32_t GetDescriptorSize() const;
 
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;

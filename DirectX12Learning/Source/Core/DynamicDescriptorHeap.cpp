@@ -103,6 +103,23 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 	if (!HasSpace(neededSize))
 	{
 		RetireCurrentHeap();
+		m_graphicsDescriptorHandleCache.UnbindAllValid();
+		neededSize = m_graphicsDescriptorHandleCache.ComputeStagedSize() + m_computeDescriptorHandleCache.ComputeCommittedSize();
+		if (neededSize <= m_pDescriptorHeapManager->GetGeneralDescriptorHeapSize())
+		{
+			m_pCurrentDescriptorHeap = m_pDescriptorHeapManager->RequestGeneralSizeDescriptorHeap();
+		}
+		else
+		{
+			m_pCurrentDescriptorHeap = m_pDescriptorHeapManager->RequestLargeSizeDescriptorHeap(neededSize);
+		}
+		m_computeDescriptorHandleCache.CopyAndBindCommittedDescriptorTables(
+			m_device.GetDevice(),
+			m_kDescriptorHeapType,
+			m_pCurrentDescriptorHeap->operator[](m_currentDescriptorHeapOffset),
+			m_pCurrentDescriptorHeap->GetDescriptorSize(),
+			commandContext.GetCommandList(),
+			&ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable);
 	}
 	if (m_pCurrentDescriptorHeap == nullptr)
 	{
