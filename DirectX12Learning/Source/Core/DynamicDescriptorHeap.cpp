@@ -126,6 +126,7 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 			m_pCurrentDescriptorHeap->GetDescriptorSize(),
 			commandContext.GetCommandList(),
 			&ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable);
+		m_currentDescriptorHeapOffset += committedComputeDescriptorsSize;
 	}
 	if (m_pCurrentDescriptorHeap == nullptr)
 	{
