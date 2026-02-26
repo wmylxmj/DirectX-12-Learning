@@ -88,3 +88,8 @@ uint32_t DescriptorHeap::GetNumDescriptors() const
 {
 	return m_kNumDescriptors;
 }
+
+uint32_t DescriptorHeap::GetDescriptorSize() const
+{
+	return m_kDescriptorSize;
+}
