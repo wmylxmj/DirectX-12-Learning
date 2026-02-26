@@ -101,6 +101,11 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 {
 }
 
+bool DynamicDescriptorHeap::HasSpace(uint32_t numDescriptors) const
+{
+	return false;
+}
+
 void DynamicDescriptorHeap::RetireCurrentHeap()
 {
 	assert(m_pCurrentDescriptorHeap != nullptr);
