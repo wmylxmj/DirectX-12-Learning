@@ -9,3 +9,8 @@ CommandContext::CommandContext(Device& device, D3D12_COMMAND_LIST_TYPE commandLi
 	m_pCommandAllocator = device.RequestCommandAllocator(commandListType);
 	CHECK_HRESULT(device.GetDevice()->CreateCommandList(1, commandListType, m_pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_pCommandList)));
 }
+
+ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
+{
+	return m_pCommandList.Get();
+}
