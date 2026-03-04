@@ -59,7 +59,7 @@ public:
 
 	void CommitGraphicsRootDescriptorTables(CommandContext& commandContext);
 
-	void FenceTracker fenceTracker);
+	void ClearCache(FenceTracker fenceTracker);
 
 private:
 	bool HasSpace(uint32_t numDescriptors) const;
