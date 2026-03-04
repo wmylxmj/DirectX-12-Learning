@@ -17,4 +17,19 @@ ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
 
 void CommandContext::BindDescriptorHeaps()
 {
+	UINT numDescriptorHeaps = 0;
+	ID3D12DescriptorHeap* pDescriptorHeaps[D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES];
+
+	for (UINT i = 0; i < D3D12_DESCRIPTOR_HEAP_TYPE_NUM_TYPES; ++i)
+	{
+		if (m_pCurrentDescriptorHeaps[i] != nullptr)
+		{
+			pDescriptorHeaps[numDescriptorHeaps++] = m_pCurrentDescriptorHeaps[i].Get();
+		}
+	}
+
+	if (numDescriptorHeaps > 0)
+	{
+		m_pCommandList->SetDescriptorHeaps(numDescriptorHeaps, pDescriptorHeaps);
+	}
 }
