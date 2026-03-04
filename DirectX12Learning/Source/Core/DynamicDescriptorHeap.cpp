@@ -410,3 +410,7 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 
 	return neededSize;
 }
+
+void DynamicDescriptorHeap::DescriptorHandleCache::ClearCache()
+{
+}
