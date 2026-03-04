@@ -108,8 +108,6 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 		m_graphicsDescriptorHandleCache.UnbindAllValid();
 
 		uint32_t stagedGraphicsDescriptorsSize = m_graphicsDescriptorHandleCache.ComputeStagedSize();
-
-		// 已提交的计算描述符大小
 		uint32_t committedComputeDescriptorsSize = m_computeDescriptorHandleCache.ComputeCommittedSize();
 		neededSize = stagedGraphicsDescriptorsSize + committedComputeDescriptorsSize;
 
