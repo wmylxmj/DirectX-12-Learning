@@ -413,4 +413,9 @@ uint32_t DynamicDescriptorHeap::DescriptorHandleCache::ComputeCommittedSize()
 
 void DynamicDescriptorHeap::DescriptorHandleCache::ClearCache()
 {
+	m_rootDescriptorTablesBitMap = 0;
+	m_staleRootDescriptorTablesBitMap = 0;
+	m_committedRootDescriptorTablesBitMap = 0;
+	m_descriptorHandles.clear();
+	m_committedDescriptorHandles.clear();
 }
