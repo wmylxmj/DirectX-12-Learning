@@ -12,6 +12,11 @@ CommandContext::CommandContext(Device& device, D3D12_COMMAND_LIST_TYPE commandLi
 
 void CommandContext::SetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, ID3D12DescriptorHeap* pDescriptorHeap)
 {
+	if (m_pCurrentDescriptorHeaps[descriptorHeapType].Get() != pDescriptorHeap)
+	{
+		m_pCurrentDescriptorHeaps[descriptorHeapType] = pDescriptorHeap;
+		BindDescriptorHeaps();
+	}
 }
 
 ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
