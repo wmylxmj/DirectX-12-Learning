@@ -11,6 +11,8 @@ class CommandContext
 public:
 	CommandContext(Device& device, D3D12_COMMAND_LIST_TYPE commandListType);
 
+	ID3D12GraphicsCommandList* GetCommandList() const;
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
