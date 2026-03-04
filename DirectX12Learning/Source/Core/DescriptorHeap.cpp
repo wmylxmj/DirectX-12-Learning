@@ -96,5 +96,5 @@ uint32_t DescriptorHeap::GetDescriptorSize() const
 
 ID3D12DescriptorHeap* DescriptorHeap::GetD3D12DescriptorHeap() const
 {
-	return nullptr;
+	return m_pDescriptorHeap.Get();
 }
