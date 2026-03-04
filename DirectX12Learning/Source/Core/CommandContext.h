@@ -11,6 +11,8 @@ class CommandContext
 public:
 	CommandContext(Device& device, D3D12_COMMAND_LIST_TYPE commandListType);
 
+	void SetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, ID3D12DescriptorHeap* pDescriptorHeap);
+
 	ID3D12GraphicsCommandList* GetCommandList() const;
 
 private:
