@@ -2,6 +2,7 @@
 
 #include "Device.h"
 #include "RootSignature.h"
+#include "CommandContext.h"
 
 #include <intrin.h>
 
@@ -127,8 +128,19 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 			m_pCurrentDescriptorHeap->operator[](m_currentDescriptorHeapOffset),
 			m_pCurrentDescriptorHeap->GetDescriptorSize(),
 			commandContext.GetCommandList(),
-			&ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable);
+			&ID3D12GraphicsCommandList::SetComputeRootDescriptorTable
+		);
 		m_currentDescriptorHeapOffset += committedComputeDescriptorsSize;
+
+		m_graphicsDescriptorHandleCache.CopyAndBindStaleDescriptorTables(
+			m_device.GetDevice(),
+			m_kDescriptorHeapType,
+			m_pCurrentDescriptorHeap->operator[](m_currentDescriptorHeapOffset),
+			m_pCurrentDescriptorHeap->GetDescriptorSize(),
+			commandContext.GetCommandList(),
+			&ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
+		);
+		m_currentDescriptorHeapOffset += stagedGraphicsDescriptorsSize;
 	}
 }
 
