@@ -190,6 +190,7 @@ void DynamicDescriptorHeap::AssignedDescriptorHandlesMarker::MarkRange(uint32_t 
 
 DynamicDescriptorHeap::DescriptorHandleCache::DescriptorHandleCache()
 {
+	ClearCache();
 }
 
 void DynamicDescriptorHeap::DescriptorHandleCache::ParseRootSignature(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, const RootSignature& rootSignature)
