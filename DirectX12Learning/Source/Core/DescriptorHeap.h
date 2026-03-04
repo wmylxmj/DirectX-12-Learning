@@ -35,6 +35,8 @@ public:
 	uint32_t GetNumDescriptors() const;
 	uint32_t GetDescriptorSize() const;
 
+	ID3D12DescriptorHeap* GetD3D12DescriptorHeap() const;
+
 private:
 	Microsoft::WRL::ComPtr<ID3D12Device> m_pDevice;
 	const D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
