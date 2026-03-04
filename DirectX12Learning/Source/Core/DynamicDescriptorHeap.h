@@ -119,6 +119,8 @@ private:
 
 	struct DescriptorHandleCache
 	{
+		DescriptorHandleCache();
+
 		void ParseRootSignature(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, const RootSignature& rootSignature);
 		void StageDescriptorHandles(uint32_t rootParameterIndex, uint32_t offset, uint32_t numDescriptors, const D3D12_CPU_DESCRIPTOR_HANDLE* descriptorHandles);
 
