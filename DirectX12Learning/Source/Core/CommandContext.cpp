@@ -14,3 +14,7 @@ ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
 {
 	return m_pCommandList.Get();
 }
+
+void CommandContext::BindDescriptorHeaps()
+{
+}
