@@ -151,8 +151,6 @@ bool DynamicDescriptorHeap::HasSpace(uint32_t numDescriptors) const
 
 void DynamicDescriptorHeap::RetireCurrentHeap()
 {
-	assert(m_pCurrentDescriptorHeap != nullptr);
-
 	if (m_pCurrentDescriptorHeap->GetNumDescriptors() == m_pDescriptorHeapManager->GetGeneralDescriptorHeapSize())
 	{
 		m_retiredGeneralSizeDescriptorHeaps.push_back(m_pCurrentDescriptorHeap);
