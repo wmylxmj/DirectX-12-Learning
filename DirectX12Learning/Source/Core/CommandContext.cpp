@@ -10,6 +10,10 @@ CommandContext::CommandContext(Device& device, D3D12_COMMAND_LIST_TYPE commandLi
 	CHECK_HRESULT(device.GetDevice()->CreateCommandList(1, commandListType, m_pCommandAllocator.Get(), nullptr, IID_PPV_ARGS(&m_pCommandList)));
 }
 
+void CommandContext::SetDescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType, ID3D12DescriptorHeap* pDescriptorHeap)
+{
+}
+
 ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
 {
 	return m_pCommandList.Get();
