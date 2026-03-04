@@ -16,6 +16,7 @@ public:
 	ID3D12GraphicsCommandList* GetCommandList() const;
 
 private:
+	void BindDescriptorHeaps();
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_pCommandList;
 	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_pCommandAllocator;
 
