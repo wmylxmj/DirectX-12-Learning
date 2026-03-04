@@ -120,6 +120,8 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 			m_pCurrentDescriptorHeap = m_pDescriptorHeapManager->RequestLargeSizeDescriptorHeap(neededSize);
 		}
 
+		commandContext.SetDescriptorHeap(m_kDescriptorHeapType, m_pCurrentDescriptorHeap->GetD3D12DescriptorHeap());
+
 		m_computeDescriptorHandleCache.CopyAndBindCommittedDescriptorTables(
 			m_device.GetDevice(),
 			m_kDescriptorHeapType,
