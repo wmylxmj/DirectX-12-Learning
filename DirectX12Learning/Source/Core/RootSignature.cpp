@@ -41,7 +41,7 @@ const RootParameter& RootSignature::operator[](size_t index) const
 
 ID3D12RootSignature* RootSignature::GetRootSignature() const
 {
-	return m_pRootSignature;
+	return m_pRootSignature.Get();
 }
 
 void RootSignature::CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags)
