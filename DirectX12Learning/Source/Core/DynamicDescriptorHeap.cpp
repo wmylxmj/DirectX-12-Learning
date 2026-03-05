@@ -160,6 +160,9 @@ void DynamicDescriptorHeap::ClearCache(FenceTracker fenceTracker)
 		m_pDescriptorHeapManager->DiscardLargeSizeDescriptorHeaps(fenceTracker, m_retiredLargeSizeDescriptorHeaps);
 		m_retiredLargeSizeDescriptorHeaps.clear();
 	}
+
+	m_graphicsDescriptorHandleCache.ClearCache();
+	m_computeDescriptorHandleCache.ClearCache();
 }
 
 bool DynamicDescriptorHeap::HasSpace(uint32_t numDescriptors) const
