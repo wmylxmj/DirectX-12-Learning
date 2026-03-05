@@ -42,3 +42,7 @@ void CommandContext::BindDescriptorHeaps()
 		m_pCommandList->SetDescriptorHeaps(numDescriptorHeaps, pDescriptorHeaps);
 	}
 }
+
+void GraphicsCommandContext::SetRootSignature(const RootSignature& rootSignature)
+{
+}
