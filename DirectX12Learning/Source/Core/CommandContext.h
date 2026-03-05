@@ -35,4 +35,6 @@ private:
 class GraphicsCommandContext : public CommandContext
 {
 public:
+
+	void SetR
 };
