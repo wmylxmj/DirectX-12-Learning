@@ -45,4 +45,14 @@ void CommandContext::BindDescriptorHeaps()
 
 void GraphicsCommandContext::SetRootSignature(const RootSignature& rootSignature)
 {
+	if (m_pCurrentGraphicsRootSignature.Get() == rootSignature.GetRootSignature())
+	{
+		return;
+	}
+
+	m_pCurrentGraphicsRootSignature = rootSignature.GetRootSignature();
+	m_pCommandList->SetGraphicsRootSignature(m_pCurrentGraphicsRootSignature.Get());
+
+	m_dynamicCbvSrvUavDescriptorHeap.ParseGraphicsRootSignature(rootSignature);
+	m_dynamicSamplerDescriptorHeap.ParseGraphicsRootSignature(rootSignature);
 }
