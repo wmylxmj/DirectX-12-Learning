@@ -131,17 +131,18 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 			&ID3D12GraphicsCommandList::SetComputeRootDescriptorTable
 		);
 		m_currentDescriptorHeapOffset += committedComputeDescriptorsSize;
-
-		m_graphicsDescriptorHandleCache.CopyAndBindStaleDescriptorTables(
-			m_device.GetDevice(),
-			m_kDescriptorHeapType,
-			m_pCurrentDescriptorHeap->operator[](m_currentDescriptorHeapOffset),
-			m_pCurrentDescriptorHeap->GetDescriptorSize(),
-			commandContext.GetCommandList(),
-			&ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
-		);
-		m_currentDescriptorHeapOffset += stagedGraphicsDescriptorsSize;
+		neededSize = stagedGraphicsDescriptorsSize;
 	}
+
+	m_graphicsDescriptorHandleCache.CopyAndBindStaleDescriptorTables(
+		m_device.GetDevice(),
+		m_kDescriptorHeapType,
+		m_pCurrentDescriptorHeap->operator[](m_currentDescriptorHeapOffset),
+		m_pCurrentDescriptorHeap->GetDescriptorSize(),
+		commandContext.GetCommandList(),
+		&ID3D12GraphicsCommandList::SetGraphicsRootDescriptorTable
+	);
+	m_currentDescriptorHeapOffset += neededSize;
 }
 
 bool DynamicDescriptorHeap::HasSpace(uint32_t numDescriptors) const
