@@ -4,6 +4,5 @@ DescriptorAllocator::DescriptorAllocator(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHe
 	m_kDescriptorHeapType(descriptorHeapType),
 	m_pCurrentDescriptorHeap(nullptr),
 	m_currentDescriptorHeapOffset(0)
-
 {
 }
