@@ -24,6 +24,11 @@ ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
 	return m_pCommandList.Get();
 }
 
+GraphicsCommandContext& CommandContext::AsGraphicsCommandContext()
+{
+	// TODO: 在此处插入 return 语句
+}
+
 void CommandContext::BindDescriptorHeaps()
 {
 	UINT numDescriptorHeaps = 0;
