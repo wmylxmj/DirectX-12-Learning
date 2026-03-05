@@ -31,3 +31,24 @@ private:
 
 	LinearAllocator m_uploadHeapLinearAllocator;
 };
+
+class GraphicsCommandContext : public CommandContext
+{
+public:
+	GraphicsContext(Device& device);
+
+	void BeginFrame();
+	void EndFrame();
+
+	void SetRootSignature(const RootSignature& rootSignature);
+
+	void SetViewportAndScissor(uint32_t width, uint32_t height);
+
+	void SetPrimitiveTopology(D3D12_PRIMITIVE_TOPOLOGY topology);
+
+	void SetIndexBuffer(const D3D12_INDEX_BUFFER_VIEW& indexBufferView);
+
+	void SetVertexBuffer(uint32_t slot, const D3D12_VERTEX_BUFFER_VIEW& vertexBufferView);
+
+	void SetRenderTarget()
+}
