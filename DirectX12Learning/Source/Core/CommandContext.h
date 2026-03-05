@@ -35,6 +35,4 @@ private:
 class GraphicsCommandContext : public CommandContext
 {
 public:
-
-	// ÉèÖÃ¸ùÇ©Ãû
 };
