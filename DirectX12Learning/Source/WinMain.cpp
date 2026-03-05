@@ -2,6 +2,7 @@
 #include "Core/Device.h"
 #include "Core/RootSignature.h"
 #include "Core/Camera.h"
+#include "Math/Align.h"
 
 #include <string>
 #include <cassert>
@@ -307,13 +308,6 @@ Microsoft::WRL::ComPtr<ID3D12Resource> CreateDefaultBuffer(
 	return defaultBuffer;
 }
 
-UINT CalcConstantBufferByteSize(UINT byteSize)
-{
-	// byteSize + 255：如果不是256的倍数则向上调整
-	// & ~255：清除低 8 位，确保结果是 256 字节对齐的
-	return (byteSize + 255) & ~255;
-}
-
 Microsoft::WRL::ComPtr<ID3DBlob> CompileShader(
 	const std::wstring& filename,
 	const D3D_SHADER_MACRO* defines,
@@ -364,7 +358,7 @@ bool AppInit() {
 	CHECK_HRESULT(g_device->GetDevice()->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&g_cbvDescriptorHeap)));
 
 	// 建立常量缓冲区
-	UINT cbByteSize = (sizeof(ObjectConstants) + 255) & ~255;
+	UINT cbByteSize = AlignUp(sizeof(ObjectConstants), D3D12_CONSTANT_BUFFER_DATA_PLACEMENT_ALIGNMENT);
 	CHECK_HRESULT(g_device->GetDevice()->CreateCommittedResource(
 		&RvalueToLvalue(CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD)),
 		D3D12_HEAP_FLAG_NONE,
@@ -378,7 +372,7 @@ bool AppInit() {
 	// 创建常量缓冲区视图
 	D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc;
 	cbvDesc.BufferLocation = g_constantBuffer->GetGPUVirtualAddress();
-	cbvDesc.SizeInBytes = CalcConstantBufferByteSize(sizeof(ObjectConstants));
+	cbvDesc.SizeInBytes = cbByteSize;
 	g_device->GetDevice()->CreateConstantBufferView(
 		&cbvDesc,
 		g_cbvDescriptorHeap->GetCPUDescriptorHandleForHeapStart()
