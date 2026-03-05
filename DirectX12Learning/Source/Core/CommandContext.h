@@ -32,7 +32,7 @@ private:
 	LinearAllocator m_uploadHeapLinearAllocator;
 };
 
-class GraphicsCommandContext : public CommandContext
+class
 {
 public:
 };
