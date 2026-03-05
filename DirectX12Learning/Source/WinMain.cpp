@@ -593,7 +593,7 @@ void Render() {
 	ID3D12DescriptorHeap* descriptorHeaps[] = { g_cbvDescriptorHeap.Get() };
 	cmdList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-	cmdList->SetGraphicsRootSignature(g_pRootSignature->GetRootSignature().Get());
+	cmdList->SetGraphicsRootSignature(g_pRootSignature->GetRootSignature());
 
 	cmdList->IASetVertexBuffers(0, 1, &g_vbv);
 	cmdList->IASetIndexBuffer(&g_ibv);
