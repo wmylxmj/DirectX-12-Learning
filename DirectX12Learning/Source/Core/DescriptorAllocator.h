@@ -14,4 +14,5 @@ private:
 	D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 
 	std::mutex m_mutex;
+	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
 };
