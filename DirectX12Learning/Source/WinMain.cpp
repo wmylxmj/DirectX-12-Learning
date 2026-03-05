@@ -500,7 +500,7 @@ bool AppInit() {
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc;
 	ZeroMemory(&psoDesc, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
 	psoDesc.InputLayout = { inputLayout.data(), (UINT)inputLayout.size() }; // 输入顶点布局
-	psoDesc.pRootSignature = g_pRootSignature->GetRootSignature().Get(); // 根签名
+	psoDesc.pRootSignature = g_pRootSignature->GetRootSignature(); // 根签名
 	psoDesc.VS =
 	{
 		reinterpret_cast<BYTE*>(vsByteCode->GetBufferPointer()),
