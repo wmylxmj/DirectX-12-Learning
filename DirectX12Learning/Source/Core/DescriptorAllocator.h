@@ -9,6 +9,10 @@
 class DescriptorAllocator
 {
 public:
+	DescriptorAllocator(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType);
+	: m_kDescriptorHeapType(descriptorHeapType)
+	{
+	}
 
 private:
 	D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
