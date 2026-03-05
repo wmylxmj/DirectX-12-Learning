@@ -12,4 +12,6 @@ public:
 
 private:
 	D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
+
+	std::mutex m_mutex;
 };
