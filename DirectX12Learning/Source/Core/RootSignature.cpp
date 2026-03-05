@@ -39,7 +39,7 @@ const RootParameter& RootSignature::operator[](size_t index) const
 	return m_parameters.get()[index];
 }
 
-Microsoft::WRL::ComPtr<ID3D12RootSignature> RootSignature::GetRootSignature() const
+ID3D12RootSignature* RootSignature::GetRootSignature() const
 {
 	return m_pRootSignature;
 }
