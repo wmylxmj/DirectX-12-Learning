@@ -15,7 +15,7 @@ public:
 
 	ID3D12GraphicsCommandList* GetCommandList() const;
 
-	GraphicsCommandContext& AsGraphicsContext();
+	GraphicsCommandContext& AsGraphicsCommandContext();
 
 protected:
 	void BindDescriptorHeaps();
