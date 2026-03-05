@@ -147,6 +147,7 @@ void DynamicDescriptorHeap::CommitGraphicsRootDescriptorTables(CommandContext& c
 
 void DynamicDescriptorHeap::ClearCache(FenceTracker fenceTracker)
 {
+	RetireCurrentHeap();
 }
 
 bool DynamicDescriptorHeap::HasSpace(uint32_t numDescriptors) const
