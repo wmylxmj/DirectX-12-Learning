@@ -29,7 +29,7 @@ public:
 	RootParameter& operator[](size_t index);
 	const RootParameter& operator[](size_t index) const;
 
-	ID3D12RootSignature GetRootSignature() const;
+	ID3D12RootSignature* GetRootSignature() const;
 
 	void CreateRootSignature(D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE);
 
