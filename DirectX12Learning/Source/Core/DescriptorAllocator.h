@@ -11,8 +11,6 @@ class DescriptorAllocator
 public:
 	DescriptorAllocator(D3D12_DESCRIPTOR_HEAP_TYPE descriptorHeapType);
 
-	D3D12_CPU_DESCRIPTOR_HANDLE Allocate(uint32_t numDescriptors);
-
 private:
 	D3D12_DESCRIPTOR_HEAP_TYPE m_kDescriptorHeapType;
 
