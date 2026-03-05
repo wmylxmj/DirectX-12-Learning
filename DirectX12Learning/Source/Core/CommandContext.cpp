@@ -26,7 +26,7 @@ ID3D12GraphicsCommandList* CommandContext::GetCommandList() const
 
 GraphicsCommandContext& CommandContext::AsGraphicsCommandContext()
 {
-	// TODO: 在此处插入 return 语句
+	return reinterpret_cast<GraphicsCommandContext&>(*this);
 }
 
 void CommandContext::BindDescriptorHeaps()
