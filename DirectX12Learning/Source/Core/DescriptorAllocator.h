@@ -17,4 +17,5 @@ private:
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
 
 	DescriptorHeap* m_pCurrentDescriptorHeap;
+	uint32_t m_currentDescriptorHeapOffset;
 };
