@@ -6,6 +6,8 @@
 #include "LinearAllocator.h"
 #include "RootSignature.h"
 
+class GraphicsCommandContext;
+
 class CommandContext
 {
 public:
