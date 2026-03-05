@@ -36,5 +36,5 @@ class GraphicsCommandContext : public CommandContext
 {
 public:
 
-	void SetR
+	void SetRootSignature(const RootSignature& rootSignature);
 };
