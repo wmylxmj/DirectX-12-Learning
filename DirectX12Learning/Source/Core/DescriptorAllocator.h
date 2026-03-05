@@ -15,4 +15,6 @@ private:
 
 	std::mutex m_mutex;
 	std::vector<std::unique_ptr<DescriptorHeap>> m_descriptorHeapPool;
+
+	DescriptorHeap* m_pCurrentDescriptorHeap;
 };
